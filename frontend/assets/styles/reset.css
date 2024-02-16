@@ -130,13 +130,13 @@ table {
 }
 
 a{
-  text-decoration: none;
-  color: inherit;
-  font: inherit;
+  text-decoration: none !important;
+  color: inherit !important;
+  font: inherit !important;
 }
 
 input,
 textarea,
 button{
-  font: inherit;
+  font: inherit !important;
 }

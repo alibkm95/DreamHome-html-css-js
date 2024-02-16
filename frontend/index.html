@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
-  <!-- reset styles resource -->
-  <link rel="stylesheet" href="./assets/styles/reset.css">
   <!-- bootstrap styles resource -->
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <!-- reset styles resource -->
+  <link rel="stylesheet" href="./assets/styles/reset.css">
   <!-- main styles resource -->
   <link rel="stylesheet" href="./assets/styles/main.css">
   <!-- favicon resource -->
@@ -22,7 +22,168 @@
 </head>
 
 <body>
-  
+  <header class="header">
+    <nav class="menu">
+      <div class="menu__logo">
+        <a href="#/" class="menu__logo-link">
+          <img src="./assets/images/logo.svg" alt="Dream Home" class="menu__logo-img">
+        </a>
+      </div>
+      <div class="menu__content">
+        <ul class="menu__list">
+          <li class="menu__list-item menu__close-btn">
+            <div class="icon-parent">
+              <i class="fa-solid fa-x"></i>
+            </div>
+          </li>
+          <li class="menu__list-item">
+            <a href="#/" class="menu__link">
+              <div class="icon-parent">
+                <i class="fa-solid fa-home"></i>
+              </div>
+              <span class="menu__text">
+                Home
+              </span>
+            </a>
+          </li>
+          <li class="menu__list-item has-submenu">
+            <div class="menu__list-iyem-header">
+              <div class="icon-parent">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <span class="menu__text">
+                Properties
+                <i class="fa-solid fa-caret-down"></i>
+              </span>
+            </div>
+            <div class="submenu">
+              <ul class="submenu__list">
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-asterisk"></i>
+                    All
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-city"></i>
+                    Apartment
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-house"></i>
+                    Villa-Bungalow
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-mountain-sun"></i>
+                    Lands
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-dollar"></i>
+                    Commercials
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="menu__list-item has-submenu">
+            <div class="menu__list-item-header">
+              <div class="icon-parent">
+                <i class="fa-solid fa-rectangle-ad"></i>
+              </div>
+              <span class="menu__text">
+                Advertisements
+                <i class="fa-solid fa-caret-down"></i>
+              </span>
+            </div>
+            <div class="submenu">
+              <ul class="submenu__list">
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-asterisk"></i>
+                    All
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-handshake"></i>
+                    Buy and sell
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-file-contract"></i>
+                    Mortgage and rent
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-users"></i>
+                    partnering construction
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="menu__list-item">
+            <a href="#/" class="menu__link">
+              <div class="icon-parent">
+                <i class="fa-solid fa-headset"></i>
+              </div>
+              <span class="menu__text">
+                Support
+              </span>
+            </a>
+          </li>
+          <li class="menu__list-item has-actions">
+            <div class="menu__actions">
+              <div class="menu__actions-search">
+                <a href="#/" class="menu__link">
+                  <div class="menu__icon">
+                    <i class="fa-solid fa-search"></i>
+                  </div>
+                </a>
+              </div>
+              <div class="menu__actions-profile">
+                <a href="#/" class="menu__link">
+                  <div class="menu__icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span class="menu__text">
+                      Login
+                    </span>
+                  </div>
+                </a>
+              </div>
+              <div class="menu__actions-notification">
+                <div class="menu__icon">
+                  <i class="fa-solid fa-bell"></i>
+                </div>
+                <div class="menu__actions-notification-wrapper">
+                  <span class="notif-empty">
+                    ¯\_(ツ)_/¯ there is no notifications!
+                  </span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="menu__open">
+        <div class="menu__open-btn">
+          <div class="menu__icon">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>
