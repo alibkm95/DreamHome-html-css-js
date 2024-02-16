@@ -1,0 +1,5 @@
+@use 'functions' as f;
+
+$title-size: clamp(f.rem(32), f.rem(32) + 3vw, f.rem(80));
+$subtitle-size: clamp(f.rem(10), f.rem(10) + 2vw, f.rem(24));
+$text-size: clamp(f.rem(10), f.rem(10) + 1vw, f.rem(20));
