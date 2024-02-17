@@ -1,12 +1,12 @@
 *,
 *::after,
-*::before{
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root{
+:root {
   --body-bg: #ffffff;
   --elem-bg: #eeeeee;
   --elem-bg2: #f7f7f7;
@@ -40,7 +40,15 @@
   font-size: 16px;
 }
 
-body{
+body {
   overflow-x: hidden;
   font-family: "Comfortaa", sans-serif;
+  background-color: var(--body-bg);
+  color: var(--txtp);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

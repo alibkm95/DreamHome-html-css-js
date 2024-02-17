@@ -1,0 +1,18 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.menu__icon {
+  width: f.rem(40);
+  height: f.rem(40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  @include m.media(lg) {
+    width: f.rem(60);
+    height: f.rem(60);
+    font-size: f.rem(30);
+  }
+}
