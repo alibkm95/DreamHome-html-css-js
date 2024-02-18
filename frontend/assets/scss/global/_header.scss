@@ -19,6 +19,7 @@
     margin-inline: auto;
     position: relative;
     isolation: isolate;
+    z-index: 9999;
 
     @include m.media(lg) {
       justify-content: flex-start;

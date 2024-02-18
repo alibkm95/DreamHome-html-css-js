@@ -16,3 +16,15 @@
     font-size: f.rem(30);
   }
 }
+
+.divider{
+  overflow: hidden;
+  transform: translateY(f.rem(5));
+}
+
+.btn-style{
+  display: block;
+  width: max-content;
+  padding: f.rem(10) f.rem(20);
+  border-radius: f.rem(5);
+}
