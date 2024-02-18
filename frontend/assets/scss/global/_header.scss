@@ -221,6 +221,10 @@
             animation: shine infinite ease-in-out 2.5s;
           }
         }
+
+        .menu__link:hover{
+          color: var(--bs-white) !important;
+        }
       }
 
       &-notification {
