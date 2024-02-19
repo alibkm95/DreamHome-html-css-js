@@ -141,3 +141,38 @@
     }
   }
 }
+
+.VR {
+  line-height: 1.5;
+  background-image: linear-gradient(0deg,
+      var(--purple-2),
+      rgba(255 255 255 / 0),
+      rgba(255 255 255 / 0));
+
+  &__left {
+
+    &-title {
+      font-weight: bolder;
+      padding-left: f.rem(20);
+      color: var(--purple);
+      text-shadow: 0 0 f.rem(15) var(--bs-white);
+    }
+
+    &-text {
+      background-color: var(--bs-indigo);
+      padding: f.rem(20);
+      border-radius: f.rem(10);
+      color: var(--bs-white);
+      box-shadow: f.rem(10) f.rem(10) f.rem(15) var(--black-40);
+    }
+  }
+
+  &__right {
+
+    img {
+      display: block;
+      width: 100%;
+      max-width: f.rem(500);
+    }
+  }
+}
