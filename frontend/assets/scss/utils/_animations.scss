@@ -1,3 +1,4 @@
+@use './functions' as f;
 
 @keyframes shine {
   0%{
@@ -11,5 +12,11 @@
   }
   100%{
     left: +150%;
+  }
+}
+
+@keyframes scroll {
+  to{
+    transform: translate(calc(-50% - f.rem(5)));
   }
 }
