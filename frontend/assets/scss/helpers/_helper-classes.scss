@@ -32,3 +32,29 @@
 .swiper-wrapper{
   padding-block: f.rem(30);
 }
+
+.input-parent{
+  width: 100%;
+  display: flex;
+  align-items: first baseline;
+  gap: f.rem(5);
+  background-color: var(--body-bg);
+  padding: f.rem(5);
+  border-radius: f.rem(5);
+
+  input{
+    width: 100%;
+    border: none;
+    outline: none;
+  }
+
+  textarea{
+    width: 100%;
+    border: none;
+    outline: none;
+  }
+
+  i{
+    color: var(--txts);
+  }
+}

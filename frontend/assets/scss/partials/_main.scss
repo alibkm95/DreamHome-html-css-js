@@ -176,3 +176,80 @@
     }
   }
 }
+
+.advertise {
+  line-height: 1.2;
+
+  &__left {
+
+    img {
+      display: block;
+      width: 100%;
+      max-width: f.rem(500);
+    }
+  }
+
+  &__right {
+    padding: f.rem(20);
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(10);
+
+    @include m.media(sm) {
+      background-color: var(--body-bg);
+      box-shadow: 0 0 f.rem(15) var(--black-20);
+      border-radius: f.rem(10);
+    }
+
+    &-title {
+      font-weight: bolder;
+      color: var(--bs-indigo);
+    }
+  }
+
+  &__form {
+    background-color: var(--elem-bg);
+    padding: f.rem(10);
+    border-radius: f.rem(10);
+    display: grid;
+    grid-auto-columns: 1fr;
+    gap: f.rem(10);
+    grid-template-areas:
+      "mail"
+      "phone"
+      "msg"
+      "submit";
+
+    @include m.media(sm) {
+      grid-template-areas:
+        "mail phone"
+        "msg msg"
+        "submit submit";
+    }
+
+    .mail {
+      grid-area: mail;
+    }
+
+    .phone {
+      grid-area: phone;
+    }
+
+    .msg {
+      grid-area: msg;
+    }
+
+    .submit {
+      grid-area: submit;
+      border: none;
+      background-color: var(--green);
+      color: var(--bs-white);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: var(--bs-indigo);
+      }
+    }
+  }
+}
