@@ -13,6 +13,7 @@ window.addEventListener('load', () => {
   const menuLinkElems = document.querySelectorAll('.menu__link')
   const subMenuParentElems = document.querySelectorAll('.has-submenu')
   const subMenuLinkElems = document.querySelectorAll('.submenu__link')
+  const openSearchLogElem = document.querySelector('.search-trigger')
 
   openMenuBtn.addEventListener('click', () => {
     OpenMenu()
@@ -44,6 +45,27 @@ window.addEventListener('load', () => {
 
   notifBtn.addEventListener('click', () => {
     ToggleNotif()
+  })
+
+  openSearchLogElem.addEventListener('click', () => {
+    Swal.fire({
+      title: "Search in ads",
+      input: "text",
+      inputPlaceholder: "Type your key words here...",
+      inputAttributes: {
+        "aria-label": "Type your message here"
+      },
+      confirmButtonText: "Search",
+      confirmButtonColor: "var(--bs-indigo)",
+      showCancelButton: true,
+      cancelButtonColor: "var(--orange)"
+    })
+      .then(result => {
+        if(result.isConfirmed){
+          console.log(result.value)
+          //  implement search feature here
+        }
+      })
   })
 
 })
