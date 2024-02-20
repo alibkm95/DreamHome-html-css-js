@@ -32,3 +32,8 @@ export const CloseSubMenues = () => {
     submenu.classList.remove('active')
   })
 }
+
+export const ToggleNotif = () => {
+  const notifWrapperElem = document.querySelector('.menu__actions-notification-wrapper')
+  notifWrapperElem.classList.toggle('active')
+}
