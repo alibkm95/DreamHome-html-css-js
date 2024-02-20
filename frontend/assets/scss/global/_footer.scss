@@ -1,0 +1,110 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.footer {
+  background-color: var(--elem-bg);
+  line-height: 1.2;
+
+  &__container {
+    display: grid;
+    grid-auto-columns: 1fr;
+    gap: f.rem(30);
+    grid-template-areas:
+      "about"
+      "quick"
+      "contact"
+      "cop";
+
+    @include m.media(md) {
+      grid-template-areas:
+        "about about"
+        "quick contact"
+        "cop cop";
+    }
+
+    @include m.media(lg) {
+      grid-template-areas:
+        "about quick contact"
+        "cop cop cop";
+    }
+  }
+
+  &__about {
+    grid-area: about;
+  }
+
+  &__quick {
+    grid-area: quick;
+
+    &-list {
+      display: flex;
+      flex-direction: column;
+      gap: f.rem(10);
+      padding-left: f.rem(10);
+    }
+  }
+
+  &__contact {
+    grid-area: contact;
+
+    &-body{
+      display: flex;
+      flex-direction: column;
+      gap: f.rem(10);
+      padding-left: f.rem(10);
+
+
+    }
+  }
+
+  &__copy {
+    grid-area: cop;
+  }
+
+  &__link {
+    transition: color 0.3s ease;
+
+    &:hover{
+      color: var(--txts) !important;
+    }
+  }
+
+  &__text{
+    font-size: f.rem(18);
+    font-weight: bolder;
+  }
+
+  &__subtext{
+
+
+    &.has-socials{
+      max-width: f.rem(400);
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      margin-top: f.rem(20);
+      font-size: f.rem(25);
+
+      i{
+        cursor: pointer;
+
+        &:nth-of-type(1){
+          color: var(--red);
+        }
+
+        &:nth-of-type(2){
+          color: var(--blue);
+        }
+
+        &:nth-of-type(3){
+          color: var(--cyan);
+        }
+
+        &:nth-of-type(4){
+          color: var(--blue);
+        }
+      }
+    }
+  }
+}
