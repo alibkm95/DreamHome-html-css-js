@@ -17,23 +17,23 @@
   }
 }
 
-.divider{
+.divider {
   overflow: hidden;
   transform: translateY(f.rem(5));
 }
 
-.btn-style{
+.btn-style {
   display: block;
   width: max-content;
   padding: f.rem(10) f.rem(20);
   border-radius: f.rem(5);
 }
 
-.swiper-wrapper{
+.swiper-wrapper {
   padding-block: f.rem(30);
 }
 
-.input-parent{
+.input-parent {
   width: 100%;
   display: flex;
   align-items: first baseline;
@@ -42,50 +42,70 @@
   padding: f.rem(5);
   border-radius: f.rem(5);
 
-  input{
+  input {
     width: 100%;
     border: none;
     outline: none;
   }
 
-  textarea{
+  textarea {
     width: 100%;
     border: none;
     outline: none;
   }
 
-  i{
+  i {
     color: var(--txts);
   }
 }
 
 .not-found {
 
-  .container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  .container {
+    display: grid;
     gap: f.rem(20);
+    place-items: center;
+    grid-auto-columns: 1fr;
+    grid-template-areas:
+      "img"
+      "txt"
+      "btn";
+
+    @include m.media(md){
+      grid-template-areas: 
+        "txt img"
+        "btn img";
+    }
   }
 
-  &__img{
+  &__img {
+    grid-area: img;
     display: block;
     width: 100%;
     max-width: f.rem(600);
   }
 
-  &__text{
+  &__text {
+    grid-area: txt;
     line-height: 1.5;
+
+    @include m.media(md){
+      place-self: end;
+    }
   }
 
-  &__link{
+  &__link {
+    grid-area: btn;
     background-color: var(--green);
     color: var(--bs-white) !important;
     transition: all 0.3s ease;
 
-    &:hover{
+    &:hover {
       background-color: var(--bs-indigo);
+    }
+
+    @include m.media(md){
+      place-self: start center;
     }
   }
 }
