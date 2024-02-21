@@ -2,13 +2,8 @@
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
 
-
-.result {
+.main {
   --item-per-page: 6;
-  background-image: linear-gradient(0deg,
-      var(--purple-2),
-      rgba(255 255 255 / 0),
-      rgba(255 255 255 / 0));
 
   @include m.media(md) {
     --item-per-page: 10;
@@ -17,12 +12,19 @@
   @include m.media(lg) {
     --item-per-page: 12;
   }
+}
 
-  &__header{
+.result {
+  background-image: linear-gradient(0deg,
+      var(--purple-2),
+      rgba(255 255 255 / 0),
+      rgba(255 255 255 / 0));
+
+  &__header {
     font-weight: bolder;
     border-bottom: 2px solid var(--red-2);
 
-    i{
+    i {
       color: var(--red);
     }
   }
