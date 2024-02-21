@@ -17,4 +17,13 @@
   @include m.media(lg) {
     --item-per-page: 12;
   }
+
+  &__header{
+    font-weight: bolder;
+    border-bottom: 2px solid var(--red-2);
+
+    i{
+      color: var(--red);
+    }
+  }
 }
