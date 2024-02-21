@@ -3,3 +3,14 @@
 @use '../utils/variables' as v;
 
 
+.result{
+  --item-per-page: 6;
+
+  @include m.media(md){
+    --item-per-page: 10;
+  }
+
+  @include m.media(lg){
+    --item-per-page: 12;
+  }
+}
