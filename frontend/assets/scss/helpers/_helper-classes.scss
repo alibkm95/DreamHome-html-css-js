@@ -71,8 +71,8 @@
       "txt"
       "btn";
 
-    @include m.media(md){
-      grid-template-areas: 
+    @include m.media(md) {
+      grid-template-areas:
         "txt img"
         "btn img";
     }
@@ -89,7 +89,7 @@
     grid-area: txt;
     line-height: 1.5;
 
-    @include m.media(md){
+    @include m.media(md) {
       place-self: end;
     }
   }
@@ -104,8 +104,9 @@
       background-color: var(--bs-indigo);
     }
 
-    @include m.media(md){
+    @include m.media(md) {
       place-self: start center;
     }
   }
 }
+

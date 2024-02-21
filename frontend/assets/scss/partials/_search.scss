@@ -3,14 +3,18 @@
 @use '../utils/variables' as v;
 
 
-.result{
+.result {
   --item-per-page: 6;
+  background-image: linear-gradient(0deg,
+      var(--purple-2),
+      rgba(255 255 255 / 0),
+      rgba(255 255 255 / 0));
 
-  @include m.media(md){
+  @include m.media(md) {
     --item-per-page: 10;
   }
 
-  @include m.media(lg){
+  @include m.media(lg) {
     --item-per-page: 12;
   }
 }

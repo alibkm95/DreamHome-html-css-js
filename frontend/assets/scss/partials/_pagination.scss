@@ -1,0 +1,132 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+
+.pagination {
+  width: 100%;
+
+  &__container {
+    width: 100%;
+    margin-inline: auto;
+    display: grid;
+    gap: f.rem(20);
+    grid-template-columns: repeat(2, 1fr);
+
+    @include m.media(md) {
+      grid-template-columns: 1fr f.rem(300) 1fr;
+    }
+
+    @include m.media(lg) {
+      grid-template-columns: 1fr f.rem(500) 1fr;
+    }
+
+    @include m.media(xl) {
+      grid-template-columns: f.rem(200) 1fr f.rem(200);
+    }
+  }
+
+  &__btn {
+    border: none;
+    background-color: var(--blue);
+    color: var(--bs-white);
+    padding: f.rem(10) f.rem(5);
+    border-radius: f.rem(5);
+    transition: all 0.3s ease;
+
+    &:hover{
+      background-color: var(--bs-indigo);
+    }
+  }
+
+  &__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: f.rem(30);
+    background-color: var(--blue);
+    border-radius: f.rem(5);
+    padding: f.rem(10) f.rem(5);
+
+    @include m.media(md) {
+      grid-column: 2 / 3;
+    }
+  }
+
+  &__current {
+    white-space: nowrap;
+    font-size: f.rem(12);
+    color: var(--bs-white);
+
+    @include m.media(md){
+      font-size: f.rem(16);
+    }
+
+    &-active {
+      background-color: var(--bs-indigo);
+      color: var(--yellow);
+      font-weight: bolder;
+      padding: f.rem(5) f.rem(8);
+      border-radius: f.rem(5);
+    }
+  }
+
+  &__jump {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: f.rem(5);
+
+    &-label {
+      white-space: nowrap;
+      font-size: f.rem(12);
+      color: var(--bs-white);
+
+      @include m.media(md){
+        font-size: f.rem(16);
+      }
+    }
+
+    &-input {
+      width: 100%;
+      max-width: f.rem(40);
+      border: none;
+      outline: transparent;
+      background-color: transparent;
+    }
+
+    &-btn {
+      border: none;
+      outline: transparent;
+      background-color: transparent;
+      color: var(--green);
+      transition: color 0.3s ease;
+
+      &:hover{
+        color: var(--bs-indigo);
+      }
+
+    }
+  }
+
+  &__input-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bs-white);
+    padding: f.rem(5);
+    border-radius: f.rem(5);
+  }
+
+  .prev-btn {
+    grid-column: 1 / 2;
+  }
+
+  .next-btn {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+
+    @include m.media(md) {
+      grid-column: 3 / 4;
+    }
+  }
+}
