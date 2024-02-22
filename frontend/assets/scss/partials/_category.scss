@@ -1,0 +1,56 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.filter{
+
+  &__container{
+    box-shadow: 0 0 f.rem(15) var(--black-20);
+    border-radius: 0;
+    
+    @include m.media(sm){
+      border-radius: f.rem(10);
+    }
+  }
+
+  &__header{
+    margin-bottom: f.rem(20);
+    padding-left: f.rem(20);
+
+    i{
+      color: var(--bs-indigo);
+    }
+  }
+
+  &__select{
+    background-color: var(--body-bg);
+    outline: transparent;
+    border: 1px solid var(--purple-2);
+    padding: f.rem(5) f.rem(10);
+    border-radius: f.rem(5);
+  }
+
+  &__form{
+
+    i{
+      color: var(--green);
+    }
+  }
+
+  &__apply-btn{
+    background-color: var(--green);
+    color: var(--bs-white);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &:hover{
+      background-color: var(--bs-indigo);
+    }
+
+    i{
+      color: var(--bs-white);
+    }
+  }
+}

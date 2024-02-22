@@ -2,18 +2,6 @@
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
 
-.main {
-  --item-per-page: 6;
-
-  @include m.media(md) {
-    --item-per-page: 10;
-  }
-
-  @include m.media(lg) {
-    --item-per-page: 12;
-  }
-}
-
 .result {
   background-image: linear-gradient(0deg,
       var(--purple-2),
