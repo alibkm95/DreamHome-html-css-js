@@ -2,27 +2,27 @@
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
 
-.filter{
+.filter {
 
-  &__container{
+  &__container {
     box-shadow: 0 0 f.rem(15) var(--black-20);
     border-radius: 0;
-    
-    @include m.media(sm){
+
+    @include m.media(sm) {
       border-radius: f.rem(10);
     }
   }
 
-  &__header{
+  &__header {
     margin-bottom: f.rem(20);
     padding-left: f.rem(20);
 
-    i{
+    i {
       color: var(--bs-indigo);
     }
   }
 
-  &__select{
+  &__select {
     background-color: var(--body-bg);
     outline: transparent;
     border: 1px solid var(--purple-2);
@@ -30,14 +30,14 @@
     border-radius: f.rem(5);
   }
 
-  &__form{
+  &__form {
 
-    i{
+    i {
       color: var(--green);
     }
   }
 
-  &__apply-btn{
+  &__apply-btn {
     background-color: var(--green);
     color: var(--bs-white);
     cursor: pointer;
@@ -45,12 +45,64 @@
     outline: none;
     transition: all 0.3s ease;
 
-    &:hover{
+    &:hover {
       background-color: var(--bs-indigo);
     }
 
-    i{
+    i {
       color: var(--bs-white);
+    }
+  }
+}
+
+.category {
+  background-image: linear-gradient(0deg,
+      var(--purple-2),
+      rgba(255 255 255 / 0),
+      rgba(255 255 255 / 0));
+}
+
+.latest,
+.mostViewed {
+
+  &__header {
+
+    @include m.media(sm) {
+      border-bottom: 1px solid var(--purple-2);
+    }
+
+    &-txt {
+      font-size: v.$subtitle-size;
+      font-weight: bolder;
+
+      i {
+        color: var(--red);
+      }
+    }
+
+    &-btn {
+      background-color: var(--green);
+      color: var(--bs-white) !important;
+      transition: all 0.3s ease;
+      letter-spacing: 2px;
+      font-size: f.rem(10) !important;
+
+      @include m.media(sm) {
+        font-size: f.rem(16) !important;
+      }
+
+      @include m.media(md) {
+        font-size: f.rem(20) !important;
+      }
+
+      @include m.media(lg) {
+        font-size: f.rem(24) !important;
+      }
+
+      &:hover {
+        transform: translateY(f.rem(-5));
+        background-color: var(--bs-indigo);
+      }
     }
   }
 }
