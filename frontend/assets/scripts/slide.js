@@ -56,7 +56,7 @@ const topViewedSwiper = new Swiper('.topViewedSwiper', {
 
 const scrollerElem = document.querySelector('.trust__body')
 
-if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && scrollerElem !== null) {
   addAnimation()
 }
 
