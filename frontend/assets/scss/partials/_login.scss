@@ -39,7 +39,7 @@
       "cont";
 
     @include m.media(md) {
-      grid-template-areas: "cont img";
+      grid-template-areas: "img cont";
     }
 
     &-content {
@@ -65,10 +65,8 @@
 
     &-actions {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: f.rem(20);
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: f.rem(10);
       padding-inline: f.rem(10);
 
       &-remember {
@@ -93,28 +91,29 @@
         }
       }
 
-      &-acc {
+      &-acc,
+      &-forget {
         font-weight: bold;
         font-size: f.rem(12);
 
-        a{
+        a {
           color: var(--green) !important;
-          
-          &:hover{
+
+          &:hover {
             color: var(--bs-indigo) !important;
           }
         }
       }
     }
 
-    &-submit{
+    &-submit {
       background-color: var(--green);
       color: var(--bs-white);
       border: none;
       outline: transparent;
       transition: all 0.3s ease;
 
-      &:hover{
+      &:hover {
         background-color: var(--bs-indigo);
       }
     }
