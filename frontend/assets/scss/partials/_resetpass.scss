@@ -1,0 +1,80 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.resetpass {
+  width: 90%;
+  max-width: f.rem(1000);
+  margin-inline: auto;
+  box-shadow: 0 0 f.rem(15) var(--black-20);
+  border-radius: f.rem(10);
+
+  &__header {
+
+    &-text {
+      text-align: center;
+      font-weight: bolder;
+
+      @include m.media(md) {
+        border-bottom: 1px solid var(--purple-2);
+        text-align: left;
+      }
+
+      i {
+        color: var(--bs-indigo);
+
+        @include m.media(md) {
+          margin-left: f.rem(20);
+        }
+      }
+    }
+  }
+
+  &__body {
+    display: grid;
+    gap: f.rem(20);
+    grid-auto-columns: 1fr;
+    grid-template-areas:
+      "img"
+      "cont";
+
+    @include m.media(md) {
+      grid-template-areas: "img cont";
+    }
+
+    &-content {
+      grid-area: cont;
+      align-self: center;
+      gap: f.rem(30);
+    }
+
+    &-img {
+      grid-area: img;
+
+      svg {
+        display: block;
+        width: 100%;
+        min-width: 100%;
+      }
+    }
+  }
+
+  &__checkmail-form,
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(10);
+  }
+
+  .btn-style {
+    background-color: var(--green);
+    color: var(--bs-white);
+    border: none;
+    outline: transparent;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: var(--bs-indigo);
+    }
+  }
+}
