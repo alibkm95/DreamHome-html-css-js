@@ -1,0 +1,81 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.main {
+  position: relative;
+}
+
+.verify {
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__err,
+  &__success {
+
+    width: 100%;
+    max-width: f.rem(1000);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: f.rem(20);
+    margin-inline: auto;
+    box-shadow: 0 0 f.rem(15) var(--black-20);
+    border-radius: f.rem(10);
+
+    @include m.media(md) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &-left {
+      align-self: center;
+    }
+
+  }
+
+  .verify__success-left {
+
+    i {
+      color: var(--green);
+    }
+  }
+
+  .verify__err-left {
+  
+    i {
+      color: var(--red);
+    }
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+  }
+
+  .btn-style {
+    background-color: var(--green);
+    color: var(--bs-white) !important;
+    margin-top: f.rem(15);
+
+    i {
+      color: var(--bs-white);
+    }
+  }
+}
+
+.loader{
+  position: fixed;
+  inset: 0;
+  background-color: var(--body-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: f.rem(10);
+
+  &.hide{
+    display: none;
+  }
+}
