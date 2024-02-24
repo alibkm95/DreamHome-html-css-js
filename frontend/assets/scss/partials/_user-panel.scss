@@ -128,5 +128,54 @@
 
   &__body{
 
+    &-container{
+      min-height: 100%;
+      box-shadow: 0 0 f.rem(15) var(--black-20);
+      border-radius: f.rem(10);
+    }
+  }
+
+  &__form{
+    display: grid;
+    gap: f.rem(10);
+
+    &-divider{
+      position: relative;
+
+      span{
+        font-size: f.rem(14);
+        background-color: var(--body-bg);
+        color: var(--txts);
+        white-space: nowrap;
+        padding: 0 f.rem(10);
+        margin-left: f.rem(20);
+      }
+
+      div{
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        z-index: -1;
+        border-top: 1px solid var(--black-20);
+      }
+    }
+
+    .alert{
+      margin-bottom: 0 !important;
+      line-height: 1.5;
+      font-size: f.rem(12);
+    }
+
+    &-submit{
+      background-color: var(--green);
+      border: none;
+      outline: transparent;
+      color: var(--bs-white);
+      transition: all 0.3s ease;
+
+      &:hover{
+        background-color: var(--bs-indigo);
+      }
+    }
   }
 }
