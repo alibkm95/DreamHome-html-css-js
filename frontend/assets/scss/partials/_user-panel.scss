@@ -1,0 +1,132 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.panel {
+
+  &__user {
+    position: relative;
+
+    &-container {
+      position: sticky;
+      top: f.rem(20);
+      box-shadow: 0 0 f.rem(15) var(--black-20);
+      border-radius: f.rem(10);
+      display: grid;
+      grid-auto-columns: 1fr;
+      gap: f.rem(20);
+      grid-template-areas: 
+        "profile"
+        "info"
+        "control";
+
+      @include m.media(sm){
+        grid-template-areas: 
+        "profile control"
+        "info control";
+      }
+
+      @include m.media(md){
+        grid-template-areas: 
+        "profile"
+        "info"
+        "control";
+      }
+    }
+
+    &-profile {
+      grid-area: profile;
+      position: relative;
+      max-width: f.rem(200);
+      margin-inline: auto;
+
+      &-img {
+        border-radius: 50%;
+        border: 2px dashed var(--bs-indigo);
+      }
+
+      &-new {
+        position: absolute;
+        bottom: 5%;
+        right: 5%;
+
+        label {
+          padding: f.rem(10);
+          font-size: f.rem(25);
+          cursor: pointer;
+          background-color: var(--green);
+          color: var(--bs-white);
+          border-radius: 50%;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background-color: var(--bs-indigo);
+          }
+        }
+      }
+    }
+
+    &-info {
+      grid-area: info;
+
+      &-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: f.rem(5);
+
+        &-item {
+          font-size: f.rem(14);
+
+          &:nth-of-type(2) {
+            font-weight: bolder;
+          }
+        }
+      }
+    }
+
+    &-controls {
+      grid-area: control;
+      align-self: center;
+
+      &-list {
+        display: flex;
+        flex-direction: column;
+        gap: f.rem(5);
+      }
+    }
+
+    &-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: f.rem(8);
+      border-radius: f.rem(5);
+      color: var(--navy) !important;
+      background-color: transparent;
+      transition: all 0.3s ease;
+      border: 1px solid var(--navy-2);
+
+      &.active {
+        background-color: var(--bs-indigo);
+        color: var(--bs-white) !important;
+        border-color: transparent;
+      }
+
+      &:hover {
+        background-color: var(--bs-indigo);
+        color: var(--bs-white) !important;
+        border-color: transparent;
+      }
+
+      i {
+        width: f.rem(20);
+        text-align: center;
+      }
+    }
+  }
+
+  &__body{
+
+  }
+}
