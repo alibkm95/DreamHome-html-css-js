@@ -2,6 +2,10 @@
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
 
+.main{
+  min-height: 100vh;
+}
+
 .menu__icon {
   width: f.rem(40);
   height: f.rem(40);
