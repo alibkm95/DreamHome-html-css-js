@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- icon resource -->
+  <link rel="stylesheet" href="./assets/styles/all.min.css">
+  <!-- font resource -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  <!-- bootstrap styles resource -->
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <!-- reset styles resource -->
+  <link rel="stylesheet" href="./assets/styles/reset.css">
+  <!-- main styles resource -->
+  <link rel="stylesheet" href="./assets/styles/ticket.css">
+  <!-- favicon resource -->
+  <link rel="shortcut icon" href="./assets/images/favicon.ico">
+  <title>Dream Home</title>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="menu">
+      <div class="menu__logo">
+        <a href="#/" class="menu__logo-link">
+          <img src="./assets/images/logo.svg" alt="Dream Home" class="menu__logo-img">
+        </a>
+      </div>
+      <div class="menu__content" id="menu-content">
+        <ul class="menu__list">
+          <li class="menu__list-item menu__close-btn">
+            <div class="icon-parent">
+              <i class="fa-solid fa-x"></i>
+            </div>
+          </li>
+          <li class="menu__list-item">
+            <a href="#/" class="menu__link">
+              <div class="icon-parent">
+                <i class="fa-solid fa-home"></i>
+              </div>
+              <span class="menu__text">
+                Home
+              </span>
+            </a>
+          </li>
+          <li class="menu__list-item has-submenu">
+            <div class="menu__list-item-header">
+              <div class="icon-parent">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <span class="menu__text">
+                Properties
+                <i class="fa-solid fa-caret-down"></i>
+              </span>
+            </div>
+            <div class="submenu"> <!-- add active class to show submenu -->
+              <ul class="submenu__list">
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-asterisk"></i>
+                    All
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-city"></i>
+                    Apartment
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-house"></i>
+                    Villa-Bungalow
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-mountain-sun"></i>
+                    Lands
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-dollar"></i>
+                    Commercials
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="menu__list-item has-submenu">
+            <div class="menu__list-item-header">
+              <div class="icon-parent">
+                <i class="fa-solid fa-rectangle-ad"></i>
+              </div>
+              <span class="menu__text">
+                Advertisements
+                <i class="fa-solid fa-caret-down"></i>
+              </span>
+            </div>
+            <div class="submenu">
+              <ul class="submenu__list">
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-asterisk"></i>
+                    All
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-handshake"></i>
+                    Buy and sell
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-file-contract"></i>
+                    Mortgage and rent
+                  </a>
+                </li>
+                <li class="submenu__list-item">
+                  <a href="#/" class="submenu__link">
+                    <i class="fa-solid fa-users"></i>
+                    partnering construction
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="menu__list-item">
+            <a href="#/" class="menu__link">
+              <div class="icon-parent">
+                <i class="fa-solid fa-headset"></i>
+              </div>
+              <span class="menu__text">
+                Support
+              </span>
+            </a>
+          </li>
+          <li class="menu__list-item has-actions">
+            <div class="menu__actions">
+              <div class="menu__actions-search">
+                <div class="menu__link search-trigger">
+                  <div class="menu__icon">
+                    <i class="fa-solid fa-search"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="menu__actions-profile">
+                <a href="#/" class="menu__link cta">
+                  <div class="menu__icon-not">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                  </div>
+                  <span class="menu__text">
+                    Login
+                  </span>
+                </a>
+              </div>
+              <div class="menu__actions-notification">
+                <div class="menu__icon">
+                  <i class="fa-solid fa-bell"></i>
+                </div>
+                <div class="menu__actions-notification-wrapper" id="notif-toggle-wrapper">
+                  ¯\_(ツ)_/¯
+                  <span class="notif-empty">
+                    there is no notifications!
+                  </span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="menu__open">
+        <div class="menu__open-btn">
+          <div class="menu__icon">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="main">
+    <section class="ticket my-5">
+      <div class="container">
+        <div class="row gy-5">
+          <aside class="ticket__info col col-12 col-md-5 col-lg-4 col-xl-3">
+            <div class="ticket__info-container p-3">
+              <span class="ticket__info-title">
+                <i class="fa-solid fa-circle"></i>
+                title:
+              </span>
+              <p class="ticket__info-text title-text fs-5">
+                Ticket title
+              </p>
+              <span class="ticket__info-title">
+                <i class="fa-solid fa-clock"></i>
+                created at:
+              </span>
+              <p class="ticket__info-text">
+                2024/03/14 - 14:23:18
+              </p>
+              <span class="ticket__info-title">
+                <i class="fa-solid fa-mug-hot"></i>
+                status:
+              </span>
+              <p class="ticket__info-text">
+                answered
+              </p>
+              <a href="./support.html" class="ticket__info-new btn-style mt-auto">
+                create new ticket
+              </a>
+            </div>
+          </aside>
+          <div class="ticket__body col col-12 col-md-7 col-lg-8 col-xl-9">
+            <div class="ticket__body-container p-3">
+              <div class="ticket__body-messages">
+                <div class="msg msg-admin">
+                  <div class="msg__header">
+                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                    <div class="msg__header-info">
+                      <span class="msg__header-info-user">
+                        User name
+                      </span>
+                      <span class="msg__header-info-date">
+                        2024/03/18 - 22:13:53
+                      </span>
+                      <span class="msg__header-info-role">
+                        user
+                      </span>
+                    </div>
+                  </div>
+                  <div class="msg__body">
+                    <div class="msg__body-text">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                    </div>
+                    <div class="msg__body-seen">
+                      <i class="fa-solid fa-check-double"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="msg msg-user">
+                  <div class="msg__header">
+                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                    <div class="msg__header-info">
+                      <span class="msg__header-info-user">
+                        User name
+                      </span>
+                      <span class="msg__header-info-date">
+                        2024/03/18 - 22:13:53
+                      </span>
+                      <span class="msg__header-info-role">
+                        admin
+                      </span>
+                    </div>
+                  </div>
+                  <div class="msg__body">
+                    <div class="msg__body-text">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                    </div>
+                    <div class="msg__body-seen">
+                      <i class="fa-solid fa-check"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="msg msg-admin">
+                  <div class="msg__header">
+                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                    <div class="msg__header-info">
+                      <span class="msg__header-info-user">
+                        User name
+                      </span>
+                      <span class="msg__header-info-date">
+                        2024/03/18 - 22:13:53
+                      </span>
+                      <span class="msg__header-info-role">
+                        user
+                      </span>
+                    </div>
+                  </div>
+                  <div class="msg__body">
+                    <div class="msg__body-text">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                    </div>
+                    <div class="msg__body-seen">
+                      <i class="fa-solid fa-check-double"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="msg msg-user">
+                  <div class="msg__header">
+                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                    <div class="msg__header-info">
+                      <span class="msg__header-info-user">
+                        User name
+                      </span>
+                      <span class="msg__header-info-date">
+                        2024/03/18 - 22:13:53
+                      </span>
+                      <span class="msg__header-info-role">
+                        admin
+                      </span>
+                    </div>
+                  </div>
+                  <div class="msg__body">
+                    <div class="msg__body-text">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                    </div>
+                    <div class="msg__body-seen">
+                      <i class="fa-solid fa-check"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="msg msg-admin">
+                  <div class="msg__header">
+                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                    <div class="msg__header-info">
+                      <span class="msg__header-info-user">
+                        User name
+                      </span>
+                      <span class="msg__header-info-date">
+                        2024/03/18 - 22:13:53
+                      </span>
+                      <span class="msg__header-info-role">
+                        user
+                      </span>
+                    </div>
+                  </div>
+                  <div class="msg__body">
+                    <div class="msg__body-text">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                    </div>
+                    <div class="msg__body-seen">
+                      <i class="fa-solid fa-check-double"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="msg msg-user">
+                  <div class="msg__header">
+                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                    <div class="msg__header-info">
+                      <span class="msg__header-info-user">
+                        User name
+                      </span>
+                      <span class="msg__header-info-date">
+                        2024/03/18 - 22:13:53
+                      </span>
+                      <span class="msg__header-info-role">
+                        admin
+                      </span>
+                    </div>
+                  </div>
+                  <div class="msg__body">
+                    <div class="msg__body-text">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                    </div>
+                    <div class="msg__body-seen">
+                      <i class="fa-solid fa-check"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ticket__body-new-message">
+                <form class="ticket__form border rounded p-1">
+                  <button type="submit" class="ticket__form-submit">
+                    <i class="fa-solid fa-paper-plane"></i>
+                  </button>
+                  <textarea name="message-input" id="message-input" rows="3" placeholder="your message ..."></textarea>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer mt-5 pt-5">
+    <div class="container">
+      <div class="footer__container">
+        <div class="footer__about">
+          <h6 class="footer__about-header fs-4 mb-3 border-bottom">
+            About Us
+          </h6>
+          <p class="footer__about-body">
+            Dream House is a real estate agency that has been operating worldwide since 1995. We are proud that our
+            customers trust us and in response to this trust, we will do our best to provide the best services to our
+            customers.
+          </p>
+        </div>
+        <div class="footer__quick">
+          <h6 class="footer__quick-header fs-4 mb-3 border-bottom">
+            Quick Access
+          </h6>
+          <ul class="footer__quick-list">
+            <li class="footer__quick-list-item">
+              <a href="#/" class="footer__link">
+                Home
+              </a>
+            </li>
+            <li class="footer__quick-list-item">
+              <a href="#/" class="footer__link">
+                Properties
+              </a>
+            </li>
+            <li class="footer__quick-list-item">
+              <a href="#/" class="footer__link">
+                Advertisements
+              </a>
+            </li>
+            <li class="footer__quick-list-item">
+              <a href="#/" class="footer__link">
+                support
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__contact">
+          <h6 class="footer__contact-header fs-4 mb-3 border-bottom">
+            Contact Us
+          </h6>
+          <ul class="footer__contact-body">
+            <li class="footer__contact-body-item f-address">
+              <span class="footer__text">
+                Address:
+              </span>
+              <span class="footer__subtext">
+                445 E Cypress Ave. California. 96002
+              </span>
+            </li>
+            <li class="footer__contact-body-item f-phone">
+              <span class="footer__text">
+                Phone:
+              </span>
+              <span class="footer__subtext">
+                (530) 223-3991
+              </span>
+            </li>
+            <li class="footer__contact-body-item f-email">
+              <span class="footer__text">
+                Email:
+              </span>
+              <span class="footer__subtext">
+                mail@dreamhome.com
+              </span>
+            </li>
+            <li class="footer__contact-body-item f-socials">
+              <span class="footer__text">
+                Follow us on social networks:
+              </span>
+              <span class="footer__subtext has-socials">
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-linkedin"></i>
+                <i class="fa-brands fa-twitter"></i>
+                <i class="fa-brands fa-facebook"></i>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__copy rounded bg-dark p-2 mb-1 text-light text-center">
+          2022 &copy; <span class="text-warning">Dream Home</span>. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script type="module" src="./assets/scripts/shared/shared.js"></script>
+  <script type="module" src="./assets/scripts/ticket.js"></script>
+</body>
+
+</html>
