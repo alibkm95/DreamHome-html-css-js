@@ -15,22 +15,22 @@
       display: grid;
       grid-auto-columns: 1fr;
       gap: f.rem(20);
-      grid-template-areas: 
+      grid-template-areas:
         "profile"
         "info"
         "control";
 
-      @include m.media(sm){
-        grid-template-areas: 
-        "profile control"
-        "info control";
+      @include m.media(sm) {
+        grid-template-areas:
+          "profile control"
+          "info control";
       }
 
-      @include m.media(md){
-        grid-template-areas: 
-        "profile"
-        "info"
-        "control";
+      @include m.media(md) {
+        grid-template-areas:
+          "profile"
+          "info"
+          "control";
       }
     }
 
@@ -126,23 +126,42 @@
     }
   }
 
-  &__body{
+  &__body {
 
-    &-container{
+    &-container {
+      position: relative;
       min-height: 100%;
       box-shadow: 0 0 f.rem(15) var(--black-20);
       border-radius: f.rem(10);
     }
+
+    &-loader {
+      position: absolute;
+      inset: 0;
+      color: var(--bs-indigo);
+
+      &-wrapper {
+        width: 100%;
+        height: 100%;
+        background-color: var(--purple-2);
+        border-radius: f.rem(10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: f.rem(10);
+        padding: f.rem(10);
+      }
+    }
   }
 
-  &__form{
+  &__form {
     display: grid;
     gap: f.rem(10);
 
-    &-divider{
+    &-divider {
       position: relative;
 
-      span{
+      span {
         font-size: f.rem(14);
         background-color: var(--body-bg);
         color: var(--txts);
@@ -151,7 +170,7 @@
         margin-left: f.rem(20);
       }
 
-      div{
+      div {
         position: absolute;
         top: 50%;
         width: 100%;
@@ -160,20 +179,20 @@
       }
     }
 
-    .alert{
+    .alert {
       margin-bottom: 0 !important;
       line-height: 1.5;
       font-size: f.rem(12);
     }
 
-    &-submit{
+    &-submit {
       background-color: var(--green);
       border: none;
       outline: transparent;
       color: var(--bs-white);
       transition: all 0.3s ease;
 
-      &:hover{
+      &:hover {
         background-color: var(--bs-indigo);
       }
     }
