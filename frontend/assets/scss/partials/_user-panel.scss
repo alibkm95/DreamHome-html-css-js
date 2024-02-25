@@ -41,6 +41,8 @@
       margin-inline: auto;
 
       &-img {
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
         border-radius: 50%;
         border: 2px dashed var(--bs-indigo);
       }
