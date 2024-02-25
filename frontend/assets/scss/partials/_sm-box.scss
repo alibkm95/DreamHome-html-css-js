@@ -1,0 +1,48 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.sm-box{
+  background-color: var(--body-bg);
+  overflow: hidden;
+
+  &__left{
+    overflow: hidden;
+
+    &>*{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    p{
+      font-size: f.rem(18);
+      font-weight: bolder;
+    }
+
+    span{
+      font-size: f.rem(14);
+      color: var(--txts);
+    }
+  }
+
+  &__right{
+    min-width: f.rem(50);
+    align-self: stretch;
+  }
+
+  &__link{
+    background-color: var(--green);
+    color: var(--bs-white) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+
+    &:hover{
+      background-color: var(--bs-indigo);
+    }
+  }
+}
