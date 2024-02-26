@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const RequestSchema = new mongoose.Schema({
+const SavedSchema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
@@ -15,4 +15,4 @@ const RequestSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('Request', RequestSchema)
+module.exports = mongoose.model('Saved', SavedSchema)
