@@ -122,7 +122,30 @@ const updateUserPassword = async (req, res) => {
 }
 
 const updateUserRole = async (req, res) => {
-  res.json({ msg: 'update user role' })
+
+  const { id: userId } = req.params
+
+  const user = await User.findOne({ _id: userId })
+
+  if (!user) {
+    throw new CustomError.NotFoundError('there is no such a user')
+  }
+
+  if(user.role === 'ADMIN'){
+    user.role = 'USER'
+    user.save()
+    res.status(StatusCodes.OK).json({msg: 'user role updated successfully to USER'})
+    return
+  }
+  
+  if(user.role === 'USER'){
+    user.role = 'ADMIN'
+    user.save()
+    res.status(StatusCodes.OK).json({msg: 'user role updated successfully to ADMIN'})
+    return
+  }
+
+  throw new CustomError.BadRequestError('requested action can not be done')
 }
 
 const deleteUser = async (req, res) => {
