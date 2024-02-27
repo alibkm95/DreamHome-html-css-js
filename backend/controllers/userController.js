@@ -67,7 +67,35 @@ const showCurrentUser = async (req, res) => {
 }
 
 const updateUserInfos = async (req, res) => {
-  res.json({ msg: 'update user infos' })
+
+  const { email, name, phone } = req.body
+
+  if (!email || !phone || !name) {
+    throw new CustomError.BadRequestError('required parameters must be provided')
+  }
+
+  const user = await User.findOne({ _id: req.user.userId })
+
+  user.email = email
+  user.phone = phone
+  user.name = name
+
+  await user.save()
+
+  const tokenUser = createTokenUser(user)
+
+  await Token.findOneAndDelete({ user: user._id })
+
+  const refreshToken = crypto.randomBytes(40).toString('hex')
+  const userAgent = req.headers['user-agent']
+  const ip = req.ip
+  const userToken = { refreshToken, ip, userAgent, user: user._id }
+
+  await Token.create(userToken)
+
+  attachCookiesToResponse({ res, user: tokenUser, refreshToken })
+
+  res.status(StatusCodes.OK).json({ user: tokenUser })
 }
 
 const updateUserPassword = async (req, res) => {
