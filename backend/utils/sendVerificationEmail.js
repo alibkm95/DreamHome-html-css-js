@@ -1,7 +1,8 @@
 const sendEmail = require('./sendEmail')
 
 const sendVerificationEmail = async ({ name, email, verificationToken, origin }) => {
-  const verifyEmail = `${origin}/user/verify-email?token=${verificationToken}&email=${email}`
+  // TODO => vrify email address must be chenge to front end origin
+  const verifyEmail = `${origin}?token=${verificationToken}&email=${email}`
 
   const message = `
     <p>please verify your email by clicking <a href="${verifyEmail}">verify!</a></p>
