@@ -151,7 +151,27 @@ const updateUserRole = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-  res.json({ msg: 'delete user' })
+
+  const { id: userId } = req.params
+
+  const user = await User.findOne({ _id: userId })
+
+  if (!user) {
+    throw new CustomError.NotFoundError('there is no such a user')
+  }
+
+  const profileImage = user.profile
+  const profileImagePath = path.parse(profileImage);
+
+  if (fs.existsSync(path.join(__dirname, `../public/uploads/profile/${profileImagePath.base}`))) {
+    fs.unlinkSync(path.join(__dirname, `../public/uploads/profile/${profileImagePath.base}`), err => {
+      if (err) console.log(err)
+    })
+  }
+
+  await user.remove()
+
+  res.status(StatusCodes.OK).json({ msg: 'user removed successfully' })
 }
 
 const uploadUserProfile = async (req, res) => {
