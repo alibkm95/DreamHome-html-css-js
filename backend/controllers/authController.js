@@ -8,7 +8,8 @@ const {
   createTokenUser,
   sendVerificationEmail,
   sendResetPasswordEmail,
-  createHash
+  createHash,
+  sendResetasswordEmail
 } = require('../utils')
 const crypto = require('crypto')
 
@@ -104,7 +105,7 @@ const logout = async (req, res) => {
     expires: new Date(Date.now())
   })
 
-  res.status(StatusCodes.OK).json({msg: 'loged out successfully'})
+  res.status(StatusCodes.OK).json({ msg: 'loged out successfully' })
 }
 
 const verifyEmail = async (req, res) => {
@@ -132,7 +133,36 @@ const verifyEmail = async (req, res) => {
 }
 
 const forgetPassword = async (req, res) => {
-  res.json({ msg: 'forgetPassword' })
+  const { email } = req.body
+
+  if (!email) {
+    throw new CustomError.BadRequestError('email is required to send reset link')
+  }
+
+  const user = await User.findOne({ email })
+
+  if(!user) {
+    throw new CustomError.NotFoundError('there is no such a user with entered email')
+  }
+
+  const passwordToken = crypto.randomBytes(70).toString('hex')
+
+  await sendResetasswordEmail({
+    name: user.name,
+    email: user.email,
+    token: passwordToken,
+    origin: process.env.RESET_ORIGIN
+  })
+
+  const tenMinutes = 1000 * 60 * 10
+  const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes)
+
+  user.passwordToken = createHash(passwordToken)
+  user.passwordTokenExpirationDate = passwordTokenExpirationDate
+
+  await user.save()
+
+  res.status(StatusCodes.OK).json({msg: 'reset password link sent to your email'})
 }
 
 const resetPassword = async (req, res) => {
