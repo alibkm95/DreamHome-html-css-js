@@ -3,6 +3,8 @@ const Token = require('../models/Token')
 const { StatusCodes } = require('http-status-codes')
 const crypto = require('crypto')
 const CustomError = require('../errors')
+const fs = require('fs')
+const path = require('path')
 const {
   createTokenUser,
   attachCookiesToResponse,
@@ -153,7 +155,54 @@ const deleteUser = async (req, res) => {
 }
 
 const uploadUserProfile = async (req, res) => {
-  res.json({ msg: 'upload user profile' })
+
+  const user = await User.findOne({ _id: req.user.userId }).select('-password')
+
+  if (!user) {
+    throw new CustomError.NotFoundError('there is no such a user')
+  }
+
+  checkpermissions(req.user, user._id)
+
+  const profileDirectory = path.join(__dirname, '../public/uploads/profile');
+
+  if (!fs.existsSync(profileDirectory)) {
+    fs.mkdirSync(profileDirectory);
+  }
+
+  if (!req.files) {
+    throw new CustomError.BadRequestError('no file selected for upload');
+  }
+
+  const profileImage = req.files.image;
+
+  if (!profileImage.mimetype.startsWith('image')) {
+    throw new CustomError.BadRequestError('only image files allowed(*.png  *.jpg)');
+  }
+
+  const maxSize = 1024 * 1024;
+
+  if (profileImage.size > maxSize) {
+    throw new CustomError.BadRequestError('selected file size must be less than 1MB');
+  }
+
+  profileImage.name = profileImage.name.replaceAll(' ', '_');
+
+  const fileName = `${new Date().getTime()}_${profileImage.name}`;
+
+  const imagePath = path.join(__dirname, `../public/uploads/profile/${fileName}`);
+
+  try {
+    await profileImage.mv(imagePath);
+  } catch (error) {
+    throw new CustomError.BadRequestError('upload file error')
+  }
+
+  user.profile = `${req.protocol}://${req.get('host')}/uploads/profile/${fileName}`
+
+  await user.save()
+
+  res.status(StatusCodes.OK).json({ user });
 }
 
 const bannUser = async (req, res) => {
