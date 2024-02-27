@@ -140,7 +140,7 @@ const forgetPassword = async (req, res) => {
 
   const user = await User.findOne({ email })
 
-  if(!user) {
+  if (!user) {
     throw new CustomError.NotFoundError('there is no such a user with entered email')
   }
 
@@ -161,11 +161,35 @@ const forgetPassword = async (req, res) => {
 
   await user.save()
 
-  res.status(StatusCodes.OK).json({msg: 'reset password link sent to your email'})
+  res.status(StatusCodes.OK).json({ msg: 'reset password link sent to your email' })
 }
 
 const resetPassword = async (req, res) => {
-  res.json({ msg: 'resetPassword' })
+  const { token, email, password } = req.body
+
+  if (!email || !password || !token) {
+    throw new CustomError.BadRequestError('reset password error!')
+  }
+
+  const user = await User.findOne({ email })
+
+  if(!user) {
+    throw new CustomError.NotFoundError('there is no such a user')
+  }
+
+  const currentDate = new Date()
+
+  if(user.passwordToken === createHash(token) && user.passwordTokenExpirationDate > currentDate){
+    user.password = password
+    user.passwordToken = null
+    user.passwordTokenExpirationDate = null
+
+    await user.save()
+  } else {
+    throw new CustomError.BadRequestError('the rest password link is expired')
+  }
+
+  res.status(StatusCodes.OK).json({msg: 'reseting password successfull'})
 }
 
 module.exports = {
