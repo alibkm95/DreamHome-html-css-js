@@ -40,7 +40,55 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  res.json({ msg: 'login' })
+
+  const { email, password } = req.body
+
+  if (!email || !password) {
+    throw new CustomError.BadRequestError('providing email and password is required')
+  }
+
+  const user = await User.findOne({ email })
+
+  if (!user) {
+    throw new CustomError.UnauthenticatedError('no such a user with provided email address')
+  }
+
+  const isPasswordCorrect = await user.comparePassword(password)
+
+  if (!isPasswordCorrect) {
+    throw new CustomError.UnauthenticatedError('password is incorrect')
+  }
+
+  const tokenUser = createTokenUser(user)
+
+  let refreshToken = ''
+
+  const existingToken = await Token.findOne({ user: user._id })
+
+  if (existingToken) {
+    const { isValid } = existingToken
+
+    if (!isValid) {
+      throw new CustomError.UnauthenticatedError('information is not valid')
+    }
+
+    refreshToken = existingToken.refreshToken
+    attachCookiesToResponse({ res, user: tokenUser, refreshToken })
+
+    res.status(StatusCodes.OK).json({ user: tokenUser })
+    return
+  }
+
+  refreshToken = crypto.randomBytes(40).toString('hex')
+
+  const userAgent = req.headers['user-agent']
+  const ip = req.ip
+  const userToken = { refreshToken, ip, userAgent, user: user._id }
+
+  await Token.create(userToken)
+
+  attachCookiesToResponse({ res, user: tokenUser, refreshToken })
+  res.status(StatusCodes.OK).json({ user: tokenUser })
 }
 
 const logout = async (req, res) => {
@@ -52,11 +100,11 @@ const verifyEmail = async (req, res) => {
 
   const user = await User.findOne({ email })
 
-  if(!user){
+  if (!user) {
     throw new CustomError.UnauthenticatedError('error! no such a user exist.')
   }
-  
-  if(user.verificationToken !== verificationToken){
+
+  if (user.verificationToken !== verificationToken) {
     throw new CustomError.UnauthenticatedError('error! verification token is corrupted')
   }
 
@@ -68,7 +116,7 @@ const verifyEmail = async (req, res) => {
 
   // TODO => in feature after verify users email, login user along side verifying
 
-  res.status(StatusCodes.OK).json({msg: 'your account verified successfully'})
+  res.status(StatusCodes.OK).json({ msg: 'your account verified successfully' })
 }
 
 const forgetPassword = async (req, res) => {
