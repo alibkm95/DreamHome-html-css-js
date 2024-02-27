@@ -131,17 +131,17 @@ const updateUserRole = async (req, res) => {
     throw new CustomError.NotFoundError('there is no such a user')
   }
 
-  if(user.role === 'ADMIN'){
+  if (user.role === 'ADMIN') {
     user.role = 'USER'
     user.save()
-    res.status(StatusCodes.OK).json({msg: 'user role updated successfully to USER'})
+    res.status(StatusCodes.OK).json({ msg: 'user role updated successfully to USER' })
     return
   }
-  
-  if(user.role === 'USER'){
+
+  if (user.role === 'USER') {
     user.role = 'ADMIN'
     user.save()
-    res.status(StatusCodes.OK).json({msg: 'user role updated successfully to ADMIN'})
+    res.status(StatusCodes.OK).json({ msg: 'user role updated successfully to ADMIN' })
     return
   }
 
@@ -157,7 +157,22 @@ const uploadUserProfile = async (req, res) => {
 }
 
 const bannUser = async (req, res) => {
-  res.json({ msg: 'bann user' })
+
+  const { id: userId } = req.params
+
+  const user = await User.findOne({ _id: userId })
+
+  if (!user) {
+    throw new CustomError.NotFoundError('there is no such user')
+  }
+
+  const { isBanned } = user
+
+  user.isBanned = isBanned ? false : true
+
+  user.save()
+
+  res.status(StatusCodes.OK).json({ msg: `the user ${user.name} | ${user.email} - is ${user.isBanned ? 'blocked' : 'unblocked'} successfully` })
 }
 
 module.exports = {
