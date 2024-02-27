@@ -10,7 +10,44 @@ const {
 } = require('../utils')
 
 const getAllUsers = async (req, res) => {
-  res.json({ msg: 'get all users' })
+
+  const { emailSearch, nameSearch, verified, userRole, banned } = req.query
+
+  let queryObject = {}
+
+  if (emailSearch) {
+    queryObject.email = { $regex: emailSearch, $options: 'i' }
+  }
+
+  if (nameSearch) {
+    queryObject.name = { $regex: nameSearch, options: 'i' }
+  }
+
+  if (verified) {
+    queryObject.isVerified = verified === 'true' ? true : false
+  }
+
+  if (userRole) {
+    queryObject.role = userRole === 'ADMIN' ? 'ADMIN' : 'USER'
+  }
+
+  if (banned) {
+    queryObject.isBanned = banned === 'true' ? true : false
+  }
+
+  let result = User.find(queryObject).select('-password').sort('-createdAt')
+
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.itemPerPage) || 12
+  const skip = (page - 1) * limit
+
+  result = result.skip(skip).limit(limit)
+
+  const users = await result
+  const totalUsers = await User.countDocuments(queryObject)
+  const numOfPages = Math.ceil(totalUsers / limit)
+
+  res.status(StatusCodes.OK).json({users, numOfPages, totalUsers})
 }
 
 const getSingleUser = async (req, res) => {
