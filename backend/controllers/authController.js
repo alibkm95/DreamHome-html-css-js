@@ -8,8 +8,7 @@ const {
   createTokenUser,
   sendVerificationEmail,
   sendResetPasswordEmail,
-  createHash,
-  sendResetasswordEmail
+  createHash
 } = require('../utils')
 const crypto = require('crypto')
 
@@ -147,7 +146,7 @@ const forgetPassword = async (req, res) => {
 
   const passwordToken = crypto.randomBytes(70).toString('hex')
 
-  await sendResetasswordEmail({
+  await sendResetPasswordEmail({
     name: user.name,
     email: user.email,
     token: passwordToken,
