@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  vrifiedIn: Date,
+  verifiedIn: Date,
   passwordToken: String,
   passwordTokenExpirationDate: Date,
   isBanned: {

@@ -18,16 +18,16 @@ const register = async (req, res) => {
 
   const emailAllreadyExist = await User.findOne({ email })
 
-  if(emailAllreadyExist){
+  if (emailAllreadyExist) {
     throw new CustomError.BadRequestError('inserted email allready exist. please pick another one')
   }
 
   const isFirstAccount = (await User.countDocuments({})) === 0
   const role = isFirstAccount ? "ROOTADMIN" : "USER"
 
-  const verificationToken= crypto.randomBytes(40).toString('hex')
+  const verificationToken = crypto.randomBytes(40).toString('hex')
 
-  const user = await User.create({email, name, phone, password, role, verificationToken})
+  const user = await User.create({ email, name, phone, password, role, verificationToken })
 
   await sendVerificationEmail({
     name: user.name,
@@ -36,7 +36,7 @@ const register = async (req, res) => {
     origin: process.env.ORIGIN
   })
 
-  res.status(StatusCodes.CREATED).json({msg: 'your account created successfully. please verify your account with the verification email sent by us.'})
+  res.status(StatusCodes.CREATED).json({ msg: 'your account created successfully. please verify your account with the verification email sent by us.' })
 }
 
 const login = async (req, res) => {
@@ -48,7 +48,27 @@ const logout = async (req, res) => {
 }
 
 const verifyEmail = async (req, res) => {
-  res.json({ msg: 'verifyEmail' })
+  const { verificationToken, email } = req.body
+
+  const user = await User.findOne({ email })
+
+  if(!user){
+    throw new CustomError.UnauthenticatedError('error! no such a user exist.')
+  }
+  
+  if(user.verificationToken !== verificationToken){
+    throw new CustomError.UnauthenticatedError('error! verification token is corrupted')
+  }
+
+  user.isVerified = true
+  user.verifiedIn = Date.now()
+  user.verificationToken = ''
+
+  await user.save()
+
+  // TODO => in feature after verify users email, login user along side verifying
+
+  res.status(StatusCodes.OK).json({msg: 'your account verified successfully'})
 }
 
 const forgetPassword = async (req, res) => {
