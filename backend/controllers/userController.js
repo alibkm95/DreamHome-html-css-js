@@ -6,7 +6,7 @@ const CustomError = require('../errors')
 const {
   createTokenUser,
   attachCookiesToResponse,
-  checkPermisions
+  checkpermissions
 } = require('../utils')
 
 const getAllUsers = async (req, res) => {
@@ -47,11 +47,19 @@ const getAllUsers = async (req, res) => {
   const totalUsers = await User.countDocuments(queryObject)
   const numOfPages = Math.ceil(totalUsers / limit)
 
-  res.status(StatusCodes.OK).json({users, numOfPages, totalUsers})
+  res.status(StatusCodes.OK).json({ users, numOfPages, totalUsers })
 }
 
 const getSingleUser = async (req, res) => {
-  res.json({ msg: 'get single user' })
+  const user = await User.findOne({ _id: req.params.id }).select('-password')
+
+  if (!user) {
+    throw new CustomError.NotFoundError('there is no such a user')
+  }
+
+  checkpermissions(req.user, user._id)
+
+  res.status(StatusCodes.OK).json({ user })
 }
 
 const showCurrentUser = async (req, res) => {
