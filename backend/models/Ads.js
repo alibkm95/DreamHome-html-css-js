@@ -92,10 +92,6 @@ const AdsSchema = mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'User',
     required: true
-  },
-  hashTags: {
-    type: [String],
-    default: []
   }
 }, {
   timestamps: true
