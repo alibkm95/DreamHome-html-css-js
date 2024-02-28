@@ -78,7 +78,13 @@ const AdsSchema = mongoose.Schema({
     type: String,
     required: [true, 'property description must be provided'],
     maxlength: 2000
+  },
+  views: {
+    type: Number,
+    default: 0
   }
+}, {
+  timestamps: true
 })
 
 module.exports = mongoose.model('Ads', AdsSchema)
