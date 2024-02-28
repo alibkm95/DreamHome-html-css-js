@@ -101,7 +101,17 @@ const getAllAds = async (req, res) => {
 }
 
 const getSingleAd = async (req, res) => {
-  res.json({ msg: 'getSingleAd' })
+
+  const { id: adId } = req.params
+
+  const ad = await Ads.findOne({ _id: adId })
+
+  if (!ad) {
+    throw new CustomError.NotFoundError('there is no such an ad')
+  }
+
+  res.status(StatusCodes.OK).json({ ad })
+
 }
 
 const updateAd = async (req, res) => {
