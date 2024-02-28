@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const AdsSchema = mongoose.Schema({
+  title: {
+    type: String,
+    maxlength: 100,
+    required: [true, 'ad title value must be provided']
+  },
   area: {
     type: Number,
     required: [true, 'property area value must be provided']
@@ -39,7 +44,7 @@ const AdsSchema = mongoose.Schema({
   },
   rooms: {
     type: Number,
-    required: [true, 'rroms count must be provided']
+    required: [true, 'rooms count must be provided']
   },
   floorLevel: {
     type: Number,
@@ -51,15 +56,15 @@ const AdsSchema = mongoose.Schema({
   },
   elavator: {
     type: Boolean,
-    required: [true, 'property options (elevator) must be provided']
+    default: false
   },
   parking: {
     type: Boolean,
-    required: [true, 'property options (parking) must be provided']
+    default: false
   },
   warehouse: {
     type: Boolean,
-    required: [true, 'property options (warehouse) must be provided']
+    default: false
   },
   yearOfCunstruction: {
     type: Number,
@@ -82,6 +87,15 @@ const AdsSchema = mongoose.Schema({
   views: {
     type: Number,
     default: 0
+  },
+  creator: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  hashTags: {
+    type: [String],
+    default: []
   }
 }, {
   timestamps: true
