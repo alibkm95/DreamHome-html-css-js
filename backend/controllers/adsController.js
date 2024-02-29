@@ -132,7 +132,42 @@ const updateAd = async (req, res) => {
 }
 
 const uploadAdImage = async (req, res) => {
-  res.json({ msg: 'uploadAdImage' })
+  
+  const imgDirectory = path.join(__dirname, '../public/uploads/adsImages');
+
+  if (!fs.existsSync(imgDirectory)) {
+    fs.mkdirSync(imgDirectory);
+  }
+
+  if (!req.files) {
+    throw new CustomError.BadRequestError('no file selected for upload');
+  }
+
+  const image = req.files.image;
+
+  if (!image.mimetype.startsWith('image')) {
+    throw new CustomError.BadRequestError('only image files allowed(*.png  *.jpg)');
+  }
+
+  const maxSize = 1024 * 1024 * 3;
+
+  if (image.size > maxSize) {
+    throw new CustomError.BadRequestError('selected file size must be less than 3MB');
+  }
+
+  image.name = image.name.replaceAll(' ', '_');
+
+  const fileName = `${new Date().getTime()}_${image.name}`;
+
+  const imagePath = path.join(__dirname, `../public/uploads/adsImages/${fileName}`);
+  
+  try {
+    await image.mv(imagePath);
+  } catch (error) {
+    throw new CustomError.BadRequestError('upload file error')
+  }
+
+  res.status(StatusCodes.OK).json({image: `${req.protocol}://${req.get('host')}/uploads/adsImages/${fileName}`})
 }
 
 const deleteAd = async (req, res) => {
