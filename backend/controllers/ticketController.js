@@ -171,11 +171,39 @@ const addNewMessage = async (req, res) => {
 }
 
 const updateTicket = async (req, res) => {
-  res.json({ msg: 'updateTicket' })
+
+  const { id: ticketId } = req.params
+
+  const ticket = await Ticket.findOne({ _id: ticketId })
+
+  if (!ticket) {
+    throw new CustomError.NotFoundError('there is no such a ticket')
+  }
+
+  await Conversation.updateMany(
+    { ticket: ticketId },
+    { seenByAdmin: true, seenByUser: true }
+  )
+
+  ticket.ticketStatus = 'closed'
+  await ticket.save()
+
+  res.status(StatusCodes.OK).json({ msg: 'ticket closed successfully' })
 }
 
 const deleteTicket = async (req, res) => {
-  res.json({ msg: 'deleteTicket' })
+
+  const { id: ticketId } = req.params
+
+  const ticket = await Ticket.findOne({ _id: ticketId })
+
+  if (!ticket) {
+    throw new CustomError.NotFoundError('there is no such a ticket')
+  }
+
+  await ticket.remove()
+
+  res.status(StatusCodes.OK).json({ msg: 'ticket removed successfully' })
 }
 
 module.exports = {
