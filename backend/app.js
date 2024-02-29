@@ -20,6 +20,7 @@ const authRouter = require('./routes/authRoutes')
 const userRouter = require('./routes/userRoutes')
 const adsRouter = require('./routes/adsRoutes')
 const ticketRouter = require('./routes/ticketRoutes')
+const viewRouter = require('./routes/viewRoutes')
 
 // err
 const notFoundMiddleware = require('./middlewares/notFound')
@@ -36,6 +37,7 @@ app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/ads', adsRouter)
 app.use('/api/v1/tickets', ticketRouter)
+app.use('/api/v1/view', viewRouter)
 
 // err middlewares
 app.use(notFoundMiddleware)
