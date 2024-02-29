@@ -85,7 +85,25 @@ const getCurrentUserTickets = async (req, res) => {
 }
 
 const getSingleTicket = async (req, res) => {
-  res.json({ msg: 'getSingleTicket' })
+
+  const { id: ticketId } = req.params
+
+  const ticket = await Ticket.findOne({ _id: ticketId })
+    .populate({
+      path: 'user',
+      select: 'name role'
+    })
+    .populate('conversations')
+
+  if (!ticket) {
+    throw new CustomError.NotFoundError('there is no such a ticket')
+  }
+
+  if (req.user.role === 'USER' && req.user.userId !== ticket.user._id.toString()) {
+    throw new CustomError.UnauthorizedError('you cant access to the tickets other than yours')
+  }
+
+  res.status(StatusCodes.OK).json({ ticket })
 }
 
 const addNewMessage = async (req, res) => {
