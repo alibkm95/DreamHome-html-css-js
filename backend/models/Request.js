@@ -15,7 +15,7 @@ const RequestSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: {
-      values: ['pending', 'completed'],
+      values: ['pending', 'completed', 'canceled'],
       message: '{VALUE} is not supported as a valid status'
     }
   }
