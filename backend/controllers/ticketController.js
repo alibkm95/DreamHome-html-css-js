@@ -107,7 +107,67 @@ const getSingleTicket = async (req, res) => {
 }
 
 const addNewMessage = async (req, res) => {
-  res.json({ msg: 'addNewMessage' })
+
+  const { id: ticketId } = req.params
+  const { newMessage } = req.body
+
+  const ticket = await Ticket.findOne({ _id: ticketId })
+    .populate({
+      path: 'user',
+      select: 'name role'
+    })
+    .populate('conversations')
+
+  if (!ticket) {
+    throw new CustomError.NotFoundError('there is no such a ticket')
+  }
+
+  if (ticket.ticketStatus === 'closed') {
+    throw new CustomError.BadRequestError('this ticket is closed')
+  }
+
+  if (req.user.role === 'USER' && req.user.userId !== ticket.user._id.toString()) {
+    throw new CustomError.UnauthorizedError('you cant access to the tickets other than yours')
+  }
+
+  if (req.user.role === 'USER') {
+    await Conversation.updateMany(
+      { ticket: ticketId },
+      { seenByUser: true }
+    )
+  }
+
+  if (req.user.role === 'ROOTADMIN' || req.user.role === 'ADMIN') {
+    await Conversation.updateMany(
+      { ticket: ticketId },
+      { seenByAdmin: true }
+    )
+  }
+
+  const newMessageObject = {
+    senderName: req.user.name,
+    senderRole: req.user.role,
+    ticket: ticketId,
+    message: newMessage
+  }
+
+  const newMessageInserting = await Conversation.create(newMessageObject)
+
+  if (!newMessageInserting) {
+    throw new CustomError.BadRequestError('unable to send new message!')
+  }
+
+  if (req.user.role === 'ADMIN' || req.user.role === 'ROOTADMIN') {
+    ticket.ticketStatus = 'answered'
+    await ticket.save()
+  }
+
+  if (req.user.role === 'USER') {
+    ticket.ticketStatus = 'pending'
+    await ticket.save()
+  }
+
+  res.status(StatusCodes.OK).json({ ticket })
 }
 
 const updateTicket = async (req, res) => {
