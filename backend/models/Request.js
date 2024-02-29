@@ -10,6 +10,14 @@ const RequestSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Ads',
     required: true
+  },
+  status: {
+    type: String,
+    required: true,
+    enum: {
+      values: ['pending', 'completed'],
+      message: '{VALUE} is not supported as a valid status'
+    }
   }
 },{
   timestamps: true
