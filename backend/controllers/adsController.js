@@ -1,4 +1,5 @@
 const Ads = require('../models/Ads')
+const Views = require('../models/Views')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
 const fs = require('fs')
@@ -110,6 +111,15 @@ const getSingleAd = async (req, res) => {
     throw new CustomError.NotFoundError('there is no such an ad')
   }
 
+  try {
+    await Views.create({ ad: adId })
+  } catch (error) {
+    console.log(error)
+  }
+
+  ad.views = ad.views + 1
+  await ad.save()
+
   res.status(StatusCodes.OK).json({ ad })
 
 }
@@ -132,7 +142,7 @@ const updateAd = async (req, res) => {
 }
 
 const uploadAdImage = async (req, res) => {
-  
+
   const imgDirectory = path.join(__dirname, '../public/uploads/adsImages');
 
   if (!fs.existsSync(imgDirectory)) {
@@ -160,18 +170,18 @@ const uploadAdImage = async (req, res) => {
   const fileName = `${new Date().getTime()}_${image.name}`;
 
   const imagePath = path.join(__dirname, `../public/uploads/adsImages/${fileName}`);
-  
+
   try {
     await image.mv(imagePath);
   } catch (error) {
     throw new CustomError.BadRequestError('upload file error')
   }
 
-  res.status(StatusCodes.OK).json({image: `${req.protocol}://${req.get('host')}/uploads/adsImages/${fileName}`})
+  res.status(StatusCodes.OK).json({ image: `${req.protocol}://${req.get('host')}/uploads/adsImages/${fileName}` })
 }
 
 const deleteAd = async (req, res) => {
-  
+
   const { id: adId } = req.params
 
   const ad = await Ads.findOne({ _id: adId })
