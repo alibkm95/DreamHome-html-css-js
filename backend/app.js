@@ -19,6 +19,7 @@ const connectDB = require('./db/connect')
 const authRouter = require('./routes/authRoutes')
 const userRouter = require('./routes/userRoutes')
 const adsRouter = require('./routes/adsRoutes')
+const ticketRouter = require('./routes/ticketRoutes')
 
 // err
 const notFoundMiddleware = require('./middlewares/notFound')
@@ -34,6 +35,7 @@ app.use(fileUpload())
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/ads', adsRouter)
+app.use('/api/v1/tickets', ticketRouter)
 
 // err middlewares
 app.use(notFoundMiddleware)
