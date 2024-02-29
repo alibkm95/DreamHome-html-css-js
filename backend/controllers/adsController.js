@@ -115,7 +115,20 @@ const getSingleAd = async (req, res) => {
 }
 
 const updateAd = async (req, res) => {
-  res.json({ msg: 'updateAd' })
+
+  const { id: adId } = req.params
+
+  const ad = await Ads.findOneAndUpdate(
+    { _id: adId },
+    req.body,
+    { new: true, runValidators: true }
+  )
+
+  if (!ad) {
+    throw new CustomError.NotFoundError('there is no such an ad')
+  }
+
+  res.status(StatusCodes.OK).json({ ad })
 }
 
 const uploadAdImage = async (req, res) => {
