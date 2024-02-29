@@ -41,7 +41,36 @@ const createTicket = async (req, res) => {
 }
 
 const getAllTickets = async (req, res) => {
-  res.json({ msg: 'getAllTickets' })
+
+  const { search, ticketStatus } = req.query
+
+  let queryObject = {}
+
+  if (ticketStatus && ticketStatus !== 'all') {
+    queryObject.ticketStatus = ticketStatus
+  }
+
+  if (search) {
+    queryObject.subject = { $regex: search, $options: 'i' }
+  }
+
+  let result = Ticket.find(queryObject).populate({
+    path: 'user',
+    select: 'name role'
+  })
+
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.itemPerPage) || 20
+  const skip = (page - 1) * limit
+
+  result = result.skip(skip).limit(limit)
+
+  const tickets = await result
+
+  const totalTickets = await Ticket.countDocuments(queryObject)
+  const numOfPages = Math.ceil(totalTickets / limit)
+
+  res.status(StatusCodes.OK).json({ tickets, totalTickets, numOfPages })
 }
 
 const getCurrentUserTickets = async (req, res) => {
