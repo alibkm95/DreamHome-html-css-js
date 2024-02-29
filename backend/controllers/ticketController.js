@@ -5,7 +5,39 @@ const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
 
 const createTicket = async (req, res) => {
-  res.json({ msg: 'createTicket' })
+
+  const { subject, message } = req.body
+
+  if (!subject || !message) {
+    throw new CustomError.BadRequestError('required fields are not provided')
+  }
+
+  const newTicketObject = {
+    subject,
+    user: req.user.userId
+  }
+
+  const ticket = await Ticket.create(newTicketObject)
+
+  if (!ticket) {
+    throw new CustomError.BadRequestError('error! creating new ticket failed')
+  }
+
+  const newMessageObject = {
+    senderName: req.user.name,
+    senderRole: req.user.role,
+    ticket: ticket._id,
+    message
+  }
+
+  const newMessage = await Conversation.create(newMessageObject)
+
+  if (!newMessage) {
+    await ticket.remove()
+    throw new CustomError.BadRequestError('error! creating new ticket failed')
+  }
+
+  res.status(StatusCodes.CREATED).json({ msg: 'ticket created successfully' })
 }
 
 const getAllTickets = async (req, res) => {
