@@ -74,7 +74,14 @@ const getAllTickets = async (req, res) => {
 }
 
 const getCurrentUserTickets = async (req, res) => {
-  res.json({ msg: 'getCurrentUserTickets' })
+
+  const tickets = await Ticket.find({ user: req.user.userId })
+
+  if (!tickets) {
+    throw new CustomError.NotFoundError('there is no tickets')
+  }
+
+  res.status(StatusCodes.OK).json({ tickets, count: tickets.length })
 }
 
 const getSingleTicket = async (req, res) => {
