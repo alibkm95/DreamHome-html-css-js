@@ -171,7 +171,35 @@ const uploadAdImage = async (req, res) => {
 }
 
 const deleteAd = async (req, res) => {
-  res.json({ msg: 'deleteAd' })
+  
+  const { id: adId } = req.params
+
+  const ad = await Ads.findOne({ _id: adId })
+
+  if (!ad) {
+    throw new CustomError.NotFoundError('there is no such an ad')
+  }
+
+  const coverImage = ad.cover
+  const coverImagePath = path.parse(coverImage);
+  const panoramaImage = ad.panorama
+  const panoramaImagePath = path.parse(panoramaImage);
+
+  if (fs.existsSync(path.join(__dirname, `../public/uploads/adsImages/${coverImagePath.base}`))) {
+    fs.unlinkSync(path.join(__dirname, `../public/uploads/adsImages/${coverImagePath.base}`), err => {
+      if (err) console.log(err)
+    })
+  }
+
+  if (fs.existsSync(path.join(__dirname, `../public/uploads/adsImages/${panoramaImagePath.base}`))) {
+    fs.unlinkSync(path.join(__dirname, `../public/uploads/adsImages/${panoramaImagePath.base}`), err => {
+      if (err) console.log(err)
+    })
+  }
+
+  await ad.remove()
+
+  res.status(StatusCodes.OK).json({ msg: 'ad removed successfully' })
 }
 
 module.exports = {
