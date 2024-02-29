@@ -6,13 +6,28 @@ const getAllViews = async (req, res) => {
 
   const views = await Views.find()
 
+  if (!views) {
+    throw new CustomError.NotFoundError('there is no views data to show')
+  }
+
   const viewsGroup = groupData(views)
 
   res.status(StatusCodes.OK).json({ viewsGroup })
 }
 
 const getSingleAdViews = async (req, res) => {
-  res.json({ msg: 'getSingleAdViews' })
+
+  const { id: adId } = req.params
+
+  const views = await Views.find({ ad: adId })
+
+  if (!views) {
+    throw new CustomError.NotFoundError('there is no viwes recorded for requested ad')
+  }
+
+    const viewsGroup = groupData(views)
+
+  res.status(StatusCodes.OK).json({ viewsGroup })
 }
 
 const groupData = (data) => {
