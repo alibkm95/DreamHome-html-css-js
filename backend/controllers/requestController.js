@@ -124,7 +124,22 @@ const updateRequest = async (req, res) => {
 }
 
 const deleteRequest = async (req, res) => {
-  res.json({ msg: 'deleteRequest' })
+
+  const { id: reqId } = req.params
+
+  const request = await Request.findOne({ _id: reqId })
+
+  if (!request) {
+    throw new CustomError.NotFoundError('there is no such a request')
+  }
+
+  try {
+    await request.remove()
+  } catch (err) {
+    throw new CustomError.BadRequestError('error! delete request failed')
+  }
+
+  res.status(StatusCodes.OK).json({ msg: 'request deleted successfully' })
 }
 
 module.exports = {
