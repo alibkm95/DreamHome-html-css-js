@@ -103,7 +103,24 @@ const getUserRequests = async (req, res) => {
 }
 
 const updateRequest = async (req, res) => {
-  res.json({ msg: 'updateRequest' })
+
+  const { status } = req.query
+  const { id: reqId } = req.params
+
+  if (!status) {
+    throw new CustomError.BadRequestError('update failed! status must be provided')
+  }
+
+  const request = await Request.findOne({ _id: reqId })
+
+  if (!request) {
+    throw new CustomError.NotFoundError('there is no such a request')
+  }
+
+  request.status = status
+  await request.save()
+
+  res.status(StatusCodes.OK).json({ request, msg: 'update request successfully' })
 }
 
 const deleteRequest = async (req, res) => {
