@@ -57,7 +57,16 @@ const getAllSaves = async (req, res) => {
 }
 
 const getUsersSaves = async (req, res) => {
-  res.json({ msg: 'getUsersSaves' })
+
+  const { userId } = req.user
+
+  const userSaveList = await Saved.find({ user: userId })
+    .populate({
+      path: 'ad',
+      select: '_id title propType adType '
+    })
+
+  res.status(StatusCodes.OK).json({ userSaveList })
 }
 
 module.exports = {
