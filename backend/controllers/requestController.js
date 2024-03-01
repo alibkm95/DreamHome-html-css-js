@@ -70,7 +70,23 @@ const getAllRequests = async (req, res) => {
 }
 
 const getSingleRequest = async (req, res) => {
-  res.json({ msg: 'getSingleRequest' })
+
+  const { id: reqId } = req.params
+
+  const request = await Request.find({ _id: reqId })
+    .populate({
+      path: 'user',
+      select: '_id name email'
+    })
+    .populate({
+      path: 'ad'
+    })
+
+  if (!request) {
+    throw new CustomError.NotFoundError('there is no such a request')
+  }
+
+  res.status(StatusCodes.OK).json({ request })
 }
 
 const getUserRequests = async (req, res) => {
