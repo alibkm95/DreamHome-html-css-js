@@ -30,7 +30,30 @@ const toggleSave = async (req, res) => {
 }
 
 const getAllSaves = async (req, res) => {
-  res.json({ msg: 'getAllSaves' })
+
+  let result = Saved.find()
+    .populate({
+      path: 'user',
+      select: '_id name email'
+    })
+    .populate({
+      path: 'ad',
+      select: '_id title propType adType'
+    })
+    .sort('-createdAt')
+
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.itemPerPage) || 20
+  const skip = (page - 1) * limit
+
+  result = result.skip(skip).limit(limit)
+
+  const savedList = await result
+
+  const totalSavedCount = await Saved.countDocuments()
+  const numOfPages = Math.ceil(totalSavedCount / limit)
+
+  res.status(StatusCodes.OK).json({ savedList, totalSavedCount, numOfPages })
 }
 
 const getUsersSaves = async (req, res) => {
