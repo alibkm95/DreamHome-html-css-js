@@ -33,7 +33,40 @@ const createRequest = async (req, res) => {
 }
 
 const getAllRequests = async (req, res) => {
-  res.json({ msg: 'getAllRequests' })
+
+  const { maxDate, minDate } = req.query
+
+  let queryObject = {}
+
+  if (maxDate && minDate) {
+    queryObject.createdAt = {
+      $gt: new Date(minDate),
+      $lt: new Date(maxDate),
+    }
+  }
+
+  let result = Request.find(queryObject)
+    .populate({
+      path: 'user',
+      select: '_id name email'
+    })
+    .populate({
+      path: 'ad',
+      select: '_id title propType adType '
+    })
+
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.itemPerPage) || 20
+  const skip = (page - 1) * limit
+
+  result = result.skip(skip).limit(limit)
+
+  const requests = await result
+
+  const totalrequests = await Request.countDocuments(queryObject)
+  const numOfPages = Math.ceil(totalrequests / limit)
+
+  res.status(StatusCodes.OK).json({ requests, totalrequests, numOfPages })
 }
 
 const getSingleRequest = async (req, res) => {
