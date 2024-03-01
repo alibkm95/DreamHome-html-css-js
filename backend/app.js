@@ -22,6 +22,7 @@ const adsRouter = require('./routes/adsRoutes')
 const ticketRouter = require('./routes/ticketRoutes')
 const viewRouter = require('./routes/viewRoutes')
 const requestRouter = require('./routes/requestRoutes')
+const saveRouter = require('./routes/savedRoutes')
 
 // err
 const notFoundMiddleware = require('./middlewares/notFound')
@@ -40,6 +41,7 @@ app.use('/api/v1/ads', adsRouter)
 app.use('/api/v1/tickets', ticketRouter)
 app.use('/api/v1/view', viewRouter)
 app.use('/api/v1/request', requestRouter)
+app.use('/api/v1/save', saveRouter)
 
 // err middlewares
 app.use(notFoundMiddleware)
