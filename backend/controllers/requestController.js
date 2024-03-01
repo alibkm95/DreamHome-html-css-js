@@ -90,7 +90,16 @@ const getSingleRequest = async (req, res) => {
 }
 
 const getUserRequests = async (req, res) => {
-  res.json({ msg: 'getUserRequests' })
+
+  const { userId } = req.user
+
+  const requests = await Request.find({ user: userId })
+    .populate({
+      path: 'ad',
+      select: '_id title propType adType '
+    })
+
+  res.status(StatusCodes.OK).json({ requests })
 }
 
 const updateRequest = async (req, res) => {
