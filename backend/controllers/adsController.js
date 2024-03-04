@@ -159,10 +159,10 @@ const uploadAdImage = async (req, res) => {
     throw new CustomError.BadRequestError('only image files allowed(*.png  *.jpg)');
   }
 
-  const maxSize = 1024 * 1024 * 5;
+  const maxSize = 1024 * 1024 * 10;
 
   if (image.size > maxSize) {
-    throw new CustomError.BadRequestError('selected file size must be less than 5 MB');
+    throw new CustomError.BadRequestError('selected file size must be less than 10 MB');
   }
 
   image.name = image.name.replaceAll(' ', '_');
