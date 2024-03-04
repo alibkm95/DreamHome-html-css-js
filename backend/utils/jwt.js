@@ -11,21 +11,29 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   const accessTokenJWT = createJWT({ payload: { user } });
   const refreshTokenJWT = createJWT({payload: {user, refreshToken}})
 
+  user._SAT = accessTokenJWT
+
   const longEXP = 1000 * 60 * 60 * 24 * 30;
   const shortEXP = 1000 * 60 * 60 * 24 * 1;
 
   res.cookie('accessToken', accessTokenJWT, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    signed: true,
     expires: new Date(Date.now() + shortEXP),
+    signed: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/',
+    // domain: 'localhost'
   });
 
   res.cookie('refreshToken', refreshTokenJWT, {
     httpOnly: true,
-    expires: new Date(Date.now() + longEXP),
     secure: process.env.NODE_ENV === 'production',
+    expires: new Date(Date.now() + longEXP),
     signed: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/',
+    // domain: 'localhost'
   });
 };
 

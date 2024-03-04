@@ -29,12 +29,16 @@ const notFoundMiddleware = require('./middlewares/notFound')
 const errorHandlerMiddleware = require('./middlewares/errorHandler')
 
 // CORS
-const setHeaders = require('./middlewares/headers')
+// const setHeaders = require('./middlewares/headers')
 
 app.use(express.json())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
-app.use(setHeaders)
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}))
+// app.use(setHeaders)
 app.use(express.static('./public'))
 app.use(fileUpload())
 
