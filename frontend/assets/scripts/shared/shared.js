@@ -6,6 +6,10 @@ import {
   ToggleNotif
 } from '../functions/functions.js'
 
+import {
+  GetMe
+} from '../functions/utils.js'
+
 window.addEventListener('load', () => {
   const openMenuBtn = document.querySelector('.menu__open')
   const menuCloseBtn = document.querySelector('.menu__close-btn')
