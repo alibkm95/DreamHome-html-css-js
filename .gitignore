@@ -132,3 +132,5 @@ dist
 # my inser frontend
 a.js
 a.html
+[0-9]*.png
+[0-9]*.jpg
