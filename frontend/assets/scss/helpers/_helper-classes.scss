@@ -117,3 +117,28 @@
 .hide{
   display: none;
 }
+
+.loader{
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background-color: var(--black-20);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: f.rem(10);
+
+  &.hide{
+    display: none;
+  }
+
+  &__wrapper{
+    display: flex;
+    align-items: center;
+    gap: f.rem(20);
+    background-color: var(--body-bg);
+    padding: f.rem(20);
+    border-radius: f.rem(5);
+  }
+}
