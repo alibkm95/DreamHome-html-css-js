@@ -14,6 +14,6 @@ window.addEventListener('load', () => {
 
   registerForm.addEventListener('submit', async (event) => {
     event.preventDefault()
-    const isSuccess = await RegisterUser(registerInputs)
+    await RegisterUser(registerInputs)
   })
 })

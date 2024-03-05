@@ -2,7 +2,8 @@ const baseURL = 'http://localhost:5000/api/v1'
 import {
   ToastBox,
   RedirectToHome,
-  GetUrlParams
+  GetUrlParams,
+  ToggleGlobalLoader
 } from '../functions/functions.js'
 
 export const GetMe = async () => {
@@ -39,6 +40,8 @@ export const RegisterUser = async (inputGroup) => {
 
   if (!isInputsOK) return
 
+  ToggleGlobalLoader()
+
   let bodyObject = {
     email: emailInput.value.trim(),
     name: nameInput.value.trim(),
@@ -59,9 +62,11 @@ export const RegisterUser = async (inputGroup) => {
 
 
   if (result.status === 201) {
+    ToggleGlobalLoader()
     inputGroup.forEach(input => input.value = '')
     ToastBox('success', response.msg, 3000, null, RedirectToHome)
   } else {
+    ToggleGlobalLoader()
     ToastBox('error', response.msg, 3000, 'ok', null)
   }
 }

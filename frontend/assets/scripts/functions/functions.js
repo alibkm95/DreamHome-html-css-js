@@ -98,3 +98,8 @@ export const RemoveParamsFromUrl = (paramsArr) => {
   url.search = searchParams.toString();
   location.href = url.toString();
 }
+
+export const ToggleGlobalLoader = () => {
+  const loaderElem = document.querySelector('.loader')
+  loaderElem.classList.toggle('hide')
+} 
