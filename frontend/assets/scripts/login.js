@@ -1,9 +1,13 @@
-import { LoginUser } from "./functions/utils.js";
+import {
+  LoginUser,
+  GetRecoverEmail
+} from "./functions/utils.js";
 
 window.addEventListener('load', async (event) => {
   const loginForm = document.querySelector('.login__form')
   const emailInput = document.getElementById('email-input')
   const passwordInput = document.getElementById('password-input')
+  const forgetBtn = document.getElementById('forget-btn')
 
   const loginInputs = [emailInput, passwordInput]
 
@@ -16,5 +20,9 @@ window.addEventListener('load', async (event) => {
   loginForm.addEventListener('submit', async (event) => {
     event.preventDefault()
     await LoginUser(emailInput, passwordInput)
+  })
+
+  forgetBtn.addEventListener('click', async () => {
+    await GetRecoverEmail(emailInput)
   })
 })

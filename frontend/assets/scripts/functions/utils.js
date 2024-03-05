@@ -76,7 +76,7 @@ export const RegisterUser = async (inputGroup) => {
 export const LoginUser = async (emailInput, passwordInput) => {
   const isInputsOk = ValidateLoginInputs(emailInput, passwordInput)
 
-  if(!isInputsOk) return
+  if (!isInputsOk) return
 
   ToggleGlobalLoader()
 
@@ -111,12 +111,71 @@ export const LogoutUser = async () => {
   // TODO => log out user
 }
 
-export const GetRecoverEmail = async () => {
-  // TODO => send user reset password email
+export const GetRecoverEmail = async (emailInput) => {
+
+  let isEmailProvided = IsNotEmpty(emailInput)
+  if (!isEmailProvided) {
+    ToastBox('error', 'inorder to get recovery link you should pass your email', 3000, null, null)
+    emailInput.classList.add('is-invalid')
+    return
+  }
+
+  const bodyObject = {
+    email: emailInput.value.trim()
+  }
+
+  const result = await fetch(`${baseURL}/auth/forgetPassword`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    emailInput.value = ''
+    ToastBox('success', response.msg, 3000, null, null)
+  } else {
+    ToastBox('error', response.msg, 3000, 'OK', null)
+  }
 }
 
-export const ResetPassword = async () => {
-  // TODO => reset users password
+export const ResetPassword = async (token, email, passwordInput, repeatPasswordInput) => {
+  const isInputsOK = ValidateResetInputs(passwordInput, repeatPasswordInput)
+
+  if (!isInputsOK) return
+
+  ToggleGlobalLoader()
+
+  const bodyObject = {
+    token,
+    email,
+    password: passwordInput.value.trim()
+  }
+
+  const result = await fetch(`${baseURL}/auth/resetPassword`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    ToggleGlobalLoader()
+    passwordInput.value = ''
+    repeatPasswordInput.value = ''
+    ToastBox('success', response.msg, 3000, null, () => window.location.href = './login.html')
+  } else {
+    ToggleGlobalLoader()
+    ToastBox('error', response.msg, 3000, 'ok', null)
+  }
 }
 
 export const VerifyEmail = async () => {
@@ -137,7 +196,7 @@ export const VerifyEmail = async () => {
     body: JSON.stringify(bodyObject),
     credentials: 'include'
   })
-  
+
   if (result.status === 200) {
     RenderVerificationSuccess()
     ToggleGlobalLoader()
@@ -226,6 +285,35 @@ export const ValidateLoginInputs = (emailInput, passwordInput) => {
   let isPasswordsProvided = IsNotEmpty(passwordInput)
   if (!isPasswordsProvided) {
     ToastBox('error', 'passwords must be provided', 3000, null, null)
+    passwordInput.classList.add('is-invalid')
+    return false
+  }
+
+  return true
+}
+
+export const ValidateResetInputs = (passwordInput, repeatPasswordInput) => {
+
+  let isPasswordsProvided = IsNotEmpty(passwordInput) && IsNotEmpty(repeatPasswordInput)
+  if (!isPasswordsProvided) {
+    ToastBox('error', 'passwords must be provided', 3000, null, null)
+    passwordInput.classList.add('is-invalid')
+    repeatPasswordInput.classList.add('is-invalid')
+    return false
+  }
+
+  let isValidPassword = IsValidPassword(passwordInput.value)
+  if (isValidPassword) {
+    let isPasswordsSame = IsPasswordSame(passwordInput.value, repeatPasswordInput.value)
+
+    if (!isPasswordsSame) {
+      ToastBox('error', 'password is not match', 3000, null, null)
+      passwordInput.classList.add('is-invalid')
+      repeatPasswordInput.classList.add('is-invalid')
+      return false
+    }
+  } else {
+    ToastBox('error', 'password must be between 6 and 12 characters and most contain numbers and at least 1 upper case letter. simbols not allowed.', 3000, null, null)
     passwordInput.classList.add('is-invalid')
     return false
   }
