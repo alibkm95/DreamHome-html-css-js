@@ -1,9 +1,11 @@
-const baseURL = 'http://localhost:5000/api/v1'
 import {
   ToastBox,
   RedirectToHome,
   GetUrlParams,
-  ToggleGlobalLoader
+  ToggleGlobalLoader,
+  baseURL,
+  RenderVerificationErr,
+  RenderVerificationSuccess
 } from '../functions/functions.js'
 
 export const GetMe = async () => {
@@ -88,7 +90,34 @@ export const ResetPassword = async () => {
 }
 
 export const VerifyEmail = async () => {
-  // TODO => verify users email
+  ToggleGlobalLoader()
+  const email = GetUrlParams('email')
+  const verificationToken = GetUrlParams('token')
+
+  let bodyObject = {
+    email,
+    verificationToken
+  }
+
+  const result = await fetch(`${baseURL}/auth/verifyEmail`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+  
+  if (result.status === 200) {
+    RenderVerificationSuccess()
+    ToggleGlobalLoader()
+    setTimeout(() => {
+      RedirectToHome()
+    }, 3000);
+  } else {
+    RenderVerificationErr()
+    ToggleGlobalLoader()
+  }
 }
 
 export const ValidateRegisterInputs = (emailInput, nameInput, phoneInput, passwordInput, repeatPasswordInput) => {

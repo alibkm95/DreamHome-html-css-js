@@ -126,9 +126,36 @@ const verifyEmail = async (req, res) => {
 
   await user.save()
 
-  // TODO => in feature after verify users email, login user along side verifying
+  const tokenUser = createTokenUser(user)
 
-  res.status(StatusCodes.OK).json({ msg: 'your account verified successfully' })
+  let refreshToken = ''
+
+  const existingToken = await Token.findOne({ user: user._id })
+
+  if (existingToken) {
+    const { isValid } = existingToken
+
+    if (!isValid) {
+      throw new CustomError.UnauthenticatedError('information is not valid')
+    }
+
+    refreshToken = existingToken.refreshToken
+    attachCookiesToResponse({ res, user: tokenUser, refreshToken })
+
+    res.status(StatusCodes.OK).json({ user: tokenUser, msg: 'your account verified successfully' })
+    return
+  }
+
+  refreshToken = crypto.randomBytes(40).toString('hex')
+
+  const userAgent = req.headers['user-agent']
+  const ip = req.ip
+  const userToken = { refreshToken, ip, userAgent, user: user._id }
+
+  await Token.create(userToken)
+
+  attachCookiesToResponse({ res, user: tokenUser, refreshToken })
+  res.status(StatusCodes.OK).json({ user: tokenUser, msg: 'your account verified successfully' })
 }
 
 const forgetPassword = async (req, res) => {
@@ -173,13 +200,13 @@ const resetPassword = async (req, res) => {
 
   const user = await User.findOne({ email })
 
-  if(!user) {
+  if (!user) {
     throw new CustomError.NotFoundError('there is no such a user')
   }
 
   const currentDate = new Date()
 
-  if(user.passwordToken === createHash(token) && user.passwordTokenExpirationDate > currentDate){
+  if (user.passwordToken === createHash(token) && user.passwordTokenExpirationDate > currentDate) {
     user.password = password
     user.passwordToken = null
     user.passwordTokenExpirationDate = null
@@ -189,7 +216,7 @@ const resetPassword = async (req, res) => {
     throw new CustomError.BadRequestError('the rest password link is expired')
   }
 
-  res.status(StatusCodes.OK).json({msg: 'reseting password successfull'})
+  res.status(StatusCodes.OK).json({ msg: 'reseting password successfull' })
 }
 
 module.exports = {
