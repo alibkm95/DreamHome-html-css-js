@@ -1,7 +1,8 @@
 const baseURL = 'http://localhost:5000/api/v1'
 import {
   ToastBox,
-  RedirectToHome
+  RedirectToHome,
+  GetUrlParams
 } from '../functions/functions.js'
 
 export const GetMe = async () => {

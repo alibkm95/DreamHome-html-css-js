@@ -40,10 +40,10 @@ export const ToggleNotif = () => {
 }
 
 export const ToastBox = (
-  icon, 
-  text, 
-  timer, 
-  confirmBtnText = null, 
+  icon,
+  text,
+  timer,
+  confirmBtnText = null,
   handler = null) => {
   const Toast = Swal.mixin({
     toast: true,
@@ -68,4 +68,33 @@ export const ToastBox = (
 
 export const RedirectToHome = () => {
   window.location = './index.html'
+}
+
+export const GetUrlParams = (key) => {
+  const urlParam = new URLSearchParams(window.location.search);
+  return urlParam.get(key)
+}
+
+export const AddParamToUrl = (paramsArr) => {
+  let url = new URL(location.href)
+  let searchParams = url.searchParams
+
+  paramsArr.map(param => {
+    searchParams.set(param.key, param.value)
+  })
+
+  url.search = searchParams.toString()
+  location.href = url.toString()
+}
+
+export const RemoveParamsFromUrl = (paramsArr) => {
+  let url = new URL(location.href);
+  let searchParams = url.searchParams;
+
+  paramsArr.forEach(param => {
+    searchParams.delete(param);
+  });
+
+  url.search = searchParams.toString();
+  location.href = url.toString();
 }
