@@ -10,7 +10,7 @@ import {
   GetMe
 } from '../functions/utils.js'
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   const openMenuBtn = document.querySelector('.menu__open')
   const menuCloseBtn = document.querySelector('.menu__close-btn')
   const notifBtn = document.querySelector('.menu__actions-notification')
@@ -18,6 +18,7 @@ window.addEventListener('load', () => {
   const subMenuParentElems = document.querySelectorAll('.has-submenu')
   const subMenuLinkElems = document.querySelectorAll('.submenu__link')
   const openSearchLogElem = document.querySelector('.search-trigger')
+  const redirectToPanelElem = document.getElementById('panels-user-name')
 
   openMenuBtn.addEventListener('click', () => {
     OpenMenu()
@@ -65,12 +66,34 @@ window.addEventListener('load', () => {
       cancelButtonColor: "var(--orange)"
     })
       .then(result => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
           console.log(result.value)
           //  implement search feature here
         }
       })
   })
 
+  const user = await GetMe()
+
+  if (user) {
+    redirectToPanelElem.innerHTML = ''
+    redirectToPanelElem.insertAdjacentHTML('afterbegin', `
+      ${user.name}
+    `)
+    redirectToPanelElem.classList.remove('cta')
+    redirectToPanelElem.setAttribute('href', `./user-panel.html?user=${user.userId}`)
+  } else {
+    redirectToPanelElem.innerHTML = ''
+    redirectToPanelElem.insertAdjacentHTML('afterbegin', `
+    <div class="menu__icon-not">
+      <i class="fa-solid fa-right-to-bracket"></i>
+    </div>
+    <span class="menu__text">
+      Login
+    </span>
+    `)
+    redirectToPanelElem.classList.add('cta')
+    redirectToPanelElem.setAttribute('href', `./login.html`)
+  }
 })
 

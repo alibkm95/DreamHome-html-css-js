@@ -9,7 +9,18 @@ import {
 } from '../functions/functions.js'
 
 export const GetMe = async () => {
-  // TODO => check for current loged in user
+  
+  const result = await fetch(`${baseURL}/users/showMe`, {
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    return response.user
+  } else {
+    return false
+  }
 }
 
 export const RegisterUser = async (inputGroup) => {
