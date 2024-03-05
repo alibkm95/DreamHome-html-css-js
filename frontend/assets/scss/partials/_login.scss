@@ -103,6 +103,17 @@
             color: var(--bs-indigo) !important;
           }
         }
+
+        &-btn{
+          background-color: transparent;
+          border: none;
+          outline: none;
+          color: var(--green) !important;
+
+          &:hover {
+            color: var(--bs-indigo) !important;
+          }
+        }
       }
     }
 
