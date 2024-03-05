@@ -73,8 +73,38 @@ export const RegisterUser = async (inputGroup) => {
   }
 }
 
-export const LoginUser = async () => {
-  // TODO => login user
+export const LoginUser = async (emailInput, passwordInput) => {
+  const isInputsOk = ValidateLoginInputs(emailInput, passwordInput)
+
+  if(!isInputsOk) return
+
+  ToggleGlobalLoader()
+
+  const bodyObject = {
+    email: emailInput.value.trim(),
+    password: passwordInput.value.trim()
+  }
+
+  const result = await fetch(`${baseURL}/auth/login`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    ToggleGlobalLoader()
+    emailInput.value = ''
+    passwordInput.value = ''
+    ToastBox('success', 'login success! redirecting to home page', 3000, null, RedirectToHome)
+  } else {
+    ToggleGlobalLoader()
+    ToastBox('error', response.msg, 3000, 'ok', null)
+  }
 }
 
 export const LogoutUser = async () => {
@@ -177,6 +207,25 @@ export const ValidateRegisterInputs = (emailInput, nameInput, phoneInput, passwo
     }
   } else {
     ToastBox('error', 'password must be between 6 and 12 characters and most contain numbers and at least 1 upper case letter. simbols not allowed.', 3000, null, null)
+    passwordInput.classList.add('is-invalid')
+    return false
+  }
+
+  return true
+}
+
+export const ValidateLoginInputs = (emailInput, passwordInput) => {
+
+  let isEmailProvided = IsNotEmpty(emailInput)
+  if (!isEmailProvided) {
+    ToastBox('error', 'email is required', 3000, null, null)
+    emailInput.classList.add('is-invalid')
+    return false
+  }
+
+  let isPasswordsProvided = IsNotEmpty(passwordInput)
+  if (!isPasswordsProvided) {
+    ToastBox('error', 'passwords must be provided', 3000, null, null)
     passwordInput.classList.add('is-invalid')
     return false
   }
