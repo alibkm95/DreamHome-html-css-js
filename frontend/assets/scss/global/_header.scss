@@ -188,11 +188,9 @@
       &-profile {
         background-color: var(--bs-indigo);
         min-width: f.rem(150);
+        max-width: f.rem(150);
         height: f.rem(40);
         border-radius: 500vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         color: var(--bs-white) !important;
         position: relative;
         transition: all 0.3s ease;
@@ -223,7 +221,20 @@
           }
         }
 
-        .menu__link:hover{
+        .menu__link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: f.rem(10);
+          width: 100%;
+          height: 100%;
+
+          .menu__text{
+            white-space: nowrap;
+          }
+        }
+
+        .menu__link:hover {
           color: var(--bs-white) !important;
         }
       }

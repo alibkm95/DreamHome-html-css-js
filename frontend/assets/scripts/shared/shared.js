@@ -76,9 +76,13 @@ window.addEventListener('load', async () => {
   const user = await GetMe()
 
   if (user) {
+    let userNameFlag = user.name
+    userNameFlag = userNameFlag.length > 10 ? userNameFlag.slice(0, 10).concat('...') : userNameFlag
     redirectToPanelElem.innerHTML = ''
     redirectToPanelElem.insertAdjacentHTML('afterbegin', `
-      ${user.name}
+      <span class="menu__text">
+        ${userNameFlag}
+      </span>
     `)
     redirectToPanelElem.classList.remove('cta')
     redirectToPanelElem.setAttribute('href', `./user-panel.html?user=${user.userId}`)
