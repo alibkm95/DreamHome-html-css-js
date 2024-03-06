@@ -14,7 +14,7 @@ import {
 export const GetMe = async () => {
 
   const isLoggedIn = GetCookie('isLoggedIn')
-  
+
   if (!isLoggedIn) return false
 
   const result = await fetch(`${baseURL}/users/showMe`, {
@@ -127,7 +127,20 @@ export const LoginUser = async (emailInput, passwordInput) => {
 }
 
 export const LogoutUser = async () => {
-  // TODO => log out user
+
+  const result = await fetch(`${baseURL}/auth/logout`, {
+    method: "DELETE",
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    RemoveIsLoggedinCookie()
+    ToastBox('success', response.msg, 3000, null, RedirectToHome)
+  } else {
+    ToastBox('error', response.msg, 3000, 'ok', null)
+  }
 }
 
 export const GetRecoverEmail = async (emailInput) => {
