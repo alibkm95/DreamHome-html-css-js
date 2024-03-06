@@ -5,11 +5,18 @@ import {
   ToggleGlobalLoader,
   baseURL,
   RenderVerificationErr,
-  RenderVerificationSuccess
+  RenderVerificationSuccess,
+  SetIsLoggedinCookie,
+  RemoveIsLoggedinCookie,
+  GetCookie
 } from '../functions/functions.js'
 
 export const GetMe = async () => {
+
+  const isLoggedIn = GetCookie('isLoggedIn')
   
+  if (!isLoggedIn) return false
+
   const result = await fetch(`${baseURL}/users/showMe`, {
     credentials: 'include'
   })
@@ -108,6 +115,7 @@ export const LoginUser = async (emailInput, passwordInput) => {
   const response = await result.json()
 
   if (result.status === 200) {
+    SetIsLoggedinCookie()
     ToggleGlobalLoader()
     emailInput.value = ''
     passwordInput.value = ''
@@ -209,6 +217,7 @@ export const VerifyEmail = async () => {
   })
 
   if (result.status === 200) {
+    SetIsLoggedinCookie()
     RenderVerificationSuccess()
     ToggleGlobalLoader()
     setTimeout(() => {

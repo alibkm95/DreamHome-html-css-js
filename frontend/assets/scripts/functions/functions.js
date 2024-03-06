@@ -1417,3 +1417,24 @@ export const RenderVerificationSuccess = () => {
   `
   )
 }
+
+export const SetIsLoggedinCookie = () => {
+  const expires = new Date()
+  document.cookie = `isLoggedIn=true; expire=${expires.getTime() + (1000 * 60 * 60 * 24 * 30)}; path=/`
+}
+
+export const RemoveIsLoggedinCookie = () => {
+  const expires = new Date()
+  document.cookie = `isLoggedIn=false; expire=${expires.getTime() - (1000 * 60 * 60 * 24 * 365)}; path=/`
+}
+
+export const GetCookie = (cookieName) => {
+  cookieName += '='
+  const cookies = document.cookie.split(';')
+  for(let i = 0; i < cookies.length; i++) {
+    if (cookies[i].startsWith(cookieName)) {
+      return cookies[i].substring(cookieName.length)
+    }
+  }
+  return null
+}
