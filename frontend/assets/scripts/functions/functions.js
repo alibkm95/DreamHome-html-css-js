@@ -103,14 +103,14 @@ export const RemoveParamsFromUrl = (paramsArr) => {
 export const ToggleGlobalLoader = () => {
   const loaderElem = document.querySelector('.loader')
   loaderElem.classList.toggle('hide')
-} 
+}
 
 export const RenderVerificationErr = () => {
   const verifyParentElem = document.querySelector('.verify')
   verifyParentElem.innerHTML = ''
 
   verifyParentElem.insertAdjacentHTML('afterbegin',
-  `
+    `
   <div class="verify__err p-3">
   <div class="verify__err-left">
     <span class="fs-1">
@@ -836,7 +836,7 @@ export const RenderVerificationSuccess = () => {
   verifyParentElem.innerHTML = ''
 
   verifyParentElem.insertAdjacentHTML('afterbegin',
-  `
+    `
   <div class="verify__success p-3">
   <div class="verify__success-left">
     <span class="fs-2">
@@ -1431,10 +1431,267 @@ export const RemoveIsLoggedinCookie = () => {
 export const GetCookie = (cookieName) => {
   cookieName += '='
   const cookies = document.cookie.split(';')
-  for(let i = 0; i < cookies.length; i++) {
+  for (let i = 0; i < cookies.length; i++) {
     if (cookies[i].startsWith(cookieName)) {
       return cookies[i].substring(cookieName.length)
     }
   }
   return null
+}
+
+export const RenderLatestAds = async () => {
+  const latestWrapperElem = document.getElementById('latest-wrapper')
+  latestWrapperElem.innerHTML = ''
+  const result = await fetch(`${baseURL}/ads`)
+  const response = await result.json()
+
+  if (result.status !== 200) {
+    latestWrapperElem.insertAdjacentHTML('afterbegin', `
+      <div class="alert alert-danger w-100">
+        an error occurred and we could not get latest ads informations :(
+      </div>
+    `)
+    return
+  }
+
+  const ads = response.ads
+
+  if (ads.length === 0) {
+    latestWrapperElem.insertAdjacentHTML('afterbegin', `
+      <div class="alert alert-warning w-100">
+        there is no ads to show :(
+      </div>
+    `)
+    return
+  }
+
+  ads.map(ad => {
+    latestWrapperElem.insertAdjacentHTML('beforeend', `
+      <div class="swiper-slide">
+        <div class="box">
+          <div class="box__container">
+            <div class="box__header">
+              <div class="box__header-img">
+                <img class="d-block w-100" src="${ad.cover}" alt="img">
+              </div>
+              <div class="box__header-detailes">
+                <a href="./item-detailes.html?item=${ad._id}" class="box__link">
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-hashtag"></i>
+                    Property Area:
+                    <span class="box__header-subtext">
+                      ${ad.area} m<sup>2</sup>
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-door-closed"></i>
+                    Rooms:
+                    <span class="box__header-subtext">
+                      ${ad.rooms ? ad.rooms : 'no rooms'}
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-location-dot"></i>
+                    Location:
+                    <span class="box__header-subtext">
+                      ${ad.location}
+                    </span>
+                  </p>
+                  <ul class="box__header-list">
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-layer-group"></i>
+                      ${ad.propType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-ad"></i>
+                      ${ad.adType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-regular fa-eye"></i>
+                      ${ad.views.toLocaleString()}
+                    </li>
+                  </ul>
+                </a>
+              </div>
+            </div>
+            <div class="box__body">
+              <h4 class="box__body-title">
+                <a href="./item-detailes.html?item=${ad._id}" class="box__link">
+                  ${ad.title}
+                </a>
+              </h4>
+              <p class="box__body-text">
+                ${TitleGenerator(ad.adType)[0]}
+                <span class="box__body-subtext">
+                ${ad.primaryPrice === 0 ? 'negotiable' : ad.primaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+              <p class="box__body-text">
+                ${TitleGenerator(ad.adType)[1]}
+                <span class="box__body-subtext">
+                ${ad.secondaryPrice === 0 ? 'negotiable' : ad.secondaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+            </div>
+            <div class="box__footer">
+              <a href="./item-detailes.html?item=${ad._id}" class="box__link d-block w-100 text-center btn-style">
+                Detailes
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `)
+  })
+
+  RunSwiper('.latestSwiper')
+}
+
+export const RenderMostViewedAds = async () => {
+  const topViewedWrapper = document.getElementById('most-viewed-wrapper')
+  topViewedWrapper.innerHTML = ''
+  const result = await fetch(`${baseURL}/ads?sort=most-viewed`)
+  const response = await result.json()
+
+  if (result.status !== 200) {
+    topViewedWrapper.insertAdjacentHTML('afterbegin', `
+      <div class="alert alert-danger w-100">
+        an error occurred and we could not get latest ads informations :(
+      </div>
+    `)
+    return
+  }
+
+  const ads = response.ads
+
+  if (ads.length === 0) {
+    topViewedWrapper.insertAdjacentHTML('afterbegin', `
+      <div class="alert alert-warning w-100">
+        there is no ads to show :(
+      </div>
+    `)
+    return
+  }
+
+  ads.map(ad => {
+    topViewedWrapper.insertAdjacentHTML('beforeend', `
+      <div class="swiper-slide">
+        <div class="box">
+          <div class="box__container">
+            <div class="box__header">
+              <div class="box__header-img">
+                <img class="d-block w-100" src="${ad.cover}" alt="img">
+              </div>
+              <div class="box__header-detailes">
+                <a href="./item-detailes.html?item=${ad._id}" class="box__link">
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-hashtag"></i>
+                    Property Area:
+                    <span class="box__header-subtext">
+                      ${ad.area} m<sup>2</sup>
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-door-closed"></i>
+                    Rooms:
+                    <span class="box__header-subtext">
+                      ${ad.rooms ? ad.rooms : 'no rooms'}
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-location-dot"></i>
+                    Location:
+                    <span class="box__header-subtext">
+                      ${ad.location}
+                    </span>
+                  </p>
+                  <ul class="box__header-list">
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-layer-group"></i>
+                      ${ad.propType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-ad"></i>
+                      ${ad.adType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-regular fa-eye"></i>
+                      ${ad.views.toLocaleString()}
+                    </li>
+                  </ul>
+                </a>
+              </div>
+            </div>
+            <div class="box__body">
+              <h4 class="box__body-title">
+                <a href="./item-detailes.html?item=${ad._id}" class="box__link">
+                  ${ad.title}
+                </a>
+              </h4>
+              <p class="box__body-text">
+                ${TitleGenerator(ad.adType)[0]}
+                <span class="box__body-subtext">
+                ${ad.primaryPrice === 0 ? 'negotiable' : ad.primaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+              <p class="box__body-text">
+                ${TitleGenerator(ad.adType)[1]}
+                <span class="box__body-subtext">
+                ${ad.secondaryPrice === 0 ? 'negotiable' : ad.secondaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+            </div>
+            <div class="box__footer">
+              <a href="./item-detailes.html?item=${ad._id}" class="box__link d-block w-100 text-center btn-style">
+                Detailes
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `)
+  })
+
+  RunSwiper('.topViewedSwiper')
+
+}
+
+const TitleGenerator = (adType) => {
+  if (adType === 'mortgage-and-rent') {
+    return ['Mortgage cost:', 'Rent cost:']
+  }
+
+  return ['Total price:', 'Price per sq.meter:']
+}
+
+const RunSwiper = (elem) => {
+  new Swiper(elem, {
+
+    speed: 400,
+    spaceBetween: 20,
+    loop: true,
+
+    breakpoints: {
+      576: {
+        slidesPerView: 1
+      },
+      768: {
+        slidesPerView: 2
+      },
+      992: {
+        slidesPerView: 3
+      }
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      dynamicBullets: true,
+    },
+    grabCursor: true,
+    autoplay: {
+      delay: 5000
+    }
+  })
 }
