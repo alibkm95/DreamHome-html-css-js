@@ -1695,3 +1695,301 @@ const RunSwiper = (elem) => {
     }
   })
 }
+
+export const GetAdDetailes = async () => {
+
+  const adId = GetUrlParams('item')
+
+  if (!adId) {
+    RedirectToHome()
+    return
+  }
+
+  const result = await fetch(`${baseURL}/ads/${adId}`)
+  const response = await result.json()
+
+  if (result.status === 404) {
+    const parentElem = document.querySelector('.main')
+    RenderNotFound(parentElem)
+    return
+  }
+
+  const ad = response.ad
+
+  const detailesWraperElem = document.getElementById('detailes-wrapper')
+  detailesWraperElem.innerHTML = ''
+  detailesWraperElem.insertAdjacentHTML('beforeend', `
+    <div class="detailes__header">
+      <div class="container">
+        <h5 class="detailes__header-text fs-3 pb-2 mb-4 border-bottom">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+          ${ad.title}
+        </h5>
+        <div class="detailes__header-wrapper row gy-3 align-items-center">
+          <div class="detailes__header-img col col-12 col-md-7">
+            <img class="d-block w-100 rounded" src="${ad.cover}" alt="item">
+            <div class="detailes__header-view rounded">
+              <span>
+                <i class="fa-regular fa-eye"></i>
+                ${ad.views.toLocaleString()}
+              </span>
+            </div>
+          </div>
+          <div class="detailes__header-content col col-12 col-md-5">
+            <span class="detailes__header-content-text">
+              <i class="fa-solid fa-hashtag"></i>
+              Area: ${ad.area} m<sup>2</sup>
+            </span>
+            <span class="detailes__header-content-text">
+              <i class="fa-solid fa-layer-group"></i>
+              ${ad.propType} |
+              <i class="fa-solid fa-ad"></i>
+              ${ad.adType}
+            </span>
+            <span class="detailes__header-content-text">
+              ${TitleGenerator(ad.adType)[0]} ${ad.primaryPrice.toLocaleString()}
+              <i class="fa-solid fa-dollar"></i>
+            </span>
+            <span class="detailes__header-content-text">
+              ${TitleGenerator(ad.adType)[1]} ${ad.secondaryPrice.toLocaleString()}
+              <i class="fa-solid fa-dollar"></i>
+            </span>
+            <button class="detailes__header-content-btn mark-btn" id="save-ad-btn"
+              title="save current ad and you can access to this ad directly from your panel." onclick="SaveAdHandler()">
+              <i class="fa-solid fa-bookmark"></i>
+              Save ad
+            </button>
+            <button class="detailes__header-content-btn mark-btn" id="panorama-btn"
+              title="open the current property in 360° environment." onclick="RenderPanorama()">
+              <i class="fa-solid fa-vr-cardboard"></i>
+              360° environment
+            </button>
+            <button class="detailes__header-content-btn mark-btn" id="request-btn"
+              title="request for an in-person visit." onclick="RequestAdHandler()">
+              <i class="fa-solid fa-people-group"></i>
+              Request
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="detailes__body mt-3">
+      <div class="container">
+        <div class="detailes__body-wrapper row gy-3">
+          <div class="detailes__body-info col col-12 col-md-5 order-md-2">
+            <ul class="detailes__body-info-list">
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-building"></i>
+                <span class="detailes__body-info-text">
+                  floor: ${FloorTextGenerator(ad.totalFloors, ad.floorLevel)}
+                </span>
+              </li>
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-door-closed"></i>
+                <span class="detailes__body-info-text">
+                  room: ${!ad.rooms ? 'no rooms' : ad.rooms}
+                </span>
+              </li>
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-elevator"></i>
+                <span class="detailes__body-info-text">
+                  elevator: ${ad.elavator ? 'yes' : 'no'}
+                </span>
+              </li>
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-square-parking"></i>
+                <span class="detailes__body-info-text">
+                  parking: ${ad.parking ? 'yes' : 'no'}
+                </span>
+              </li>
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-warehouse"></i>
+                <span class="detailes__body-info-text">
+                  warehause: ${ad.warehous ? 'yes' : 'no'}
+                </span>
+              </li>
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-calendar"></i>
+                <span class="detailes__body-info-text">
+                  year of construction: ${!ad.yearOfCunstruction ? 'unknown' : ad.yearOfCunstruction}
+                </span>
+              </li>
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span class="detailes__body-info-text">
+                  location: ${ad.location}
+                </span>
+              </li>
+              <li class="detailes__body-info-list-item">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="detailes__body-info-text">
+                  district: ${!ad.district ? 'unknown' : ad.district}
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="detailes__body-desc col col-12 col-md-7">
+            <p class="detailes__body-desc-title pb-2 border-bottom fs-5">
+              Description:
+            </p>
+            <p class="detailes__body-desc-text p-2">
+              ${ad.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `)
+
+  await RenderSimilarAds(ad.adType, ad.propType)
+}
+
+export const RenderSimilarAds = async (adType, propType) => {
+  const similarSectionElem = document.querySelector('.similar')
+  const similarWrapper = document.getElementById('similar-wrapper')
+
+  similarWrapper.innerHTML = ''
+  const result = await fetch(`${baseURL}/ads?propType=${propType}&adType=${adType}`)
+  const response = await result.json()
+
+  if (result.status !== 200) {
+    similarWrapper.insertAdjacentHTML('afterbegin', `
+      <div class="alert alert-danger w-100">
+        an error occurred and we could not get similar ads informations :(
+      </div>
+    `)
+    return
+  }
+
+  const ads = response.ads
+
+  if (ads.length === 0) {
+    similarWrapper.insertAdjacentHTML('afterbegin', `
+      <div class="alert alert-warning w-100">
+        there is no ads to show :(
+      </div>
+    `)
+    return
+  }
+
+  ads.map(ad => {
+    similarWrapper.insertAdjacentHTML('beforeend', `
+      <div class="swiper-slide">
+        <div class="box">
+          <div class="box__container">
+            <div class="box__header">
+              <div class="box__header-img">
+                <img class="d-block w-100" src="${ad.cover}" alt="img">
+              </div>
+              <div class="box__header-detailes">
+                <a href="./item-detailes.html?item=${ad._id}" class="box__link">
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-hashtag"></i>
+                    Property Area:
+                    <span class="box__header-subtext">
+                      ${ad.area} m<sup>2</sup>
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-door-closed"></i>
+                    Rooms:
+                    <span class="box__header-subtext">
+                      ${ad.rooms ? ad.rooms : 'no rooms'}
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-location-dot"></i>
+                    Location:
+                    <span class="box__header-subtext">
+                      ${ad.location}
+                    </span>
+                  </p>
+                  <ul class="box__header-list">
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-layer-group"></i>
+                      ${ad.propType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-ad"></i>
+                      ${ad.adType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-regular fa-eye"></i>
+                      ${ad.views.toLocaleString()}
+                    </li>
+                  </ul>
+                </a>
+              </div>
+            </div>
+            <div class="box__body">
+              <h4 class="box__body-title">
+                <a href="./item-detailes.html?item=${ad._id}" class="box__link">
+                  ${ad.title}
+                </a>
+              </h4>
+              <p class="box__body-text">
+                ${TitleGenerator(ad.adType)[0]}
+                <span class="box__body-subtext">
+                ${ad.primaryPrice === 0 ? 'negotiable' : ad.primaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+              <p class="box__body-text">
+                ${TitleGenerator(ad.adType)[1]}
+                <span class="box__body-subtext">
+                ${ad.secondaryPrice === 0 ? 'negotiable' : ad.secondaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+            </div>
+            <div class="box__footer">
+              <a href="./item-detailes.html?item=${ad._id}" class="box__link d-block w-100 text-center btn-style">
+                Detailes
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `)
+  })
+
+  similarSectionElem.classList.remove('hide')
+  RunSwiper('.similarSwiper')
+}
+
+export const RenderNotFound = (parentElem) => {
+  parentElem.innerHTML = ''
+  parentElem.insertAdjacentHTML('afterbegin', `
+    <div class="not-found">
+      <div class="container">
+        <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
+        <p class="not-found__text text-center fs-3">
+          Sorry. We could not find any results ...
+        </p>
+        <a href="./index.html" class="not-found__link btn-style">
+          Back to Home
+          <i class="fa-solid fa-home"></i>
+        </a>
+      </div>
+    </div>
+  `)
+}
+
+export const FloorTextGenerator = (total, current) => {
+  if (!total) {
+    return 'ground level'
+  }
+
+  return current === 0 ? `ground level of ${total} floors` : `${current} of ${total} floors`
+}
+
+export const SaveAdHandler = async () => {
+  console.log('save')
+}
+
+export const RenderPanorama = () => {
+  console.log('panorama')
+}
+
+export const RequestAdHandler = async () => {
+  console.log('request')
+}
