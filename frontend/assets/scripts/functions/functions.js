@@ -1760,12 +1760,10 @@ export const GetAdDetailes = async () => {
               ${ad.adType}
             </span>
             <span class="detailes__header-content-text">
-              ${TitleGenerator(ad.adType)[0]} ${ad.primaryPrice.toLocaleString()}
-              <i class="fa-solid fa-dollar"></i>
+              ${TitleGenerator(ad.adType)[0]} ${ad.primaryPrice === 0 ? 'negotiable' : ad.primaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
             </span>
             <span class="detailes__header-content-text">
-              ${TitleGenerator(ad.adType)[1]} ${ad.secondaryPrice.toLocaleString()}
-              <i class="fa-solid fa-dollar"></i>
+              ${TitleGenerator(ad.adType)[1]} ${ad.secondaryPrice === 0 ? 'negotiable' : ad.secondaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
             </span>
             <button class="detailes__header-content-btn mark-btn " id="save-ad-btn"
               title="save current ad and you can access to this ad directly from your panel." onclick="SaveAdHandler(event)">
