@@ -16,7 +16,7 @@ const toggleSave = async (req, res) => {
   if (alreadySaved) {
     await alreadySaved.remove()
 
-    res.status(StatusCodes.OK).json({ msg: 'ad removed from your saved list' })
+    res.status(StatusCodes.OK).json({ saved: false, msg: 'ad removed from your saved list' })
     return
   }
 
@@ -26,7 +26,7 @@ const toggleSave = async (req, res) => {
     throw new CustomError.BadRequestError('error! saving selected ad failed')
   }
 
-  res.status(StatusCodes.OK).json({ msg: 'ad saved successfully' })
+  res.status(StatusCodes.OK).json({ saved: true, msg: 'ad saved successfully' })
 }
 
 const getAllSaves = async (req, res) => {

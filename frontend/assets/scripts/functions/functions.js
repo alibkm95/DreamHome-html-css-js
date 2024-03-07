@@ -1697,7 +1697,7 @@ const RunSwiper = (elem) => {
 }
 
 export const GetAdDetailes = async () => {
-
+  ToggleGlobalLoader()
   const adId = GetUrlParams('item')
 
   if (!adId) {
@@ -1715,6 +1715,12 @@ export const GetAdDetailes = async () => {
   }
 
   const ad = response.ad
+  const savedList = await GetUserSavedList()
+  let isAlredySaved = false
+
+  if (savedList) {
+    isAlredySaved = savedList.some(saveItem => saveItem.ad._id === adId)
+  }
 
   const detailesWraperElem = document.getElementById('detailes-wrapper')
 
@@ -1759,8 +1765,17 @@ export const GetAdDetailes = async () => {
             </span>
             <button class="detailes__header-content-btn mark-btn " id="save-ad-btn"
               title="save current ad and you can access to this ad directly from your panel." onclick="SaveAdHandler(event)">
-              <i class="fa-solid fa-bookmark"></i>
-              Save ad
+              ${isAlredySaved ?
+      `
+                <i class="fa-solid fa-bookmark"></i>
+                saved
+                `
+      :
+      `
+                <i class="fa-regular fa-bookmark"></i>
+                bookmark ad
+                `
+    }
             </button>
             <button class="detailes__header-content-btn mark-btn" id="panorama-btn"
               title="open the current property in 360° environment." onclick="RenderPanorama()">
@@ -1845,6 +1860,7 @@ export const GetAdDetailes = async () => {
   `)
 
   await RenderSimilarAds(ad.adType, ad.propType)
+  ToggleGlobalLoader()
 }
 
 export const RenderSimilarAds = async (adType, propType) => {
@@ -1986,11 +2002,59 @@ export const FloorTextGenerator = (total, current) => {
 }
 
 export const SaveAdHandler = async (event) => {
-  // event.target.innerHTML += `
-  // <div class="spinner-border spinner-border-sm" role="status">
-  //   <span class="visually-hidden">Loading...</span>
-  // </div>
-  // `
+  event.target.innerHTML += `
+  <div class="spinner-border spinner-border-sm" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  `
+
+  let bodyObject = {
+    selectedAd: GetUrlParams('item')
+  }
+
+  const result = await fetch(`${baseURL}/save`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    if (response.saved) {
+      ToastBox('success', response.msg, 3000, null, null)
+      event.target.innerHTML = ''
+      event.target.insertAdjacentHTML('beforeend', `
+      <i class="fa-solid fa-bookmark"></i>
+      saved
+      `)
+    } else {
+      ToastBox('success', response.msg, 3000, null, null)
+      event.target.innerHTML = ''
+      event.target.insertAdjacentHTML('beforeend', `
+      <i class="fa-regular fa-bookmark"></i>
+      bookmark ad
+      `)
+    }
+  }
+
+  if (result.status === 401) {
+    MsgBox(
+      'error',
+      'in order to save an item, you need to login with your account',
+      'never mind!',
+      'go to login',
+      () => { window.location.href = './login.html' },
+      null)
+    event.target.innerHTML = ''
+    event.target.insertAdjacentHTML('beforeend', `
+    <i class="fa-regular fa-bookmark"></i>
+    bookmark ad
+    `)
+  }
 }
 
 export const RenderPanorama = () => {
@@ -2001,4 +2065,39 @@ export const RenderPanorama = () => {
 
 export const RequestAdHandler = async (event) => {
   // console.log(event.target)
+}
+
+export const GetUserSavedList = async () => {
+
+  const isLoggedIn = GetCookie('isLoggedIn')
+
+  if (!isLoggedIn) return false
+
+  const result = await fetch(`${baseURL}/save/u`, {
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    return response.userSaveList
+  }
+}
+
+export const MsgBox = (icon, text, cancelBtnText, confirmBtnText, submitHandler, rejectHandler) => {
+  Swal.fire({
+    text,
+    icon,
+    showCancelButton: cancelBtnText ? true : false,
+    confirmButtonColor: 'var(--bs-indigo)',
+    cancelButtonColor: "var(--orange)",
+    confirmButtonText: confirmBtnText,
+    cancelButtonText: cancelBtnText
+  }).then((result) => {
+    if (result.isConfirmed) {
+      submitHandler && submitHandler()
+    } else {
+      rejectHandler && rejectHandler()
+    }
+  })
 }
