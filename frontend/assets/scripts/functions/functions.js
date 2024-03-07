@@ -1717,6 +1717,9 @@ export const GetAdDetailes = async () => {
   const ad = response.ad
 
   const detailesWraperElem = document.getElementById('detailes-wrapper')
+
+  if (!detailesWraperElem) return ad.panorama
+
   detailesWraperElem.innerHTML = ''
   detailesWraperElem.insertAdjacentHTML('beforeend', `
     <div class="detailes__header">
@@ -1754,8 +1757,8 @@ export const GetAdDetailes = async () => {
               ${TitleGenerator(ad.adType)[1]} ${ad.secondaryPrice.toLocaleString()}
               <i class="fa-solid fa-dollar"></i>
             </span>
-            <button class="detailes__header-content-btn mark-btn" id="save-ad-btn"
-              title="save current ad and you can access to this ad directly from your panel." onclick="SaveAdHandler()">
+            <button class="detailes__header-content-btn mark-btn " id="save-ad-btn"
+              title="save current ad and you can access to this ad directly from your panel." onclick="SaveAdHandler(event)">
               <i class="fa-solid fa-bookmark"></i>
               Save ad
             </button>
@@ -1765,7 +1768,7 @@ export const GetAdDetailes = async () => {
               360° environment
             </button>
             <button class="detailes__header-content-btn mark-btn" id="request-btn"
-              title="request for an in-person visit." onclick="RequestAdHandler()">
+              title="request for an in-person visit." onclick="RequestAdHandler(event)">
               <i class="fa-solid fa-people-group"></i>
               Request
             </button>
@@ -1982,14 +1985,20 @@ export const FloorTextGenerator = (total, current) => {
   return current === 0 ? `ground level of ${total} floors` : `${current} of ${total} floors`
 }
 
-export const SaveAdHandler = async () => {
-  console.log('save')
+export const SaveAdHandler = async (event) => {
+  // event.target.innerHTML += `
+  // <div class="spinner-border spinner-border-sm" role="status">
+  //   <span class="visually-hidden">Loading...</span>
+  // </div>
+  // `
 }
 
 export const RenderPanorama = () => {
-  console.log('panorama')
+  const adId = GetUrlParams('item')
+
+  window.open(`./panorama.html?item=${adId}`)
 }
 
-export const RequestAdHandler = async () => {
-  console.log('request')
+export const RequestAdHandler = async (event) => {
+  // console.log(event.target)
 }
