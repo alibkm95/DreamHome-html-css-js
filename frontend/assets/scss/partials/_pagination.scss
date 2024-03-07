@@ -57,7 +57,7 @@
     font-size: f.rem(12);
     color: var(--bs-white);
 
-    @include m.media(md){
+    @include m.media(lg){
       font-size: f.rem(16);
     }
 
@@ -81,7 +81,7 @@
       font-size: f.rem(12);
       color: var(--bs-white);
 
-      @include m.media(md){
+      @include m.media(lg){
         font-size: f.rem(16);
       }
     }
