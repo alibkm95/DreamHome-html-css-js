@@ -44,9 +44,11 @@ window.addEventListener('load', async () => {
   resultParentElem.classList.remove('hide')
   RenderItemBox(resultWrapper, ads)
 
-  if (totalPages > 1) {
-    paginationParent.classList.remove('hide')
+  if (totalPages <= 1) {
+    return
   }
+  
+  paginationParent.classList.remove('hide')
 
   nextBtn.addEventListener('click', () => NextPageHandler(page ? page : 1, totalPages))
   prevBtn.addEventListener('click', () => PrevPageHandler(page ? page : 1))
