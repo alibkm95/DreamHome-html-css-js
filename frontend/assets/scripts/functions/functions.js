@@ -2064,7 +2064,55 @@ export const RenderPanorama = () => {
 }
 
 export const RequestAdHandler = async (event) => {
-  // console.log(event.target)
+  event.target.innerHTML += `
+  <div class="spinner-border spinner-border-sm" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  `
+
+  let bodyObject = {
+    selectedAd: GetUrlParams('item')
+  }
+
+  const result = await fetch(`${baseURL}/request`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 201) {
+    ToastBox('success', 'The request was successfully registered. Please wait for a call from our experts in the next few days', 3000, null, null)
+    event.target.innerHTML = ''
+    event.target.insertAdjacentHTML('beforeend', `
+      <i class="fa-solid fa-people-group"></i>
+      Request
+    `)
+  } else if(result.status === 401) {
+    MsgBox(
+      'error',
+      'in order to submit a request, you need to login with your account',
+      'never mind!',
+      'go to login',
+      () => { window.location.href = './login.html' },
+      null)
+    event.target.innerHTML = ''
+    event.target.insertAdjacentHTML('beforeend', `
+      <i class="fa-solid fa-people-group"></i>
+      Request
+    `)
+  } else {
+    ToastBox('error', response.msg, 3000, null, null)
+    event.target.innerHTML = ''
+    event.target.insertAdjacentHTML('beforeend', `
+      <i class="fa-solid fa-people-group"></i>
+      Request
+    `)
+  }
 }
 
 export const GetUserSavedList = async () => {
