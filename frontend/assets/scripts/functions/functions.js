@@ -2092,7 +2092,7 @@ export const RequestAdHandler = async (event) => {
       <i class="fa-solid fa-people-group"></i>
       Request
     `)
-  } else if(result.status === 401) {
+  } else if (result.status === 401) {
     MsgBox(
       'error',
       'in order to submit a request, you need to login with your account',
@@ -2148,4 +2148,138 @@ export const MsgBox = (icon, text, cancelBtnText, confirmBtnText, submitHandler,
       rejectHandler && rejectHandler()
     }
   })
+}
+
+export const RenderItemBox = (parentElem, items) => {
+  items.map(item => {
+    parentElem.insertAdjacentHTML('beforeend', `
+      <div class="result__box col col-12 col-md-6 col-lg-4">
+        <div class="box">
+          <div class="box__container">
+            <div class="box__header">
+              <div class="box__header-img">
+                <img class="d-block w-100" src="${item.cover}" alt="img">
+              </div>
+              <div class="box__header-detailes">
+                <a href="./item-detailes.html?item=${item._id}" class="box__link">
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-hashtag"></i>
+                    Property Area:
+                    <span class="box__header-subtext">
+                      ${item.area} m<sup>2</sup>
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-door-closed"></i>
+                    Rooms:
+                    <span class="box__header-subtext">
+                      ${item.rooms ? item.rooms : 'no rooms'}
+                    </span>
+                  </p>
+                  <p class="box__header-text">
+                    <i class="fa-solid fa-location-dot"></i>
+                    Location:
+                    <span class="box__header-subtext">
+                      ${item.location}
+                    </span>
+                  </p>
+                  <ul class="box__header-list">
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-layer-group"></i>
+                      ${item.propType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-solid fa-ad"></i>
+                      ${item.adType}
+                    </li>
+                    <li class="box__header-list-item">
+                      <i class="fa-regular fa-eye"></i>
+                      ${item.views.toLocaleString()}
+                    </li>
+                  </ul>
+                </a>
+              </div>
+            </div>
+            <div class="box__body">
+              <h4 class="box__body-title">
+                <a href="./item-detailes.html?item=${item._id}" class="box__link">
+                  ${item.title}
+                </a>
+              </h4>
+              <p class="box__body-text">
+                ${TitleGenerator(item.adType)[0]}
+                <span class="box__body-subtext">
+                ${item.primaryPrice === 0 ? 'negotiable' : item.primaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+              <p class="box__body-text">
+                ${TitleGenerator(item.adType)[1]}
+                <span class="box__body-subtext">
+                ${item.secondaryPrice === 0 ? 'negotiable' : item.secondaryPrice.toLocaleString() + '<i class="fa-solid fa-dollar"></i>'}
+                </span>
+              </p>
+            </div>
+            <div class="box__footer">
+              <a href="./item-detailes.html?item=${item._id}" class="box__link d-block w-100 text-center btn-style">
+                Detailes
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `)
+  })
+}
+
+export const NextPageHandler = (currentPage, totalPages,) => {
+  currentPage++
+
+  if (currentPage > totalPages) return
+
+  let urlParamArr = [
+    { key: 'page', value: currentPage }
+  ]
+
+  AddParamToUrl(urlParamArr)
+}
+
+export const PrevPageHandler = (currentPage,) => {
+  currentPage--
+
+  if (currentPage < 1) return
+
+  let urlParamArr = [
+    { key: 'page', value: currentPage }
+  ]
+
+  AddParamToUrl(urlParamArr)
+}
+
+export const JumpToPageHandler = (value, totalPages) => {
+  let requestPage = 1
+
+  const regex = /^\d+$/g
+
+  let isNumber = regex.test(value)
+
+  if (!isNumber) {
+    return
+  }
+
+  requestPage = value
+
+  if (requestPage < 1) {
+    requestPage = 1
+  }
+
+  if (requestPage > totalPages) {
+    requestPage = totalPages
+  }
+
+  let urlParamArr = [
+    { key: 'page', value: requestPage }
+  ]
+
+  AddParamToUrl(urlParamArr)
 }

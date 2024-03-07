@@ -67,8 +67,7 @@ window.addEventListener('load', async () => {
     })
       .then(result => {
         if (result.isConfirmed) {
-          console.log(result.value)
-          //  implement search feature here
+          window.location.href = `./search.html?search=${result.value}`
         }
       })
   })
