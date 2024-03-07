@@ -1,3 +1,7 @@
+import {
+  IsNotEmpty
+} from './utils.js'
+
 const menuContentElem = document.querySelector('.menu__content')
 const subMenuElems = document.querySelectorAll('.submenu')
 
@@ -2282,4 +2286,62 @@ export const JumpToPageHandler = (value, totalPages) => {
   ]
 
   AddParamToUrl(urlParamArr)
+}
+
+export const CreateTicket = async (subjectElem, messageElem) => {
+
+  ToggleGlobalLoader()
+
+  let isSubjectProvided = IsNotEmpty(subjectElem)
+  if (!isSubjectProvided) {
+    ToastBox('error', 'subject field is required', 3000, null, null)
+    subjectElem.classList.add('is-invalid')
+    return
+  }
+
+  let isMessageProvided = IsNotEmpty(messageElem)
+  if (!isMessageProvided) {
+    ToastBox('error', 'message field is required', 3000, null, null)
+    messageElem.classList.add('is-invalid')
+    return
+  }
+
+  const bodyObject = {
+    subject: subjectElem.value.trim(),
+    message: messageElem.value.trim()
+  }
+
+  const result = await fetch(`${baseURL}/tickets`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  ToggleGlobalLoader()
+
+  if (result.status === 401) {
+    return MsgBox(
+      'error',
+      'in order to send a ticket you have to login with your account',
+      'never mind!',
+      'go to login',
+      () => {window.location.href = './login.html'},
+      null
+    )
+  }
+
+  if (result.status === 201) {
+    subjectElem.value = ''
+    messageElem.value = ''
+    ToastBox('success', response.msg, 3000, null, () => {
+      window.location.href = './user-panel.html?activeSection=tickets'
+    })
+  } else {
+    return ToastBox('error', response.msg, 3000, null, null)
+  }
 }
