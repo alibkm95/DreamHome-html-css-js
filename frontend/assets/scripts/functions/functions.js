@@ -2450,7 +2450,53 @@ export const RenderAccountInfo = (user) => {
 }
 
 export const RenderUsersSaveList = async () => {
-  console.log('saved by user')
+  const savedList = await GetUserSavedList()
+  const userPanelContainer = document.getElementById('user-panel-content')
+
+  userPanelContainer.innerHTML = ''
+  userPanelContainer.insertAdjacentHTML('afterbegin', `
+    <div class="panel__body-saved">
+      <div class="container">
+        <ul class="row gy-3" id="saved-wrapper"></ul>
+      </div>
+    </div>
+  `)
+
+  const savedWrapper = document.getElementById('saved-wrapper')
+
+  if (!savedList.length) {
+    return savedWrapper.insertAdjacentHTML('beforeend', `
+      <li class="panel__body-saved-err alert alert-danger fs-3 col col-12">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        No saved ads found
+      </li>
+    `)
+  }
+
+  savedList.map(saveItem => {
+    savedWrapper.insertAdjacentHTML('beforeend', `
+      <li class="panel__body-saved-item col col-12 col-lg-6 col-xxl-4">
+        <div class="sm-box w-100 d-flex align-items-center justify-content-between border rounded">
+          <div class="sm-box__left d-flex flex-column gap-2 py-3 ps-3">
+            <p class="sm-box__title">
+              ${saveItem.ad.title}
+            </p>
+            <span class="sm-box__text">
+              ${saveItem.ad.propType} | ${saveItem.ad.adType}
+            </span>
+            <span class="sm-box__subtext">
+              saved on: ${new Date(saveItem.createdAt).toLocaleDateString('')}
+            </span>
+          </div>
+          <div class="sm-box__right">
+            <a href="./item-detailes.html?item=${saveItem.ad._id}" class="sm-box__link">
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </li>
+    `)
+  })
 }
 
 export const RenderUserTickets = async () => {
