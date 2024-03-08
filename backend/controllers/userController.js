@@ -70,13 +70,23 @@ const showCurrentUser = async (req, res) => {
 
 const updateUserInfos = async (req, res) => {
 
-  const { email, name, phone } = req.body
+  const { email, name, phone, oldPassword, newPassword } = req.body
 
   if (!email || !phone || !name) {
     throw new CustomError.BadRequestError('required parameters must be provided')
   }
 
   const user = await User.findOne({ _id: req.user.userId })
+
+  if (oldPassword && newPassword) {
+    const isPasswordCorrect = await user.comparePassword(oldPassword)
+
+    if (!isPasswordCorrect) {
+      throw new CustomError.UnauthenticatedError('old password is not correct')
+    }
+
+    user.password = newPassword
+  }
 
   user.email = email
   user.phone = phone
@@ -98,29 +108,6 @@ const updateUserInfos = async (req, res) => {
   attachCookiesToResponse({ res, user: tokenUser, refreshToken })
 
   res.status(StatusCodes.OK).json({ user: tokenUser })
-}
-
-const updateUserPassword = async (req, res) => {
-
-  const { oldPassword, newPassword } = req.body
-
-  if (!oldPassword || !newPassword) {
-    throw new CustomError.BadRequestError('required parapeters must be provided')
-  }
-
-  const user = await User.findOne({ _id: req.user.userId })
-
-  const isPasswordCorrect = await user.comparePassword(oldPassword)
-
-  if (!isPasswordCorrect) {
-    throw new CustomError.UnauthenticatedError('old password is not correct')
-  }
-
-  user.password = newPassword
-
-  await user.save()
-
-  res.status(StatusCodes.OK).json({ msg: 'password updated successfully' })
 }
 
 const updateUserRole = async (req, res) => {
@@ -249,7 +236,6 @@ module.exports = {
   getSingleUser,
   showCurrentUser,
   updateUserInfos,
-  updateUserPassword,
   updateUserRole,
   deleteUser,
   uploadUserProfile,

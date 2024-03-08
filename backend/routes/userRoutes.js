@@ -11,7 +11,6 @@ const {
   getSingleUser,
   showCurrentUser,
   updateUserInfos,
-  updateUserPassword,
   updateUserRole,
   deleteUser,
   uploadUserProfile,
@@ -33,10 +32,6 @@ router
 router
   .route('/profile')
   .patch(authenticateUser, uploadUserProfile)
-
-router
-  .route('/updateUserPassword')
-  .patch(authenticateUser, updateUserPassword)
 
 router
   .route('/updateUserRole/:id')

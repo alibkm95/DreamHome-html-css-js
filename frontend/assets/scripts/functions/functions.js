@@ -1,5 +1,9 @@
 import {
-  IsNotEmpty
+  IsNotEmpty,
+  IsPasswordSame,
+  IsValidEmail,
+  IsValidPassword,
+  IsValidPhone
 } from './utils.js'
 
 const menuContentElem = document.querySelector('.menu__content')
@@ -2368,8 +2372,81 @@ export const RedirectToCMS = () => {
   console.log('redirecting to ...')
 }
 
-export const RenderAccountInfo = () => {
-  console.log('account info')
+export const RenderAccountInfo = (user) => {
+  const userPanelContainer = document.getElementById('user-panel-content')
+
+  userPanelContainer.innerHTML = ''
+  userPanelContainer.insertAdjacentHTML('beforeend', `
+    <div class="panel__body-acc">
+      <form class="panel__form">
+        <div class="panel__form-input form-floating">
+          <input type="email" class="form-control " id="email-input" placeholder="@ email ..." value="${user.email}">
+          <label for="email-input">
+            <i class="fa-solid fa-at"></i>
+            your email
+          </label>
+        </div>
+        <div class="panel__form-input form-floating">
+          <input type="text" class="form-control " id="name-input" placeholder="name ..." value="${user.name}">
+          <label for="name-input">
+            <i class="fa-solid fa-user"></i>
+            your full name
+          </label>
+        </div>
+        <div class="panel__form-input form-floating">
+          <input type="text" class="form-control " id="phone-input" placeholder="phone ..." value="${user.phone}">
+          <label for="phone-input">
+            <i class="fa-solid fa-mobile"></i>
+            your phone number
+          </label>
+        </div>
+        <div class="panel__form-divider">
+          <span>
+            Manage password
+          </span>
+          <div class="line"></div>
+        </div>
+        <div class="panel__form-text alert alert-warning">
+          <i class="fa-solid fa-circle"></i>
+          To update the password, you must fill all three fields below. Otherwise, the password update will be ignored.
+        </div>
+        <div class="panel__form-input form-floating">
+          <input type="password" class="form-control " id="old-pass-input" placeholder="your old password ...">
+          <label for="old-pass-input">
+            <i class="fa-solid fa-unlock"></i>
+            your old password
+          </label>
+        </div>
+        <div class="panel__form-input form-floating">
+          <input type="password" class="form-control " id="new-pass-input" placeholder="your new password ...">
+          <label for="new-pass-input">
+            <i class="fa-solid fa-lock"></i>
+            your new password
+          </label>
+        </div>
+        <div class="panel__form-input form-floating">
+          <input type="password" class="form-control " id="repeat-new-pass-input" placeholder="repeat your new password ...">
+          <label for="repeat-new-pass-input">
+            <i class="fa-solid fa-lock"></i>
+            repeat your new password
+          </label>
+        </div>
+        <button type="submit" class="panel__form-submit btn-style">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          update infos
+        </button>
+      </form>
+    </div>
+  `)
+
+  const panelForm = document.querySelector('.panel__form')
+
+  panelForm.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    ToggleGlobalLoader()
+    await UpdateUserInfos()
+    ToggleGlobalLoader()
+  })
 }
 
 export const RenderUsersSaveList = async () => {
@@ -2382,4 +2459,140 @@ export const RenderUserTickets = async () => {
 
 export const RenderUserRequests = async () => {
   console.log('requests')
+}
+
+export const UpdateUserInfos = async () => {
+  const emailInput = document.getElementById('email-input')
+  const nameInput = document.getElementById('name-input')
+  const phoneInput = document.getElementById('phone-input')
+  const oldPasswordInput = document.getElementById('old-pass-input')
+  const passwordInput = document.getElementById('new-pass-input')
+  const repeatPasswordInput = document.getElementById('repeat-new-pass-input')
+
+  const inputGroup = [
+    emailInput,
+    nameInput,
+    phoneInput,
+    oldPasswordInput,
+    passwordInput,
+    repeatPasswordInput
+  ]
+
+  inputGroup.map(input => {
+    input.addEventListener('focus', event => {
+      event.target.classList.remove('is-invalid')
+    })
+  })
+
+  let isPasswordUpdates =
+    IsNotEmpty(oldPasswordInput) &&
+    IsNotEmpty(passwordInput) &&
+    IsNotEmpty(repeatPasswordInput)
+
+  let isInputsOK = ValidateUpdateInputs(emailInput, nameInput, phoneInput, passwordInput, repeatPasswordInput, isPasswordUpdates)
+
+  if (!isInputsOK) return
+
+  const userNewInfos = {
+    email: emailInput.value.trim(),
+    name: nameInput.value.trim(),
+    phone: phoneInput.value.trim(),
+    oldPassword: isPasswordUpdates ? oldPasswordInput.value.trim() : null,
+    newPassword: isPasswordUpdates ? passwordInput.value.trim() : null
+  }
+
+  const updateUser = await fetch(`${baseURL}/users/updateUser`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userNewInfos),
+    credentials: 'include'
+  })
+
+  const response = await updateUser.json()
+
+  if (updateUser.status === 200) {
+    const userInfoParent = document.querySelector('.panel__user-info-list')
+
+    userInfoParent.innerHTML = ''
+    userInfoParent.insertAdjacentHTML('afterbegin', `
+    <li class="panel__user-info-list-item">
+      ${emailInput.value.trim()}
+    </li>
+    <li class="panel__user-info-list-item">
+    ${nameInput.value.trim()}
+    </li>
+    <li class="panel__user-info-list-item">
+      updated: just now!
+    </li>
+  `)
+
+    oldPasswordInput.value = ''
+    passwordInput.value = ''
+    repeatPasswordInput.value = ''
+
+    ToastBox('success', 'update information success!', 3000, null, null)
+  } else {
+    ToastBox('error', response.msg, 3000, null, null)
+  }
+}
+
+export const ValidateUpdateInputs = (emailInput, nameInput, phoneInput, passwordInput, repeatPasswordInput, isPasswordUpdates) => {
+  let isEmailProvided = IsNotEmpty(emailInput)
+  if (!isEmailProvided) {
+    ToastBox('error', 'email is required', 3000, null, null)
+    emailInput.classList.add('is-invalid')
+    return false
+  }
+
+  let isValidEmail = IsValidEmail(emailInput.value)
+  if (!isValidEmail) {
+    ToastBox('error', 'provided email is not valid', 3000, null, null)
+    emailInput.classList.add('is-invalid')
+    return false
+  }
+
+  let isNameProvided = IsNotEmpty(nameInput)
+  if (!isNameProvided) {
+    ToastBox('error', 'full name is required', 3000, null, null)
+    nameInput.classList.add('is-invalid')
+    return false
+  }
+
+  let isPhoneProvided = IsNotEmpty(phoneInput)
+  if (!isPhoneProvided) {
+    ToastBox('error', 'phone number is required', 3000, null, null)
+    phoneInput.classList.add('is-invalid')
+    return false
+  }
+
+  let isValidPhone = IsValidPhone(phoneInput.value)
+  if (!isValidPhone) {
+    ToastBox('error', 'phone number must be in international format: "+1-212-456-7890"', 3000, null, null)
+    phoneInput.classList.add('is-invalid')
+    return false
+  }
+
+  if (isPasswordUpdates) {
+
+    let isValidPassword = IsValidPassword(passwordInput.value)
+    if (isValidPassword) {
+      let isPasswordsSame = IsPasswordSame(passwordInput.value, repeatPasswordInput.value)
+
+      if (!isPasswordsSame) {
+        ToastBox('error', 'password is not match', 3000, null, null)
+        passwordInput.classList.add('is-invalid')
+        repeatPasswordInput.classList.add('is-invalid')
+        return false
+      }
+    } else {
+      ToastBox('error', 'password must be between 6 and 12 characters and most contain numbers and at least 1 upper case letter. simbols not allowed.', 3000, null, null)
+      passwordInput.classList.add('is-invalid')
+      return false
+    }
+
+  }
+
+  return true
 }

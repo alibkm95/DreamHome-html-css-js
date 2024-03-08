@@ -7,6 +7,7 @@ import {
   RenderUsersSaveList,
   RenderUserTickets,
   RenderUserRequests,
+  ToggleGlobalLoader
 } from './functions/functions.js'
 
 import {
@@ -15,6 +16,7 @@ import {
 } from './functions/utils.js'
 
 window.addEventListener('load', async () => {
+  ToggleGlobalLoader()
 
   const activeSection = GetUrlParams('activeSection') || "account-info"
   const userID = GetUrlParams('user')
@@ -91,7 +93,7 @@ window.addEventListener('load', async () => {
 
   switch (activeSection) {
     case "account-info":
-      await RenderAccountInfo()
+      await RenderAccountInfo(user)
       break;
     case "saved":
       await RenderUsersSaveList()
@@ -103,6 +105,9 @@ window.addEventListener('load', async () => {
       await RenderUserRequests()
       break;
     default:
+      await RenderAccountInfo(user)
       break;
   }
+
+  ToggleGlobalLoader()
 })
