@@ -3,7 +3,8 @@ import {
   CloseMenu,
   OpenSubMenu,
   CloseSubMenues,
-  ToggleNotif
+  ToggleNotif,
+  RedirectToHome
 } from '../functions/functions.js'
 
 import {
@@ -75,6 +76,13 @@ window.addEventListener('load', async () => {
   const user = await GetMe()
 
   if (user) {
+    const isInLogin = document.querySelector('main[data-page="login"]')
+    const isInRegister = document.querySelector('main[data-page="register"]')
+
+    if (isInLogin || isInRegister) {
+      return RedirectToHome()
+    }
+
     let userNameFlag = user.name
     userNameFlag = userNameFlag.length > 10 ? userNameFlag.slice(0, 10).concat('...') : userNameFlag
     redirectToPanelElem.innerHTML = ''
@@ -86,6 +94,10 @@ window.addEventListener('load', async () => {
     redirectToPanelElem.classList.remove('cta')
     redirectToPanelElem.setAttribute('href', `./user-panel.html?user=${user.userId}`)
   } else {
+    const isInUserPanel = document.querySelector('main[data-page="user-panel"]')
+
+    if (isInUserPanel) return RedirectToHome()
+
     redirectToPanelElem.innerHTML = ''
     redirectToPanelElem.insertAdjacentHTML('afterbegin', `
     <div class="menu__icon-not">

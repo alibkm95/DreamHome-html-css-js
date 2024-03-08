@@ -38,6 +38,7 @@
       grid-area: profile;
       position: relative;
       max-width: f.rem(200);
+      min-width: f.rem(200);
       margin-inline: auto;
 
       &-img {

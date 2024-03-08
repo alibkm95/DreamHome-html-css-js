@@ -1424,12 +1424,13 @@ export const RenderVerificationSuccess = () => {
 
 export const SetIsLoggedinCookie = () => {
   const expires = new Date()
-  document.cookie = `isLoggedIn=true; expire=${expires.getTime() + (1000 * 60 * 60 * 24 * 30)}; path=/`
+  expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24 * 30))
+  document.cookie = `isLoggedIn=true; expires=${expires.toUTCString()}; path=/`
 }
 
 export const RemoveIsLoggedinCookie = () => {
-  const expires = new Date()
-  document.cookie = `isLoggedIn=false; expire=${expires.getTime() - (1000 * 60 * 60 * 24 * 365)}; path=/`
+  const expires = new Date(0)
+  document.cookie = `isLoggedIn=false; expires=${expires.toUTCString()}; path=/`
 }
 
 export const GetCookie = (cookieName) => {
@@ -2294,6 +2295,7 @@ export const CreateTicket = async (subjectElem, messageElem) => {
   if (!isSubjectProvided) {
     ToastBox('error', 'subject field is required', 3000, null, null)
     subjectElem.classList.add('is-invalid')
+    ToggleGlobalLoader()
     return
   }
 
@@ -2301,6 +2303,7 @@ export const CreateTicket = async (subjectElem, messageElem) => {
   if (!isMessageProvided) {
     ToastBox('error', 'message field is required', 3000, null, null)
     messageElem.classList.add('is-invalid')
+    ToggleGlobalLoader()
     return
   }
 
@@ -2328,7 +2331,7 @@ export const CreateTicket = async (subjectElem, messageElem) => {
       'in order to send a ticket you have to login with your account',
       'never mind!',
       'go to login',
-      () => {window.location.href = './login.html'},
+      () => { window.location.href = './login.html' },
       null
     )
   }
@@ -2336,10 +2339,47 @@ export const CreateTicket = async (subjectElem, messageElem) => {
   if (result.status === 201) {
     subjectElem.value = ''
     messageElem.value = ''
-    ToastBox('success', response.msg, 3000, null, () => {
-      window.location.href = './user-panel.html?activeSection=tickets'
-    })
+    ToastBox('success', response.msg, 3000, null, RedirectToHome)
   } else {
     return ToastBox('error', response.msg, 3000, null, null)
   }
+}
+
+export const UploadUserProfile = async (img) => {
+  const formdata = new FormData()
+  formdata.append('image', img)
+
+  const result = await fetch(`${baseURL}/users/profile`, {
+    method: "PATCH",
+    body: formdata,
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    return response.profile
+  } else {
+    return false
+  }
+}
+
+export const RedirectToCMS = () => {
+  console.log('redirecting to ...')
+}
+
+export const RenderAccountInfo = () => {
+  console.log('account info')
+}
+
+export const RenderUsersSaveList = async () => {
+  console.log('saved by user')
+}
+
+export const RenderUserTickets = async () => {
+  console.log('tickets')
+}
+
+export const RenderUserRequests = async () => {
+  console.log('requests')
 }

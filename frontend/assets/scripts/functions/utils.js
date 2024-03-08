@@ -30,6 +30,20 @@ export const GetMe = async () => {
   }
 }
 
+export const GetUserInfos = async (userId) => {
+  const result = await fetch(`${baseURL}/users/${userId}`, {
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    return response.user
+  } else {
+    return false
+  }
+}
+
 export const RegisterUser = async (inputGroup) => {
   let emailInput, nameInput, phoneInput, passwordInput, repeatPasswordInput
 

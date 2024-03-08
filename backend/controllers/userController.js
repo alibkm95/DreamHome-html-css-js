@@ -53,7 +53,7 @@ const getAllUsers = async (req, res) => {
 }
 
 const getSingleUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id }).select('-password')
+  const user = await User.findOne({ _id: req.params.id }).select('-password -passwordToken -passwordTokenExpirationDate -verificationToken')
 
   if (!user) {
     throw new CustomError.NotFoundError('there is no such a user')
@@ -176,7 +176,7 @@ const deleteUser = async (req, res) => {
 
 const uploadUserProfile = async (req, res) => {
 
-  const user = await User.findOne({ _id: req.user.userId }).select('-password')
+  const user = await User.findOne({ _id: req.user.userId }).select('-password -passwordToken -passwordTokenExpirationDate -verificationToken')
 
   if (!user) {
     throw new CustomError.NotFoundError('there is no such a user')
