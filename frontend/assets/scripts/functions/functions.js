@@ -2139,6 +2139,23 @@ export const GetUserSavedList = async () => {
   }
 }
 
+export const GetUserTickets = async () => {
+
+  const isLoggedIn = GetCookie('isLoggedIn')
+
+  if (!isLoggedIn) return false
+
+  const result = await fetch(`${baseURL}/tickets/showMyTickets`, {
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    return response.tickets
+  }
+}
+
 export const MsgBox = (icon, text, cancelBtnText, confirmBtnText, submitHandler, rejectHandler) => {
   Swal.fire({
     text,
@@ -2500,11 +2517,65 @@ export const RenderUsersSaveList = async () => {
 }
 
 export const RenderUserTickets = async () => {
-  console.log('tickets')
+  const ticketList = await GetUserTickets()
+
+  const userPanelContainer = document.getElementById('user-panel-content')
+
+  userPanelContainer.innerHTML = ''
+  userPanelContainer.insertAdjacentHTML('afterbegin', `
+    <div class="panel__body-tickets">
+      <div class="container">
+        <ul class="row gy-3" id="tickets-wrapper"></ul>
+      </div>
+    </div>
+  `)
+
+  const ticketsWrapper = document.getElementById('tickets-wrapper')
+
+  if (!ticketList.length) {
+    return ticketsWrapper.insertAdjacentHTML('beforeend', `
+      <li class="panel__body-tickets-err alert alert-danger fs-3 col col-12">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        No tickets found
+      </li>
+    `)
+  }
+
+  ticketList.map(ticket => {
+    ticketsWrapper.insertAdjacentHTML('beforeend', `
+      <li class="panel__body-tickets-item col col-12 col-lg-6 col-xxl-4">
+        <div class="sm-box w-100 d-flex align-items-center justify-content-between border rounded">
+          <div class="sm-box__left d-flex flex-column gap-2 py-3 ps-3">
+            <p class="sm-box__title">
+              ${ticket.subject}
+            </p>
+            <span class="sm-box__text">
+              status:
+              <span class="
+              ${ticket.ticketStatus === 'pending' ? 'text-warning' : ''}
+              ${ticket.ticketStatus === 'answered' ? 'text-success' : ''}
+              ${ticket.ticketStatus === 'closed' ? 'text-danger' : ''}
+              ">
+                ${ticket.ticketStatus}
+              </span>
+            </span>
+            <span class="sm-box__subtext">
+              created at: ${new Date(ticket.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+          <div class="sm-box__right">
+            <a href="./ticket.html?item=${ticket._id}" class="sm-box__link">
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </li>
+    `)
+  })
 }
 
 export const RenderUserRequests = async () => {
-  console.log('requests')
+
 }
 
 export const UpdateUserInfos = async () => {
