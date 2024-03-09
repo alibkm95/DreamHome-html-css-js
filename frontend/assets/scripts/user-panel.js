@@ -7,7 +7,8 @@ import {
   RenderUsersSaveList,
   RenderUserTickets,
   RenderUserRequests,
-  ToggleGlobalLoader
+  ToggleGlobalLoader,
+  RedirectToHome
 } from './functions/functions.js'
 
 import {
@@ -20,6 +21,8 @@ window.addEventListener('load', async () => {
 
   const activeSection = GetUrlParams('activeSection') || "account-info"
   const userID = GetUrlParams('user')
+
+  if(!userID) return RedirectToHome()
 
   const user = await GetUserInfos(userID)
 

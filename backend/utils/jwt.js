@@ -11,8 +11,6 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   const accessTokenJWT = createJWT({ payload: { user } });
   const refreshTokenJWT = createJWT({payload: {user, refreshToken}})
 
-  user._SAT = accessTokenJWT
-
   const longEXP = 1000 * 60 * 60 * 24 * 30;
   const shortEXP = 1000 * 60 * 60 * 24 * 1;
 

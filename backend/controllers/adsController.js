@@ -65,26 +65,25 @@ const getAllAds = async (req, res) => {
   }
 
   let result = Ads.find(queryObject)
-  result = result.sort('-createdAt')
 
-  if (sort) {
-    switch (sort) {
-      case 'newest':
-        result = result.sort('-createdAt')
-        break;
-      case 'most-viewed':
-        result = result.sort('-views')
-        break;
-      case 'a-z':
-        result = result.sort('-title')
-        break;
-      case 'z-a':
-        result = result.sort('title')
-        break;
-      default:
-        result = result.sort('-createdAt')
-        break;
-    }
+  if (sort && sort === 'newest') {
+    result = result.sort('-createdAt')
+  }
+
+  if (sort && sort === 'most-viewed') {
+    result = result.sort('-views')
+  }
+
+  if (sort && sort === 'a-z') {
+    result = result.sort('title')
+  }
+
+  if (sort && sort === 'z-a') {
+    result = result.sort('-title')
+  }
+
+  if (!sort) {
+    result = result.sort('-createdAt')
   }
 
   const page = Number(req.query.page) || 1

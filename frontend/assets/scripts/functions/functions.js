@@ -2836,6 +2836,7 @@ export const RenderConversation = (ticketInfo) => {
 }
 
 export const SendNewMessage = async (parent) => {
+  ToggleGlobalLoader()
 
   const ticketID = GetUrlParams('item')
 
@@ -2869,6 +2870,7 @@ export const SendNewMessage = async (parent) => {
 
   const response = await newMessage.json()
 
+  ToggleGlobalLoader()
 
   if (newMessage.status === 200) {
 
@@ -2891,12 +2893,12 @@ export const SendNewMessage = async (parent) => {
         ticketStatusElem.classList.add('')
         break;
     }
-  
+
     ticketStatusElem.innerText = `${response.ticket.ticketStatus}`
 
-    ToastBox('success', 'message sent successfully', 3000, null ,null)
+    ToastBox('success', 'message sent successfully', 3000, null, null)
   } else {
-    ToastBox('error', response.msg, 3000, null ,null)
+    ToastBox('error', response.msg, 3000, null, null)
     return
   }
 }

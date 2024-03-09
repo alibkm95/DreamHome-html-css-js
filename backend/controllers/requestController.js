@@ -34,7 +34,7 @@ const createRequest = async (req, res) => {
 
 const getAllRequests = async (req, res) => {
 
-  const { maxDate, minDate } = req.query
+  const { maxDate, minDate, user: userID } = req.query
 
   let queryObject = {}
 
@@ -43,6 +43,10 @@ const getAllRequests = async (req, res) => {
       $gt: new Date(minDate),
       $lt: new Date(maxDate),
     }
+  }
+
+  if (userID) {
+    queryObject.user = userID
   }
 
   let result = Request.find(queryObject)
