@@ -1,14 +1,9 @@
 const mongoose = require('mongoose')
 
 const ConversationsSchema = new mongoose.Schema({
-  senderName: {
-    type: String,
-    maxlength: 50,
-    required: true
-  },
-  senderRole: {
-    type: String,
-    maxlength: 50,
+  creator: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   ticket: {

@@ -21,7 +21,7 @@ router
   .post(authenticateUser, createRequest)
 
 router
-  .route('/u/:id')
+  .route('/u')
   .get(authenticateUser, getUserRequests)
 
 router

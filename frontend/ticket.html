@@ -188,22 +188,22 @@
                 <i class="fa-solid fa-circle"></i>
                 title:
               </span>
-              <p class="ticket__info-text title-text fs-5">
-                Ticket title
+              <p class="ticket__info-text title-text fs-5" id="ticket-title">
+                <!-- insert from js -->
               </p>
               <span class="ticket__info-title">
                 <i class="fa-solid fa-clock"></i>
                 created at:
               </span>
-              <p class="ticket__info-text">
-                2024/03/14 - 14:23:18
+              <p class="ticket__info-text" id="ticket-date">
+                <!-- insert from js -->
               </p>
               <span class="ticket__info-title">
                 <i class="fa-solid fa-mug-hot"></i>
                 status:
               </span>
-              <p class="ticket__info-text">
-                answered
+              <p class="ticket__info-text" id="ticket-status">
+                <!-- insert from js -->
               </p>
               <a href="./support.html" class="ticket__info-new btn-style mt-auto">
                 create new ticket
@@ -212,8 +212,9 @@
           </aside>
           <div class="ticket__body col col-12 col-md-7 col-lg-8 col-xl-9">
             <div class="ticket__body-container p-3">
-              <div class="ticket__body-messages">
-                <div class="msg msg-admin">
+              <div class="ticket__body-messages" id="message-wrapper">
+                <!-- insert from js -->
+                <!-- <div class="msg msg-admin">
                   <div class="msg__header">
                     <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
                     <div class="msg__header-info">
@@ -260,106 +261,10 @@
                       <i class="fa-solid fa-check"></i>
                     </div>
                   </div>
-                </div>
-                <div class="msg msg-admin">
-                  <div class="msg__header">
-                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
-                    <div class="msg__header-info">
-                      <span class="msg__header-info-user">
-                        User name
-                      </span>
-                      <span class="msg__header-info-date">
-                        2024/03/18 - 22:13:53
-                      </span>
-                      <span class="msg__header-info-role">
-                        user
-                      </span>
-                    </div>
-                  </div>
-                  <div class="msg__body">
-                    <div class="msg__body-text">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
-                    </div>
-                    <div class="msg__body-seen">
-                      <i class="fa-solid fa-check-double"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="msg msg-user">
-                  <div class="msg__header">
-                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
-                    <div class="msg__header-info">
-                      <span class="msg__header-info-user">
-                        User name
-                      </span>
-                      <span class="msg__header-info-date">
-                        2024/03/18 - 22:13:53
-                      </span>
-                      <span class="msg__header-info-role">
-                        admin
-                      </span>
-                    </div>
-                  </div>
-                  <div class="msg__body">
-                    <div class="msg__body-text">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
-                    </div>
-                    <div class="msg__body-seen">
-                      <i class="fa-solid fa-check"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="msg msg-admin">
-                  <div class="msg__header">
-                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
-                    <div class="msg__header-info">
-                      <span class="msg__header-info-user">
-                        User name
-                      </span>
-                      <span class="msg__header-info-date">
-                        2024/03/18 - 22:13:53
-                      </span>
-                      <span class="msg__header-info-role">
-                        user
-                      </span>
-                    </div>
-                  </div>
-                  <div class="msg__body">
-                    <div class="msg__body-text">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
-                    </div>
-                    <div class="msg__body-seen">
-                      <i class="fa-solid fa-check-double"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="msg msg-user">
-                  <div class="msg__header">
-                    <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
-                    <div class="msg__header-info">
-                      <span class="msg__header-info-user">
-                        User name
-                      </span>
-                      <span class="msg__header-info-date">
-                        2024/03/18 - 22:13:53
-                      </span>
-                      <span class="msg__header-info-role">
-                        admin
-                      </span>
-                    </div>
-                  </div>
-                  <div class="msg__body">
-                    <div class="msg__body-text">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
-                    </div>
-                    <div class="msg__body-seen">
-                      <i class="fa-solid fa-check"></i>
-                    </div>
-                  </div>
-                </div>
+                </div> -->
               </div>
               <div class="ticket__body-new-message">
-                <form class="ticket__form border rounded p-1">
+                <form class="ticket__form border rounded p-1" id="new-message-form">
                   <button type="submit" class="ticket__form-submit">
                     <i class="fa-solid fa-paper-plane"></i>
                   </button>
@@ -368,6 +273,14 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+    <section class="loader hide">
+      <div class="loader__wrapper">
+        <span class="fs-4">loading ...</span>
+        <div class="spinner-grow" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
     </section>

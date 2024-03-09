@@ -2156,6 +2156,22 @@ export const GetUserTickets = async () => {
   }
 }
 
+export const GetUserRequests = async () => {
+  const isLoggedIn = GetCookie('isLoggedIn')
+
+  if (!isLoggedIn) return false
+
+  const result = await fetch(`${baseURL}/request/u`, {
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    return response.requests
+  }
+}
+
 export const MsgBox = (icon, text, cancelBtnText, confirmBtnText, submitHandler, rejectHandler) => {
   Swal.fire({
     text,
@@ -2575,7 +2591,58 @@ export const RenderUserTickets = async () => {
 }
 
 export const RenderUserRequests = async () => {
+  const requests = await GetUserRequests()
 
+  const userPanelContainer = document.getElementById('user-panel-content')
+
+  userPanelContainer.innerHTML = ''
+  userPanelContainer.insertAdjacentHTML('afterbegin', `
+    <div class="panel__body-requests">
+      <div class="container">
+        <ul class="row gy-3" id="requests-wrapper"></ul>
+      </div>
+    </div>
+  `)
+
+  const requestWrapper = document.getElementById('requests-wrapper')
+
+  if (!requests.length) {
+    return requestWrapper.insertAdjacentHTML('beforeend', `
+    <li class="panel__body-requests-err alert alert-danger fs-3 col col-12">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      No requests found
+    </li>
+    `)
+  }
+
+  requests.map(req => {
+    requestWrapper.insertAdjacentHTML('beforeend', `
+      <li class="panel__body-requsets-item col col-12 col-lg-6 col-xxl-4">
+        <div class="sm-box w-100 d-flex align-items-center justify-content-between border rounded">
+          <div class="sm-box__left d-flex flex-column gap-2 py-3 ps-3">
+            <p class="sm-box__title">
+              ${req.ad.title}
+            </p>
+            <span class="sm-box__text">
+              status:
+              <span class="
+              ${req.status === 'pending' ? 'text-warning' : ''}
+              ${req.status === 'completed' ? 'text-success' : ''}
+              ${req.status === 'canceled' ? 'text-danger' : ''}
+              ">
+                ${req.status}
+                </span>
+            </span>
+            <span class="sm-box__subtext">
+              ${req.status === 'pending' ? ' Waiting for an appointment' : ''}
+              ${req.status === 'completed' ? ' Arranged. wait for our call' : ''}
+              ${req.status === 'canceled' ? ' canceled by admins' : ''}
+            </span>
+          </div>
+        </div>
+      </li>
+    `)
+  })
 }
 
 export const UpdateUserInfos = async () => {
@@ -2712,4 +2779,124 @@ export const ValidateUpdateInputs = (emailInput, nameInput, phoneInput, password
   }
 
   return true
+}
+
+export const GetTicketDetailes = async () => {
+  const ticketId = GetUrlParams('item')
+
+  if (!ticketId) return RedirectToHome()
+
+  const result = await fetch(`${baseURL}/tickets/${ticketId}`, {
+    credentials: 'include'
+  })
+
+  const response = await result.json()
+
+  if (result.status === 200) {
+    return response.ticket
+  } else {
+    return false
+  }
+}
+
+export const RenderConversation = (ticketInfo) => {
+  const messageWrapper = document.getElementById('message-wrapper')
+
+  messageWrapper.innerHTML = ''
+  ticketInfo.conversations.forEach(message => {
+    messageWrapper.insertAdjacentHTML('beforeend', `
+      <div class="msg ${message.creator.role === 'USER' ? 'msg-user' : 'msg-admin'}">
+        <div class="msg__header">
+          <img src="${message.creator.profile}" alt="user" class="msg__header-img">
+          <div class="msg__header-info">
+            <span class="msg__header-info-user">
+            ${message.creator.name}
+            </span>
+            <span class="msg__header-info-date">
+            ${new Date(message.createdAt).toLocaleDateString() + ' - ' + new Date(message.createdAt).toLocaleTimeString()}
+            </span>
+            <span class="msg__header-info-role">
+            ${message.creator.role.toLowerCase()}
+            </span>
+          </div>
+        </div>
+        <div class="msg__body">
+          <div class="msg__body-text">
+            ${message.message}
+          </div>
+          <div class="msg__body-seen">
+          ${message.creator.role === 'USER' ? `
+            <i class="fa-solid ${message.seenByAdmin ? 'fa-check-double' : 'fa-check'}"></i>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `)
+  })
+}
+
+export const SendNewMessage = async (parent) => {
+
+  const ticketID = GetUrlParams('item')
+
+  if (!ticketID) return RedirectToHome()
+
+  const messageInput = document.getElementById('message-input')
+
+  messageInput.addEventListener('focus', () => {
+    parent.classList.remove('border-danger')
+  })
+
+  const isMessageProvided = IsNotEmpty(messageInput)
+  if (!isMessageProvided) {
+    ToastBox('error', 'message content is required', 3000, null, null)
+    parent.classList.add('border-danger')
+    return
+  }
+
+  const bodyObject = {
+    newMessage: messageInput.value.trim()
+  }
+
+  const newMessage = await fetch(`${baseURL}/tickets/addNewMsg/${ticketID}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const response = await newMessage.json()
+
+
+  if (newMessage.status === 200) {
+
+    RenderConversation(response.ticket)
+    messageInput.value = ''
+
+    const ticketStatusElem = document.getElementById('ticket-status')
+
+    switch (response.ticket.ticketStatus) {
+      case 'pending':
+        ticketStatusElem.classList.add('text-warning')
+        break;
+      case 'answered':
+        ticketStatusElem.classList.add('text-success')
+        break;
+      case 'closed':
+        ticketStatusElem.classList.add('text-danger')
+        break;
+      default:
+        ticketStatusElem.classList.add('')
+        break;
+    }
+  
+    ticketStatusElem.innerText = `${response.ticket.ticketStatus}`
+
+    ToastBox('success', 'message sent successfully', 3000, null ,null)
+  } else {
+    ToastBox('error', response.msg, 3000, null ,null)
+    return
+  }
 }

@@ -24,8 +24,7 @@ const createTicket = async (req, res) => {
   }
 
   const newMessageObject = {
-    senderName: req.user.name,
-    senderRole: req.user.role,
+    creator: req.user.userId,
     ticket: ticket._id,
     message
   }
@@ -91,9 +90,16 @@ const getSingleTicket = async (req, res) => {
   const ticket = await Ticket.findOne({ _id: ticketId })
     .populate({
       path: 'user',
-      select: 'name role'
+      select: 'name role profile'
     })
-    .populate('conversations')
+    .populate({
+      path: 'conversations',
+      populate: {
+        path: 'creator',
+        model: 'User',
+        select: 'name role profile'
+      }
+    })
 
   if (!ticket) {
     throw new CustomError.NotFoundError('there is no such a ticket')
@@ -111,12 +117,11 @@ const addNewMessage = async (req, res) => {
   const { id: ticketId } = req.params
   const { newMessage } = req.body
 
-  const ticket = await Ticket.findOne({ _id: ticketId })
+  let ticket = await Ticket.findOne({ _id: ticketId })
     .populate({
       path: 'user',
       select: 'name role'
     })
-    .populate('conversations')
 
   if (!ticket) {
     throw new CustomError.NotFoundError('there is no such a ticket')
@@ -145,8 +150,7 @@ const addNewMessage = async (req, res) => {
   }
 
   const newMessageObject = {
-    senderName: req.user.name,
-    senderRole: req.user.role,
+    creator: req.user.userId,
     ticket: ticketId,
     message: newMessage
   }
@@ -166,6 +170,20 @@ const addNewMessage = async (req, res) => {
     ticket.ticketStatus = 'pending'
     await ticket.save()
   }
+
+  ticket = await Ticket.findOne({ _id: ticketId })
+    .populate({
+      path: 'user',
+      select: 'name role'
+    })
+    .populate({
+      path: 'conversations',
+      populate: {
+        path: 'creator',
+        model: 'User',
+        select: 'name role profile'
+      }
+    })
 
   res.status(StatusCodes.OK).json({ ticket })
 }
