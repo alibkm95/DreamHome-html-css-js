@@ -2850,6 +2850,7 @@ export const SendNewMessage = async (parent) => {
 
   const isMessageProvided = IsNotEmpty(messageInput)
   if (!isMessageProvided) {
+    ToggleGlobalLoader()
     ToastBox('error', 'message content is required', 3000, null, null)
     parent.classList.add('border-danger')
     return

@@ -84,7 +84,7 @@ window.addEventListener('load', async () => {
     }
 
     let userNameFlag = user.name
-    userNameFlag = userNameFlag.length > 10 ? userNameFlag.slice(0, 10).concat('...') : userNameFlag
+    userNameFlag = userNameFlag.length > 9 ? userNameFlag.slice(0, 8).concat('...') : userNameFlag
     redirectToPanelElem.innerHTML = ''
     redirectToPanelElem.insertAdjacentHTML('afterbegin', `
       <span class="menu__text">
