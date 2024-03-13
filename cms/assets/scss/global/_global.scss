@@ -1,0 +1,63 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --body-bg: #ffffff;
+  --elem-bg: #eeeeee;
+  --elem-bg2: #f7f7f7;
+  --txtp: #0c0c0c;
+  --txts: #acacac;
+  --blue: #5e72e4;
+  --blue-2: rgba(94, 114, 228, 0.2);
+  --purple: #6C00FF;
+  --purple-2: rgba(106, 0, 255, 0.2);
+  --red: #f53636;
+  --red-2: rgba(245, 54, 54, 0.2);
+  --navy: #2d374c;
+  --navy-2: rgba(45, 55, 76, 0.2);
+  --cyan: #11cdef;
+  --cyan-2: rgba(17, 206, 239, 0.2);
+  --green: #1aae6f;
+  --green-2: rgba(26, 174, 110, 0.2);
+  --orange: #ff3709;
+  --orange-2: rgba(255, 54, 9, 0.2);
+  --yellow: #ffd900;
+  --yellow-2: rgba(255, 217, 0, 0.2);
+  --coral: #FFC371;
+  --coral-2: rgba(255, 196, 113, 0.2);
+  --white: #ffffff;
+  --white-2: rgba(255, 255, 255, 0.2);
+  --black-20: rgba(0, 0, 0, 0.2);
+  --black-40: rgba(0, 0, 0, 0.4);
+  --black-60: rgba(0, 0, 0, 0.6);
+  --black-80: rgba(0, 0, 0, 0.8);
+  --black-100: #000000;
+  font-size: 16px;
+}
+
+::-webkit-scrollbar{
+  width: f.rem(10);
+}
+
+::-webkit-scrollbar-track{
+  background-color: var(--purple-2);
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: var(--purple);
+}
+
+body {
+  overflow-x: hidden;
+  font-family: "Comfortaa", sans-serif;
+  background-color: var(--body-bg) !important;
+  color: var(--txtp) !important;
+}

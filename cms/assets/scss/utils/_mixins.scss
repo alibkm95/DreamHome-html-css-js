@@ -1,0 +1,17 @@
+@use 'sass:map';
+@use 'functions' as f;
+
+
+$breakePoints:(
+    "sm": f.rem(576),
+    "md": f.rem(768),
+    "lg": f.rem(992),
+    "xl": f.rem(1200),
+    "xxl": f.rem(1400),
+);
+
+@mixin media($size){
+    @media screen and (min-width: map-get($breakePoints, $size)) {
+        @content;
+    }
+}

@@ -1,0 +1,143 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.header {
+  background-color: var(--elem-bg2);
+}
+
+.topbar {
+  width: 100%;
+  max-width: f.rem(1200);
+  display: grid;
+  grid-auto-columns: 1fr;
+  gap: f.rem(20);
+  grid-template-areas:
+    "B R"
+    "L L";
+
+  @include m.media(sm) {
+    grid-template-columns: f.rem(50) 2fr 1fr;
+    grid-template-areas:
+      "B L R";
+  }
+
+  &__left {
+    grid-area: L;
+    display: flex;
+    align-items: center;
+    gap: f.rem(35);
+  }
+
+  &__right {
+    grid-area: R;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: f.rem(10);
+  }
+
+  &__bottom {
+    grid-area: B;
+    align-self: center;
+  }
+
+  &__search {
+    width: 100%;
+    max-width: f.rem(500);
+  }
+
+  &__notif,
+  &__setting,
+  &__email {
+    position: relative;
+
+    button {
+      border: none;
+      background-color: transparent;
+      width: f.rem(40);
+      height: f.rem(40);
+      font-size: f.rem(20) !important;
+      border-radius: 50%;
+      color: var(--navy);
+
+      &:hover {
+        background-color: var(--navy-2);
+      }
+    }
+
+    &-counter {
+      position: absolute;
+      top: 5%;
+      right: 5%;
+      background-color: var(--red);
+      color: var(--bs-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: f.rem(12);
+      font-weight: bold;
+      width: f.rem(15);
+      height: f.rem(15);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: f.rem(15);
+
+    &-profile {
+      width: f.rem(50);
+      border-radius: 50%;
+      padding: f.rem(5);
+      overflow: hidden;
+      box-shadow: 0 0 f.rem(15) var(--black-20);
+
+      &-img {
+        border-radius: 50%;
+      }
+    }
+
+    &-infos {
+      display: none;
+      overflow: hidden;
+
+      @include m.media(sm) {
+        display: block;
+      }
+
+      &-name {
+        font-weight: bolder;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &-role {
+        font-size: f.rem(12);
+        color: var(--txts);
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__menu-toggler {
+    background-color: var(--purple-2);
+    border: none;
+    outline: none;
+    width: f.rem(50);
+    height: f.rem(50);
+    padding: f.rem(10);
+    font-size: f.rem(20) !important;
+    border-radius: 50%;
+    color: var(--bs-indigo);
+    transition: all 0.3s ease;
+
+    &:hover{
+      background-color: var(--blue-2);
+      color: var(--blue);
+    }
+  }
+}

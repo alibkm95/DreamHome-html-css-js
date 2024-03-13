@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- icon resource -->
+  <link rel="stylesheet" href="./assets/styles/all.min.css">
+  <!-- font resource -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  <!-- bootstrap styles resource -->
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <!-- reset styles resource -->
+  <link rel="stylesheet" href="./assets/styles/reset.css">
+  <!-- main styles resource -->
+  <link rel="stylesheet" href="./assets/styles/main.css">
+  <!-- favicon resource -->
+  <link rel="shortcut icon" href="./assets/images/favicon.ico">
+  <title>Dream Home | Admin Dashboard</title>
+</head>
+
+<body>
+  <header class="header border border-bottom">
+    <div class="container-fluid">
+      <nav class="topbar py-3 mx-auto">
+        <div class="topbar__left">
+          <div class="topbar__search">
+            <div class="input-parent border">
+              <i class="fa-solid fa-search"></i>
+              <input type="text" name="search-input" id="search-input" placeholder="insert your key words">
+            </div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <div class="topbar__email">
+            <button class="topbar__email-btn">
+              <i class="fa-regular fa-envelope"></i>
+            </button>
+            <span class="topbar__notif-counter">
+              5
+            </span>
+          </div>
+          <div class="topbar__notif">
+            <button class="topbar__notif-btn">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <span class="topbar__notif-counter">
+              3
+            </span>
+          </div>
+          <div class="topbar__setting">
+            <button class="topbar__setting-btn">
+              <i class="fa-solid fa-gear"></i>
+            </button>
+          </div>
+          <div class="line-divider"></div>
+          <div class="topbar__user">
+            <div class="topbar__user-profile">
+              <img class="topbar__user-profile-img d-block w-100" src="./assets/images/user.svg" alt="USER">
+            </div>
+            <div class="topbar__user-infos">
+              <p class="topbar__user-infos-name">
+                users name
+              </p>
+              <span class="topbar__user-infos-role">
+                Admin
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="topbar__bottom">
+          <button class="topbar__menu-toggler" id="menu-toggler-outer">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+</body>
+
+</html>
