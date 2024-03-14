@@ -235,6 +235,64 @@
           </div>
         </div>
       </section>
+      <section class="charts py-4">
+        <div class="container-fluid">
+          <div class="row gy-3">
+            <div class="col col-12 col-md-8 col-lg-9 col-xl-9">
+              <div class="charts__view charts-inner">
+                <canvas class="charts__view-wrapper" id="charts-view-wrapper"></canvas>
+              </div>
+            </div>
+            <div class="col col-12 col-md-4 col-lg-3 col-xl-3">
+              <div class="charts__request charts-inner">
+                <canvas class="charts__request-wrapper" id="charts-request-wrapper"></canvas>
+              </div>
+            </div>
+            <div class="col col-12 col-md-4 col-lg-3 col-xl-3">
+              <div class="charts__ticket charts-inner">
+                <canvas class="charts__ticket-wrapper" id="charts-ticket-wrapper"></canvas>
+              </div>
+            </div>
+            <div class="col col-12 col-md-8 col-lg-9 col-xl-9">
+              <div class="charts__server charts-inner">
+                <p class="charts__server-title fs-3 p-3 mb-3 border-bottom">
+                  server status
+                </p>
+                <ul class="charts__server-wrapper">
+                  <li class="storage charts__server-item">
+                    <div class="storage__content">
+                      <span class="storage__content-text">
+                        Storage:
+                      </span>
+                      <span class="storage__content-text">
+                        1.2TB / 8TB
+                      </span>
+                    </div>
+                    <div class="storage__percent">
+                      <p>15 %</p>
+                      <span></span>
+                    </div>
+                  </li>
+                  <li class="bandwidth charts__server-item">
+                    <div class="bandwidth__content">
+                      <span class="bandwidth__content-text">
+                        Bandwidth:
+                      </span>
+                      <span class="bandwidth__content-text">
+                        580GB / 1TB
+                      </span>
+                    </div>
+                    <div class="bandwidth__percent">
+                      <p>58 %</p>
+                      <span></span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>
