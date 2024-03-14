@@ -2,3 +2,55 @@
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
 
+.analystic {
+
+  &__box {
+
+    &.views-detailes{
+      background-color: var(--red);
+      color: var(--bs-white);
+    }
+
+    &.requests-detailes{
+      background-color: var(--yellow);
+    }
+
+    &.tickets-detailes{
+      background-color: var(--green);
+      color: var(--bs-white);
+    }
+
+    &.users-detailes{
+      background-color: var(--bs-indigo);
+      color: var(--bs-white);
+
+      .analystic__box-value{
+        position: relative;
+      }
+    }
+  }
+
+  .last-users{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+
+    &__item{
+      margin-left: f.rem(-10);
+    }
+
+    &__link{
+      display: block;
+      background-color: var(--bs-indigo);
+      padding: f.rem(3);
+      border-radius: 50%;
+    }
+
+    img{
+      width: f.rem(25);
+      height: f.rem(25);
+      border-radius: 50%;
+    }
+  }
+}

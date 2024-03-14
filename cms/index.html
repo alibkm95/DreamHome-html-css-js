@@ -94,7 +94,7 @@
         </div>
         <ul class="sidebar__menu px-2 py-3 border-bottom">
           <li class="sidebar__menu-item">
-            <a href="#" class="sidebar__link active">
+            <a href="./index.html" class="sidebar__link active">
               <i class="fa-solid fa-chart-column sidebar__menu-icon"></i>
               <span class="sidebar__menu-text">
                 Dashboard
@@ -102,7 +102,7 @@
             </a>
           </li>
           <li class="sidebar__menu-item">
-            <a href="#" class="sidebar__link">
+            <a href="./ads.html" class="sidebar__link">
               <i class="fa-solid fa-ad sidebar__menu-icon"></i>
               <span class="sidebar__menu-text">
                 Ads
@@ -110,7 +110,7 @@
             </a>
           </li>
           <li class="sidebar__menu-item">
-            <a href="#" class="sidebar__link">
+            <a href="./requests.html" class="sidebar__link">
               <i class="fa-solid fa-share-from-square sidebar__menu-icon"></i>
               <span class="sidebar__menu-text">
                 Requests
@@ -118,7 +118,7 @@
             </a>
           </li>
           <li class="sidebar__menu-item">
-            <a href="#" class="sidebar__link">
+            <a href="./tickets.html" class="sidebar__link">
               <i class="fa-solid fa-ticket sidebar__menu-icon"></i>
               <span class="sidebar__menu-text">
                 Tickets
@@ -126,7 +126,7 @@
             </a>
           </li>
           <li class="sidebar__menu-item">
-            <a href="#" class="sidebar__link">
+            <a href="./users.html" class="sidebar__link">
               <i class="fa-solid fa-people-group sidebar__menu-icon"></i>
               <span class="sidebar__menu-text">
                 Users
@@ -144,8 +144,97 @@
         </div>
       </div>
     </aside>
-    <main class="main">
-      
+    <main class="main py-4">
+      <section class="analystic">
+        <div class="container-fluid">
+          <div class="row g-3">
+            <div class="col col-12 col-sm-6 col-xl-3">
+              <div class="analystic__box rounded p-3 d-flex flex-column gap-4 views-detailes">
+                <h5 class="analystic__box-title fs-4">
+                  Views
+                </h5>
+                <div class="analystic__box-content d-flex align-items-center justify-content-between">
+                  <div class="analystic__box-text">
+                    last month:
+                  </div>
+                  <div class="analystic__box-value">
+                    5,140
+                    <i class="fa-regular fa-eye"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col col-12 col-sm-6 col-xl-3">
+              <div class="analystic__box rounded p-3 d-flex flex-column gap-4 requests-detailes">
+                <h5 class="analystic__box-title fs-4">
+                  Requests
+                </h5>
+                <div class="analystic__box-content d-flex align-items-center justify-content-between">
+                  <div class="analystic__box-text">
+                    pending:
+                  </div>
+                  <div class="analystic__box-value">
+                    5,140
+                    <i class="fa-solid fa-share-from-square"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col col-12 col-sm-6 col-xl-3">
+              <div class="analystic__box rounded p-3 d-flex flex-column gap-4 tickets-detailes">
+                <h5 class="analystic__box-title fs-4">
+                  Tickets
+                </h5>
+                <div class="analystic__box-content d-flex align-items-center justify-content-between">
+                  <div class="analystic__box-text">
+                    recent:
+                  </div>
+                  <div class="analystic__box-value">
+                    5,140
+                    <i class="fa-solid fa-ticket"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col col-12 col-sm-6 col-xl-3">
+              <div class="analystic__box rounded p-3 d-flex flex-column gap-4 users-detailes">
+                <h5 class="analystic__box-title fs-4">
+                  Users
+                </h5>
+                <div class="analystic__box-content d-flex align-items-center justify-content-between">
+                  <div class="analystic__box-text">
+                    recent:
+                  </div>
+                  <div class="analystic__box-value">
+                    <ul class="last-users d-flex align-items-center">
+                      <li class="last-users__item">
+                        <a href="#" class="last-users__link">
+                          <img class="d-block" src="./assets/images/user.svg" alt="user">
+                        </a>
+                      </li>
+                      <li class="last-users__item">
+                        <a href="#" class="last-users__link">
+                          <img class="d-block" src="./assets/images/user.svg" alt="user">
+                        </a>
+                      </li>
+                      <li class="last-users__item">
+                        <a href="#" class="last-users__link">
+                          <img class="d-block" src="./assets/images/user.svg" alt="user">
+                        </a>
+                      </li>
+                      <li class="last-users__item">
+                        <a href="#" class="last-users__link">
+                          <img class="d-block" src="./assets/images/user.svg" alt="user">
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>

@@ -8,4 +8,8 @@ export const ToggleSidebarMenu = (rotateElem, applicable) => {
   } else {
     rotateElem.style.transform = 'rotate(0deg)'
   }
+
+  applicable.addEventListener('click', () => {
+    ToggleSidebarMenu(rotateElem, applicable)
+  })
 }
