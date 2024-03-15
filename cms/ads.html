@@ -161,7 +161,131 @@
           </nav>
         </div>
       </section>
-      
+      <section class="filter">
+        <div class="container-fluid">
+          <form class="filter__container border rounded p-3" id="filter-form">
+            <div class="filter__header mb-4">
+              <p class="filter__header-text fs-4">
+                <i class="fa-solid fa-filter"></i>
+                Filters:
+              </p>
+            </div>
+            <div class="filter__body">
+              <div class="filter__body-search filter-input">
+                <label for="search-input">
+                  <i class="fa-solid fa-search"></i>
+                  Search:
+                </label>
+                <input type="text" name="search" id="search-input" placeholder="Search by keyword..." />
+              </div>
+              <div class="filter__body-adType filter-input">
+                <label for="ad-type">
+                  <i class="fa-solid fa-ad"></i>
+                  Ad Type:
+                </label>
+                <select name="ad-type" id="ad-type">
+                  <option value="all" selected>
+                    All
+                  </option>
+                  <option value="buy-and-sell">
+                    Buy and sell
+                  </option>
+                  <option value="mortgage-and-rent">
+                    Mortgage and rent
+                  </option>
+                  <option value="partnering-construction">
+                    Partnering construction
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-propType filter-input">
+                <label for="prop-type">
+                  <i class="fa-solid fa-layer-group"></i>
+                  Property Type:
+                </label>
+                <select name="prop-type" id="prop-type">
+                  <option value="all" selected>
+                    All
+                  </option>
+                  <option value="apartment">
+                    Apartment
+                  </option>
+                  <option value="villa-bungalow">
+                    Villa-Bungalow
+                  </option>
+                  <option value="lands">
+                    Lands
+                  </option>
+                  <option value="commercials">
+                    Commercials
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-sort filter-input">
+                <label for="sort-type">
+                  <i class="fa-solid fa-arrow-up-wide-short"></i>
+                  Sort:
+                </label>
+                <select name="sort-type" id="sort-type">
+                  <option value="newest" selected>
+                    Newest
+                  </option>
+                  <option value="most-viewed">
+                    Most viewed
+                  </option>
+                  <option value="a-z">
+                    A - Z
+                  </option>
+                  <option value="z-a">
+                    Z - A
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-publish filter-input">
+                <label for="publish-type">
+                  <i class="fa-solid fa-check-circle"></i>
+                  publish:
+                </label>
+                <select name="publish-type" id="publish-type">
+                  <option value="all" selected>
+                    All
+                  </option>
+                  <option value="true">
+                    Published
+                  </option>
+                  <option value="false">
+                    Unpublished
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-submit filter-input">
+                <button type="submit" class="filter__body-submit-btn">
+                  Apply filters
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="ads my-4">
+        <div class="container-fluid">
+          <div class="ads__container border rounded p-3">
+            <div class="ads__header mb-4 d-flex align-items-center justify-content-between">
+              <p class="ads__header-text fs-4">
+                <i class="fa-solid fa-ad"></i>
+                Ads list:
+              </p>
+              <a href="./ad-detailes.html" class="ads__header-link">
+                <i class="fa-solid fa-plus-square"></i>
+                Create New Ad
+              </a>
+            </div>
+            <div class="ads__body">
+              
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>

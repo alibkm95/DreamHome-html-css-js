@@ -79,11 +79,11 @@
   }
 }
 
-.hide{
+.hide {
   display: none;
 }
 
-.loader{
+.loader {
   position: fixed;
   inset: 0;
   z-index: 100000;
@@ -94,11 +94,11 @@
   justify-content: center;
   gap: f.rem(10);
 
-  &.hide{
+  &.hide {
     display: none;
   }
 
-  &__wrapper{
+  &__wrapper {
     display: flex;
     align-items: center;
     gap: f.rem(20);
@@ -108,19 +108,134 @@
   }
 }
 
-.line-divider{
+.line-divider {
   height: 75%;
   border-right: 2px solid rgba(0 0 0 / 0.1);
 }
 
 .navigator {
 
-  a{
+  a {
     color: var(--blue) !important;
     transition: color 0.3s ease;
 
-    &:hover{
+    &:hover {
       color: var(--green) !important;
+    }
+  }
+}
+
+.filter {
+
+  &__header {
+    font-weight: bolder;
+
+    i {
+      color: var(--bs-indigo);
+    }
+  }
+
+  &__body {
+    display: grid;
+    gap: f.rem(20);
+    grid-auto-columns: 1fr;
+    grid-template-areas:
+      "search"
+      "ad"
+      "prop"
+      "sort"
+      "publish"
+      "submit";
+
+    @include m.media(sm) {
+      grid-template-areas:
+        "search sort"
+        "ad prop"
+        "publish submit";
+    }
+
+    @include m.media(md) {
+      grid-template-areas:
+        "ad ad ad prop prop prop"
+        "search search search search sort publish"
+        "submit submit submit submit submit submit";
+    }
+
+    @include m.media(lg) {
+      grid-template-areas:
+        "ad prop sort"
+        "search publish submit";
+    }
+
+    @include m.media(xl) {
+      grid-template-areas:
+        "ad prop search sort publish"
+        "submit submit submit submit submit";
+    }
+
+    &-search {
+      grid-area: search;
+    }
+
+    &-adType {
+      grid-area: ad;
+    }
+
+    &-propType {
+      grid-area: prop;
+    }
+
+    &-sort {
+      grid-area: sort;
+    }
+
+    &-publish {
+      grid-area: publish;
+    }
+
+    &-submit {
+      grid-area: submit;
+      align-self: self-end;
+
+      @include m.media(xl) {
+        justify-self: self-end;
+      }
+    }
+  }
+
+  &-input {
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(10);
+
+    i {
+      color: var(--green);
+    }
+
+    input,
+    select,
+    textarea {
+      background-color: var(--body-bg);
+      border: 1px solid var(--purple-2);
+      outline: transparent;
+      padding: f.rem(5);
+      width: 100%;
+      border-radius: f.rem(5);
+    }
+
+    button {
+      width: max-content;
+      border: none;
+      outline: transparent;
+      padding: f.rem(10);
+      border-radius: f.rem(5);
+      background-color: var(--green);
+      color: var(--bs-white);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: var(--bs-indigo);
+      }
     }
   }
 }

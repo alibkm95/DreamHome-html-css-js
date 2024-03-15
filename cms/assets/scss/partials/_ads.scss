@@ -1,3 +1,30 @@
 @use '../utils/functions' as f;
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
+
+.ads {
+
+  &__header {
+    flex-wrap: wrap;
+    gap: f.rem(20);
+
+    &-text {
+
+      i {
+        color: var(--bs-indigo);
+      }
+    }
+
+    &-link {
+      background-color: var(--green);
+      color: var(--bs-white) !important;
+      padding: f.rem(10);
+      border-radius: f.rem(5);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: var(--bs-indigo);
+      }
+    }
+  }
+}
