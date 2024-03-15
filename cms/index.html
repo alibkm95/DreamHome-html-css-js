@@ -245,18 +245,24 @@
             </div>
             <div class="col col-12 col-md-4 col-lg-3 col-xl-3">
               <div class="charts__request charts-inner">
+                <p class="charts__request-title fs-3 p-3 mb-3 border-bottom">
+                  Requests
+                </p>
                 <canvas class="charts__request-wrapper" id="charts-request-wrapper"></canvas>
               </div>
             </div>
             <div class="col col-12 col-md-4 col-lg-3 col-xl-3">
               <div class="charts__ticket charts-inner">
+                <p class="charts__ticket-title fs-3 p-3 mb-3 border-bottom">
+                  Tickets
+                </p>
                 <canvas class="charts__ticket-wrapper" id="charts-ticket-wrapper"></canvas>
               </div>
             </div>
             <div class="col col-12 col-md-8 col-lg-9 col-xl-9">
               <div class="charts__server charts-inner">
                 <p class="charts__server-title fs-3 p-3 mb-3 border-bottom">
-                  server status
+                  Server status
                 </p>
                 <ul class="charts__server-wrapper">
                   <li class="storage charts__server-item">
@@ -290,6 +296,14 @@
                 </ul>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      <section class="loader hide">
+        <div class="loader__wrapper">
+          <span class="fs-4">loading ...</span>
+          <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
       </section>
