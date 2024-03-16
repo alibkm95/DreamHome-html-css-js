@@ -30,7 +30,7 @@
 
 .not-found {
 
-  .container {
+  &__container {
     display: grid;
     gap: f.rem(20);
     place-items: center;
@@ -238,4 +238,11 @@
       }
     }
   }
+}
+
+.btn-style {
+  display: block;
+  width: max-content;
+  padding: f.rem(10) f.rem(20);
+  border-radius: f.rem(5);
 }
