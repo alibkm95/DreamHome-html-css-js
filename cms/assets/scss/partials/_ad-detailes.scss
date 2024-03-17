@@ -1,0 +1,59 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.charts {
+
+  &-inner {
+    padding: f.rem(10);
+    height: 100%;
+    min-height: f.rem(300);
+
+    canvas {
+      width: 100%;
+      height: 100% !important;
+    }
+  }
+}
+
+.detailes {
+
+  .upload-cover,
+  .upload-panorama {
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(10);
+    background-color: var(--elem-bg2);
+    border: 2px dashed var(--black-20);
+
+    label {
+      cursor: pointer;
+      background-color: var(--elem-bg);
+
+      img {
+        display: block;
+        aspect-ratio: 2 / 1;
+        object-fit: contain;
+        width: 100%;
+        max-width: f.rem(300);
+        margin-inline: auto;
+      }
+    }
+
+    &__controls {
+      display: flex;
+      align-items: center;
+      gap: f.rem(10);
+
+      button {
+        white-space: nowrap;
+      }
+
+      .progress {
+        width: 100%;
+      }
+    }
+  }
+
+  
+}

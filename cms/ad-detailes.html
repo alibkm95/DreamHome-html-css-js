@@ -144,8 +144,102 @@
         </div>
       </div>
     </aside>
-    <main class="main">
-      
+    <main class="main py-4">
+      <section class="navigator">
+        <div class="container-fluid">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 rounded border">
+              <li class="breadcrumb-item">
+                <a href="./index.html">
+                  <i class="fa-solid fa-home"></i>
+                </a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="./ads.html">
+                  Advertisements
+                </a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Detailes
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+      <section class="charts py-4 hide">
+        <div class="container-fluid">
+          <div class="row gy-3">
+            <div class="col col-12 col-md-6">
+              <div class="charts__view charts-inner border rounded">
+                <canvas class="charts__view-wrapper" id="charts-view-wrapper"></canvas>
+              </div>
+            </div>
+            <div class="col col-12 col-md-6">
+              <div class="charts__request charts-inner border rounded">
+                <canvas class="charts__request-wrapper" id="charts-request-wrapper"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="detailes">
+        <div class="container-fluid">
+          <div class="detailes__wrapper p-3 border rounded">
+            <div class="detailes__header">
+              <p class="detailes__header-text fs-3">
+                <i class="fa-solid fa-list"></i>
+                Detailes & Edit
+                <!-- <i class="fa-solid fa-plus-square"></i>
+                Create New -->
+              </p>
+            </div>
+            <div class="detailes__body mt-5">
+              <div class="row gy-3">
+                <div class="col col-12 col-md-6">
+                  <form class="upload-cover rounded p-2" id="upload-cover">
+                    <label for="cover-input" class="d-block w-100 rounded">
+                      <img src="./assets/images/upload-img.png" style="opacity: 0.3;">
+                    </label>
+                    <input type="file" name="cover-input" id="cover-input" class="hide upload-cover__input">
+                    <div class="upload-cover__controls">
+                      <button class="upload-cover__submit btn btn-primary">
+                        <fa class="fa-solid fa-cloud-upload"></fa>
+                        Upload
+                      </button>
+                      <div class="progress hide">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col col-12 col-md-6">
+                  <form class="upload-panorama rounded p-2" id="upload-panorama">
+                    <label for="panorama-input" class="d-block w-100 rounded">
+                      <img src="./assets/images/upload-img.png" style="opacity: 0.3;">
+                    </label>
+                    <input type="file" name="panorama-input" id="panorama-input" class="hide upload-panorama__input">
+                    <div class="upload-cover__controls">
+                      <button class="upload-panorama__submit btn btn-warning">
+                        <fa class="fa-solid fa-cloud-upload"></fa>
+                        Upload
+                      </button>
+                      <div class="progress hide">
+                        <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                      </div>
+                    </div>
+                    
+                  </form>
+                </div>
+                <div class="col col-12">
+                  <form class="ads-form">
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>
