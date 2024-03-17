@@ -12,6 +12,7 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.2",
-    "sweetalert2": "^11.10.6"
+    "sweetalert2": "^11.10.6",
+    "tippy.js": "^6.3.7"
   }
 }

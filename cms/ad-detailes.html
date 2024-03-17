@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="./assets/styles/reset.css">
   <!-- main styles resource -->
   <link rel="stylesheet" href="./assets/styles/ad-detailes.css">
+  <!-- tippy styles -->
+  <link rel="stylesheet" href="./node_modules/tippy.js/dist/tippy.css">
   <!-- favicon resource -->
   <link rel="shortcut icon" href="./assets/images/favicon.ico">
   <title>Dream Home | Admin Dashboard</title>
@@ -160,13 +162,13 @@
                 </a>
               </li>
               <li class="breadcrumb-item active" aria-current="page">
-                Detailes
+                Detailes & edit or Create new
               </li>
             </ol>
           </nav>
         </div>
       </section>
-      <section class="charts py-4 hide">
+      <section class="charts py-4">
         <div class="container-fluid">
           <div class="row gy-3">
             <div class="col col-12 col-md-6">
@@ -207,7 +209,8 @@
                         Upload
                       </button>
                       <div class="progress hide">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                          aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
                       </div>
                     </div>
                   </form>
@@ -224,15 +227,296 @@
                         Upload
                       </button>
                       <div class="progress hide">
-                        <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated"
+                          role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                          style="width: 75%"></div>
                       </div>
                     </div>
-                    
+
                   </form>
                 </div>
                 <div class="col col-12">
-                  <form class="ads-form">
-                    
+                  <form class="ads-form row gy-3 mt-4" id="ads-form">
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <i class="fa-solid fa-asterisk"></i>
+                        required
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="title-input" placeholder="title ...">
+                        <label for="title-input">
+                          <i class="fa-solid fa-i-cursor"></i>
+                          Title
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <i class="fa-solid fa-asterisk"></i>
+                        required
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="area-input" placeholder="area ...">
+                        <label for="area-input">
+                          <i class="fa-solid fa-hashtag"></i>
+                          Area
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        + apartment is default
+                      </p>
+                      <div class="form-floating">
+                        <select class="form-select" id="propType-input" aria-label="propType-input">
+                          <option value="apartment" selected>
+                            Apartment
+                          </option>
+                          <option value="villa-bungalow">
+                            Villa-Bungalow
+                          </option>
+                          <option value="lands">
+                            Lands
+                          </option>
+                          <option value="commercials">
+                            Commercials
+                          </option>
+                        </select>
+                        <label for="propType-input">
+                          <i class="fa-solid fa-layer-group"></i>
+                          Property Type
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        + buy ans sell is default
+                      </p>
+                      <div class="form-floating">
+                        <select class="form-select" id="adType-input" aria-label="adType-input">
+                          <option value="buy-and-sell" selected>
+                            Buy and sell
+                          </option>
+                          <option value="mortgage-and-rent">
+                            Mortgage and rent
+                          </option>
+                          <option value="partnering-construction">
+                            Partnering construction
+                          </option>
+                        </select>
+                        <label for="adType-input">
+                          <i class="fa-solid fa-layer-group"></i>
+                          Property Type
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <button type="button" class="input-help" id="primary-price-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="primary-price-input"
+                          placeholder="primary price ...">
+                        <label for="primary-price-input">
+                          <i class="fa-solid fa-dollar"></i>
+                          Primary price
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <button type="button" class="input-help" id="secondary-price-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="secondary-price-input"
+                          placeholder="secondary price ...">
+                        <label for="secondary-price-input">
+                          <i class="fa-solid fa-dollar"></i>
+                          Secondary price
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <i class="fa-solid fa-asterisk"></i>
+                        required
+                        <button type="button" class="input-help" id="cover-image-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="cover-image-input" placeholder="cover image ...">
+                        <label for="cover-image-input">
+                          <i class="fa-solid fa-image"></i>
+                          Cover image
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <i class="fa-solid fa-asterisk"></i>
+                        required
+                        <button type="button" class="input-help" id="panorama-image-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="panorama-image-input"
+                          placeholder="panorama image ...">
+                        <label for="panorama-image-input">
+                          <i class="fa-solid fa-image"></i>
+                          Panorama image
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <i class="fa-solid fa-asterisk"></i>
+                        required
+                        <button type="button" class="input-help" id="rooms-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="rooms-input" placeholder="rooms ...">
+                        <label for="rooms-input">
+                          <i class="fa-solid fa-door-open"></i>
+                          Rooms
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <button type="button" class="input-help" id="YOC-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="YOC-input" placeholder="YOC ...">
+                        <label for="YOC-input">
+                          <i class="fa-solid fa-calendar"></i>
+                          Year of cunstruction
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        <button type="button" class="input-help" id="location-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="location-input" placeholder="location ...">
+                        <label for="location-input">
+                          <i class="fa-solid fa-location-dot"></i>
+                          Location
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6 col-lg-4">
+                      <p class="ads-form__input-text">
+                        + default is (Yes)
+                      </p>
+                      <div class="form-floating">
+                        <select class="form-select" id="publish-input" aria-label="publish-input">
+                          <option value="true" selected>
+                            Yes
+                          </option>
+                          <option value="false">
+                            No
+                          </option>
+                        </select>
+                        <label for="publish-input">
+                          <i class="fa-solid fa-newspaper"></i>
+                          Publish
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6">
+                      <p class="ads-form__input-text">
+                        <button type="button" class="input-help" id="floor-help">
+                          <i class="fa-solid fa-question"></i>
+                        </button>
+                      </p>
+                      <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+                        <div class="form-floating w-100">
+                          <input type="text" class="form-control" id="floor-input" placeholder="floor ...">
+                          <label for="floor-input">
+                            <i class="fa-solid fa-city"></i>
+                            Floor level
+                          </label>
+                        </div>
+                        <div class="form-floating w-100">
+                          <input type="text" class="form-control" id="total-floors-input"
+                            placeholder="totla floors ...">
+                          <label for="total-floors-input">
+                            <i class="fa-solid fa-city"></i>
+                            Totla floors
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12 col-md-6">
+                      <p class="ads-form__input-text">
+                        + default value for all 3 check boxes is No
+                      </p>
+                      <div class="d-flex flex-column flex-md-wrap flex-md-row align-items-md-center gap-3 h-100 mt-auto">
+                        <div class="form-check">
+                          <input class="form-check-input elavator-input" type="checkbox" id="elavator-input">
+                          <label class="form-check-label checkbox-label" for="elavator-input">
+                            Elavator
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input parking-input" type="checkbox" id="parking-input">
+                          <label class="form-check-label checkbox-label" for="parking-input">
+                            Parking
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input warehous-input" type="checkbox" id="warehous-input">
+                          <label class="form-check-label checkbox-label" for="warehous-input">
+                            Warehaus
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12">
+                      <p class="ads-form__input-text">
+                        <i class="fa-solid fa-asterisk"></i>
+                        required
+                      </p>
+                      <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="description-input"
+                          style="height: 150px"></textarea>
+                        <label for="description-input">
+                          <i class="fa-solid fa-rectangle-list"></i>
+                          Description
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__controls col col-12 d-flex flex-row-reverse gap-3 flex-wrap">
+                      <button class="btn-style ads-form__controls-btn edit-btn" type="submit">
+                        <i class="fa-solid fa-save"></i>
+                        Save changes
+                      </button>
+                      <button class="btn-style ads-form__controls-btn delete-btn" type="button">
+                        <i class="fa-solid fa-trash"></i>
+                        Delete ad
+                      </button>
+                      <a href="./ad-detailes.html" class="btn-style ads-form__controls-btn create-new-btn">
+                        <i class="fa-solid fa-plus-square"></i>
+                        Create new ad
+                      </a>
+                      <button class="btn-style ads-form__controls-btn create-btn" type="submit">
+                        <i class="fa-solid fa-plus-square"></i>
+                        Create
+                      </button>
+                    </div>
                   </form>
                 </div>
               </div>
@@ -246,6 +530,8 @@
   <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="./node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
   <script type="module" src="./assets/scripts/shared/shared.js"></script>
+  <script src="./node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+  <script src="./node_modules/tippy.js/dist/tippy-bundle.umd.min.js"></script>
   <script type="module" src="./assets/scripts/ad-detailes.js"></script>
 </body>
 
