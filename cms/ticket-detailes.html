@@ -144,8 +144,195 @@
         </div>
       </div>
     </aside>
-    <main class="main">
-      
+    <main class="main py-4">
+      <section class="navigator">
+        <div class="container-fluid">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 rounded border">
+              <li class="breadcrumb-item">
+                <a href="./index.html">
+                  <i class="fa-solid fa-home"></i>
+                </a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="./tickets.html">
+                  Tickets
+                </a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Detailes & conversations
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+      <section class="ticket my-4">
+        <div class="container-fluid">
+          <div class="row gy-5">
+            <aside class="ticket__info col col-12 col-md-5 col-lg-4 col-xl-3">
+              <div class="ticket__info-container border rounded p-3">
+                <span class="ticket__info-title">
+                  <i class="fa-solid fa-circle"></i>
+                  title:
+                </span>
+                <p class="ticket__info-text title-text fs-5" id="ticket-title">
+                  <!-- insert from js -->
+                  ticket subject
+                </p>
+                <span class="ticket__info-title">
+                  <i class="fa-solid fa-clock"></i>
+                  created at:
+                </span>
+                <p class="ticket__info-text" id="ticket-date">
+                  <!-- insert from js -->
+                  2024-05-18
+                </p>
+                <span class="ticket__info-title">
+                  <i class="fa-solid fa-mug-hot"></i>
+                  status:
+                </span>
+                <p class="ticket__info-text" id="ticket-status">
+                  <!-- insert from js -->
+                  pending
+                </p>
+                <span class="ticket__info-title">
+                  <i class="fa-solid fa-user"></i>
+                  creator:
+                </span>
+                <p class="ticket__info-text" id="ticket-user">
+                  <!-- insert from js -->
+                  Ali bak mohamadi asl
+                </p>
+                <button class="ticket__info-close btn btn-warning">
+                  close this ticket
+                </button>
+                <button class="ticket__info-delete btn btn-danger">
+                  Delete this ticket
+                </button>
+              </div>
+            </aside>
+            <div class="ticket__body col col-12 col-md-7 col-lg-8 col-xl-9">
+              <div class="ticket__body-container border rounded p-3">
+                <div class="ticket__body-messages" id="message-wrapper">
+                  <!-- insert from js -->
+                  <div class="msg msg-admin">
+                    <div class="msg__header">
+                      <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                      <div class="msg__header-info">
+                        <span class="msg__header-info-user">
+                          User name
+                        </span>
+                        <span class="msg__header-info-date">
+                          2024/03/18 - 22:13:53
+                        </span>
+                        <span class="msg__header-info-role">
+                          user
+                        </span>
+                      </div>
+                    </div>
+                    <div class="msg__body">
+                      <div class="msg__body-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                      </div>
+                      <div class="msg__body-seen">
+                        <i class="fa-solid fa-check-double"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="msg msg-user">
+                    <div class="msg__header">
+                      <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                      <div class="msg__header-info">
+                        <span class="msg__header-info-user">
+                          User name
+                        </span>
+                        <span class="msg__header-info-date">
+                          2024/03/18 - 22:13:53
+                        </span>
+                        <span class="msg__header-info-role">
+                          admin
+                        </span>
+                      </div>
+                    </div>
+                    <div class="msg__body">
+                      <div class="msg__body-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                      </div>
+                      <div class="msg__body-seen">
+                        <i class="fa-solid fa-check"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="msg msg-admin">
+                    <div class="msg__header">
+                      <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                      <div class="msg__header-info">
+                        <span class="msg__header-info-user">
+                          User name
+                        </span>
+                        <span class="msg__header-info-date">
+                          2024/03/18 - 22:13:53
+                        </span>
+                        <span class="msg__header-info-role">
+                          user
+                        </span>
+                      </div>
+                    </div>
+                    <div class="msg__body">
+                      <div class="msg__body-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                      </div>
+                      <div class="msg__body-seen">
+                        <i class="fa-solid fa-check-double"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="msg msg-user">
+                    <div class="msg__header">
+                      <img src="./assets/images/user.svg" alt="user" class="msg__header-img">
+                      <div class="msg__header-info">
+                        <span class="msg__header-info-user">
+                          User name
+                        </span>
+                        <span class="msg__header-info-date">
+                          2024/03/18 - 22:13:53
+                        </span>
+                        <span class="msg__header-info-role">
+                          admin
+                        </span>
+                      </div>
+                    </div>
+                    <div class="msg__body">
+                      <div class="msg__body-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, voluptate veritatis est tenetur voluptas in optio dolores dolorum earum ab!
+                      </div>
+                      <div class="msg__body-seen">
+                        <i class="fa-solid fa-check"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ticket__body-new-message">
+                  <form class="ticket__form border rounded p-1" id="new-message-form">
+                    <button type="submit" class="ticket__form-submit">
+                      <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                    <textarea name="message-input" id="message-input" rows="3" placeholder="your message ..."></textarea>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="loader hide">
+        <div class="loader__wrapper">
+          <span class="fs-4">loading ...</span>
+          <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>
