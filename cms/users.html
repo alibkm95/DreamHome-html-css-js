@@ -144,8 +144,185 @@
         </div>
       </div>
     </aside>
-    <main class="main">
-      
+    <main class="main py-4">
+      <section class="navigator">
+        <div class="container-fluid">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 rounded border">
+              <li class="breadcrumb-item">
+                <a href="./index.html">
+                  <i class="fa-solid fa-home"></i>
+                </a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Users
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+      <section class="filter">
+        <div class="container-fluid">
+          <form class="filter__container border rounded p-3" id="filter-form">
+            <div class="filter__header mb-4">
+              <p class="filter__header-text fs-4">
+                <i class="fa-solid fa-filter"></i>
+                Filters:
+              </p>
+            </div>
+            <div class="filter__body">
+              <div class="filter__body-user-name filter-input">
+                <label for="user-name">
+                  <i class="fa-solid fa-i-cursor"></i>
+                  Name:
+                </label>
+                <input type="text" name="user-name" id="user-name" placeholder="user's full name ...">
+              </div>
+              <div class="filter__body-user-email filter-input">
+                <label for="user-email">
+                  <i class="fa-solid fa-envelope"></i>
+                  Email:
+                </label>
+                <input type="text" name="user-email" id="user-email" placeholder="user's email ...">
+              </div>
+              <div class="filter__body-user-phone filter-input">
+                <label for="user-phone">
+                  <i class="fa-solid fa-mobile"></i>
+                  Phone:
+                </label>
+                <input type="text" name="user-phone" id="user-phone" placeholder="user's phone ...">
+              </div>
+              <div class="filter__body-status filter-input">
+                <label for="status-type">
+                  <i class="fa-solid fa-check-circle"></i>
+                  Account status:
+                </label>
+                <select name="status-type" id="status-type">
+                  <option value="all" selected>
+                    All
+                  </option>
+                  <option value="verified">
+                    verified
+                  </option>
+                  <option value="unverified">
+                    unverified
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-submit filter-input">
+                <button type="submit" class="filter__body-submit-btn">
+                  Apply filters
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="users my-4">
+        <div class="container-fluid">
+          <div class="users__container border rounded p-3">
+            <div class="users__header mb-4 d-flex align-items-center justify-content-between">
+              <p class="users__header-text fs-4">
+                <i class="fa-solid fa-user-circle"></i>
+                Users list:
+              </p>
+            </div>
+            <div class="users__body">
+
+              <div class="not-found">
+                <div class="not-found__container">
+                  <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
+                  <p class="not-found__text text-center fs-3">
+                    Sorry. We could not find any results ...
+                  </p>
+                  <a href="./index.html" class="not-found__link btn-style">
+                    Back to Home
+                    <i class="fa-solid fa-home"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="data-table">
+                <table class="table table-striped table-hover border">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Joined in</th>
+                      <th scope="col">Acc status</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="data-container">
+                    <tr>
+                      <th scope="row">
+                        1
+                      </th>
+                      <td>
+                        Ali bak mohamadi asl
+                      </td>
+                      <td>
+                        ali.bkm95@gmail.com
+                      </td>
+                      <td>
+                        2024-03-12
+                      </td>
+                      <td>
+                        verified
+                      </td>
+                      <td>
+                        <a href="#" class="btn-style users__link">
+                          Detailes
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="pagination my-4">
+                <div class="pagination__container">
+                  <button class="pagination__btn prev-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Previous
+                  </button>
+                  <div class="pagination__actions">
+                    <span class="pagination__current">
+                      <!-- insert from js -->
+                      Page <span class="pagination__current-active">3</span> of 10
+                    </span>
+                    <div class="pagination__jump">
+                      <label for="jump-input" class="pagination__jump-label">
+                        Jump to page:
+                      </label>
+                      <div class="pagination__input-wrapper">
+                        <input class="pagination__jump-input" type="text" name="jump-input" id="jump-input">
+                        <button class="pagination__jump-btn jump-btn">
+                          <i class="fa-solid fa-forward"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="pagination__btn next-btn">
+                    Next
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="loader hide">
+        <div class="loader__wrapper">
+          <span class="fs-4">loading ...</span>
+          <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>
