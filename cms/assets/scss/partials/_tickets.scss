@@ -1,0 +1,152 @@
+@use '../utils/functions' as f;
+@use '../utils/mixins' as m;
+@use '../utils/variables' as v;
+
+.charts {
+
+  &-inner {
+    padding: f.rem(10);
+    height: f.rem(300);
+    max-width: 100% !important;
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+}
+
+.filter {
+
+  &__header {
+    font-weight: bolder;
+
+    i {
+      color: var(--bs-indigo);
+    }
+  }
+
+  &__body {
+    display: grid;
+    gap: f.rem(20);
+    grid-auto-columns: 1fr;
+    grid-template-areas:
+      "maxDate"
+      "minDate"
+      "status"
+      "user"
+      "submit";
+
+    @include m.media(sm) {
+      grid-template-areas:
+        "maxDate minDate"
+        "status user"
+        "submit submit";
+    }
+
+    @include m.media(lg) {
+      grid-template-areas:
+        "maxDate minDate status user"
+        "submit submit submit submit";
+    }
+
+    &-max-date {
+      grid-area: maxDate;
+    }
+
+    &-min-date {
+      grid-area: minDate;
+    }
+
+    &-status {
+      grid-area: status;
+    }
+
+    &-user{
+      grid-area: user;
+    }
+
+    &-submit {
+      grid-area: submit;
+      align-self: self-end;
+
+      @include m.media(md) {
+        justify-self: self-end;
+      }
+    }
+  }
+
+  &-input {
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(10);
+
+    i {
+      color: var(--green);
+    }
+
+    input,
+    select,
+    textarea {
+      background-color: var(--body-bg);
+      border: 1px solid var(--purple-2);
+      outline: transparent;
+      padding: f.rem(5);
+      width: 100%;
+      border-radius: f.rem(5);
+    }
+
+    button {
+      width: max-content;
+      border: none;
+      outline: transparent;
+      padding: f.rem(10);
+      border-radius: f.rem(5);
+      background-color: var(--green);
+      color: var(--bs-white);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: var(--bs-indigo);
+      }
+    }
+  }
+}
+
+.tickets {
+
+  &__header {
+    flex-wrap: wrap;
+    gap: f.rem(20);
+
+    &-text {
+
+      i {
+        color: var(--bs-indigo);
+      }
+    }
+  }
+
+  .data-table {
+    .sender-email{
+      font-size: f.rem(12);
+      color: var(--txts);
+    }
+
+    @include m.media(md) {
+      overflow-x: unset;
+    }
+  }
+
+  &__link {
+    background-color: var(--green);
+    color: var(--bs-white) !important;
+    padding: f.rem(10);
+    border-radius: f.rem(5);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: var(--bs-indigo);
+    }
+  }
+}
