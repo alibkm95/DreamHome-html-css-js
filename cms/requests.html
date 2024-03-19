@@ -144,12 +144,357 @@
         </div>
       </div>
     </aside>
-    <main class="main">
-      
+    <main class="main py-4">
+      <section class="navigator">
+        <div class="container-fluid">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3 rounded border">
+              <li class="breadcrumb-item">
+                <a href="./index.html">
+                  <i class="fa-solid fa-home"></i>
+                </a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Requests
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+      <section class="charts py-4">
+        <div class="container-fluid">
+          <div class="row gy-3">
+            <div class="col col-12 col-md-6">
+              <div class="charts__status charts-inner border rounded">
+                <canvas class="charts__status-wrapper" id="charts-status-wrapper"></canvas>
+              </div>
+            </div>
+            <div class="col col-12 col-md-6">
+              <div class="charts__request charts-inner border rounded">
+                <canvas class="charts__request-wrapper" id="charts-request-wrapper"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="filter">
+        <div class="container-fluid">
+          <form class="filter__container border rounded p-3" id="filter-form">
+            <div class="filter__header mb-4">
+              <p class="filter__header-text fs-4">
+                <i class="fa-solid fa-filter"></i>
+                Filters:
+              </p>
+            </div>
+            <div class="filter__body">
+              <div class="filter__body-max-date filter-input">
+                <label for="max-date">
+                  <i class="fa-solid fa-calendar"></i>
+                  Maximum date:
+                </label>
+                <input type="date" name="max-date" id="max-date">
+              </div>
+              <div class="filter__body-min-date filter-input">
+                <label for="min-date">
+                  <i class="fa-solid fa-calendar"></i>
+                  Minimum date:
+                </label>
+                <input type="date" name="min-date" id="min-date">
+              </div>
+              <div class="filter__body-status filter-input">
+                <label for="status-type">
+                  <i class="fa-solid fa-check-circle"></i>
+                  Status:
+                </label>
+                <select name="status-type" id="status-type">
+                  <option value="all" selected>
+                    All
+                  </option>
+                  <option value="pending">
+                    pending
+                  </option>
+                  <option value="completed">
+                    completed
+                  </option>
+                  <option value="canceled">
+                    canceled
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-submit filter-input">
+                <button type="submit" class="filter__body-submit-btn">
+                  Apply filters
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="requests my-4">
+        <div class="container-fluid">
+          <div class="requests__container border rounded p-3">
+            <div class="requests__header mb-4 d-flex align-items-center justify-content-between">
+              <p class="requests__header-text fs-4">
+                <i class="fa-solid fa-share-from-square"></i>
+                Requests list:
+              </p>
+            </div>
+            <div class="requests__body">
+
+              <div class="not-found">
+                <div class="not-found__container">
+                  <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
+                  <p class="not-found__text text-center fs-3">
+                    Sorry. We could not find any results ...
+                  </p>
+                  <a href="./index.html" class="not-found__link btn-style">
+                    Back to Home
+                    <i class="fa-solid fa-home"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="data-table">
+                <table class="table table-striped table-hover border">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Requested ad</th>
+                      <th scope="col">Applicant</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="data-container">
+                    <tr>
+                      <th scope="row">
+                        1
+                      </th>
+                      <td>
+                        ad title
+                      </td>
+                      <td>
+                        users name
+                      </td>
+                      <td>
+                        status
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <button class="btn dropdown-toggle" type="button" id="dropdownBtn" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            actions
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownBtn">
+                            <li>
+                              <button class="dropdown-item">
+                                Detailes
+                              </button>
+                            </li>
+                            <li>
+                              <button class="dropdown-item">
+                                Manage status
+                              </button>
+                            </li>
+                            <li>
+                              <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                              <button class="dropdown-item text-danger">
+                                Delete request
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="pagination my-4">
+                <div class="pagination__container">
+                  <button class="pagination__btn prev-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Previous
+                  </button>
+                  <div class="pagination__actions">
+                    <span class="pagination__current">
+                      <!-- insert from js -->
+                      Page <span class="pagination__current-active">3</span> of 10
+                    </span>
+                    <div class="pagination__jump">
+                      <label for="jump-input" class="pagination__jump-label">
+                        Jump to page:
+                      </label>
+                      <div class="pagination__input-wrapper">
+                        <input class="pagination__jump-input" type="text" name="jump-input" id="jump-input">
+                        <button class="pagination__jump-btn jump-btn">
+                          <i class="fa-solid fa-forward"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="pagination__btn next-btn">
+                    Next
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="modals">
+        <div class="detailes-modal hide">
+          <div class="detailes-modal__container p-4">
+            <div class="detailes-modal__header fs-3 pb-3 border-bottom">
+              <p class="detailes-modal__header-text">
+                <i class="fa-solid fa-list"></i>
+                Detailes
+              </p>
+              <button class="detailes-modal__close btn-style" id="detailes-modal-close">
+                <i class="fa-solid fa-x"></i>
+              </button>
+            </div>
+            <div class="detailes-modal__body py-3">
+              <ul class="ad mb-4">
+                <li class="ad-cover">
+                  <img class="d-block w-100 rounded" src="./assets/images/download.png">
+                </li>
+                <li class="ad-title">
+                  title:
+                  <span>
+                    the ads title
+                  </span>
+                </li>
+                <li class="ad-propType">
+                  propType:
+                  <span>
+                    the ads propType
+                  </span>
+                </li>
+                <li class="ad-adType">
+                  adType:
+                  <span>
+                    the ads adType
+                  </span>
+                </li>
+                <li class="ad-primaryPrice">
+                  primaryPrice:
+                  <span>
+                    the ads primaryPrice
+                  </span>
+                </li>
+                <li class="ad-secondaryPrice">
+                  secondaryPrice:
+                  <span>
+                    the ads secondaryPrice
+                  </span>
+                </li>
+                <li class="ad-full-info">
+                  <a href="#" class="ad-info-btn btn-style">
+                    ad's full info
+                  </a>
+                </li>
+              </ul>
+              <ul class="applicant mt-2 pt-4 border-top">
+                <li class="applicant-profile">
+                  <img src="./assets/images/user.svg" class="d-block w-100">
+                </li>
+                <li class="applicant-name">
+                  name:
+                  <span>
+                    users name
+                  </span>
+                </li>
+                <li class="applicant-email">
+                  email:
+                  <span>
+                    users email
+                  </span>
+                </li>
+                <li class="applicant-phone">
+                  phone:
+                  <span>
+                    users phone
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="status-modal hide">
+          <div class="status-modal__container p-4 rounded">
+            <div class="status-modal__header fs-4 pb-3 border-bottom">
+              <p class="status-modal__header-text">
+                <i class="fa-solid fa-check-circle"></i>
+                Manage status
+              </p>
+              <button class="status-modal__close btn-style" id="status-modal-close">
+                <i class="fa-solid fa-x"></i>
+              </button>
+            </div>
+            <div class="status-modal__body py-3">
+              <form class="status-form">
+                <p class="status-form__text pb-3">
+                  Select status type:
+                </p>
+                <div class="status-form__input radio-input-group">
+                  <input type="radio" class="btn-check" name="radio-group" id="pending" autocomplete="off"
+                    checked>
+                  <label class="btn btn-outline-warning text-dark" for="pending">Pending</label>
+
+                  <input type="radio" class="btn-check" name="radio-group" id="complete" autocomplete="off">
+                  <label class="btn btn-outline-success" for="complete">Complete</label>
+
+                  <input type="radio" class="btn-check" name="radio-group" id="cancel" autocomplete="off">
+                  <label class="btn btn-outline-danger" for="cancel">Cancel</label>
+                </div>
+                <p class="status-form__text py-2 mt-2">
+                  Inform applicant with email:
+                  <span class="d-block status-form__subtext mt-1">
+                    + by leaving email fields blank, email won't send to applicant
+                  </span>
+                </p>
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="subject-input" placeholder="subject ...">
+                  <label for="subject-input">
+                    <i class="fa-solid fa-i-cursor"></i>
+                    subject
+                  </label>
+                </div>
+                <div class="form-floating mt-2">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="msg-input"
+                    style="height: 100px"></textarea>
+                  <label for="msg-input">
+                    <i class="fa-solid fa-rectangle-list"></i>
+                    message
+                  </label>
+                </div>
+                <div class="status-form__submit mt-2">
+                  <button class="submit-btn btn-style float-end">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="loader hide">
+        <div class="loader__wrapper">
+          <span class="fs-4">loading ...</span>
+          <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>
-  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
   <script type="module" src="./assets/scripts/shared/shared.js"></script>
   <script type="module" src="./assets/scripts/requests.js"></script>
