@@ -110,14 +110,16 @@ const getSingleAd = async (req, res) => {
     throw new CustomError.NotFoundError('there is no such an ad')
   }
 
-  try {
-    await Views.create({ ad: adId })
-  } catch (error) {
-    console.log(error)
-  }
+  if (req.user.role !== 'ROOTADMIN' && req.user.role !== 'ADMIN') {
+    try {
+      await Views.create({ ad: adId })
+    } catch (error) {
+      console.log(error)
+    }
 
-  ad.views = ad.views + 1
-  await ad.save()
+    ad.views = ad.views + 1
+    await ad.save()
+  }
 
   res.status(StatusCodes.OK).json({ ad })
 

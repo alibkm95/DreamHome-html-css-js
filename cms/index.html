@@ -58,14 +58,14 @@
           <div class="line-divider"></div>
           <div class="topbar__user">
             <div class="topbar__user-profile">
-              <img class="topbar__user-profile-img d-block w-100" src="./assets/images/user.svg" alt="USER">
+              <img class="topbar__user-profile-img d-block w-100" src="./assets/images/user.svg" alt="USER" id="header-user-profile-img">
             </div>
             <div class="topbar__user-infos">
               <p class="topbar__user-infos-name">
-                users name
+                <!-- insert from js -->
               </p>
               <span class="topbar__user-infos-role">
-                Admin
+                <!-- insert from js -->
               </span>
             </div>
           </div>
@@ -157,9 +157,8 @@
                   <div class="analystic__box-text">
                     last month:
                   </div>
-                  <div class="analystic__box-value">
-                    5,140
-                    <i class="fa-regular fa-eye"></i>
+                  <div class="analystic__box-value" id="viwe-analystic-wrapper">
+                    <!-- insert from js -->
                   </div>
                 </div>
               </div>
@@ -171,11 +170,10 @@
                 </h5>
                 <div class="analystic__box-content d-flex align-items-center justify-content-between">
                   <div class="analystic__box-text">
-                    pending:
+                    top 100's pending:
                   </div>
-                  <div class="analystic__box-value">
-                    5,140
-                    <i class="fa-solid fa-share-from-square"></i>
+                  <div class="analystic__box-value" id="request-analystic-wrapper">
+                    <!-- insert from js -->
                   </div>
                 </div>
               </div>
@@ -187,11 +185,10 @@
                 </h5>
                 <div class="analystic__box-content d-flex align-items-center justify-content-between">
                   <div class="analystic__box-text">
-                    recent:
+                    top 100's pending:
                   </div>
-                  <div class="analystic__box-value">
-                    5,140
-                    <i class="fa-solid fa-ticket"></i>
+                  <div class="analystic__box-value" id="ticket-analystic-wrapper">
+                    <!-- insert from js -->
                   </div>
                 </div>
               </div>
@@ -206,27 +203,8 @@
                     recent:
                   </div>
                   <div class="analystic__box-value">
-                    <ul class="last-users d-flex align-items-center">
-                      <li class="last-users__item">
-                        <a href="#" class="last-users__link">
-                          <img class="d-block" src="./assets/images/user.svg" alt="user">
-                        </a>
-                      </li>
-                      <li class="last-users__item">
-                        <a href="#" class="last-users__link">
-                          <img class="d-block" src="./assets/images/user.svg" alt="user">
-                        </a>
-                      </li>
-                      <li class="last-users__item">
-                        <a href="#" class="last-users__link">
-                          <img class="d-block" src="./assets/images/user.svg" alt="user">
-                        </a>
-                      </li>
-                      <li class="last-users__item">
-                        <a href="#" class="last-users__link">
-                          <img class="d-block" src="./assets/images/user.svg" alt="user">
-                        </a>
-                      </li>
+                    <ul class="last-users d-flex align-items-center" id="user-analystic-wrapper">
+                      <!-- insert from js -->
                     </ul>
                   </div>
                 </div>
@@ -301,7 +279,9 @@
       </section>
       <section class="loader hide">
         <div class="loader__wrapper">
-          <span class="fs-4">loading ...</span>
+          <span class="fs-4" id="loader-text">
+            <!-- insert from js -->
+          </span>
           <div class="spinner-grow" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>

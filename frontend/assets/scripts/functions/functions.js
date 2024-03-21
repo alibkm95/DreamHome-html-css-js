@@ -2402,7 +2402,7 @@ export const UploadUserProfile = async (img) => {
 }
 
 export const RedirectToCMS = () => {
-  console.log('redirecting to ...')
+  window.open('../cms/index.html')
 }
 
 export const RenderAccountInfo = (user) => {

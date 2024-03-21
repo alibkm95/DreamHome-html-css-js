@@ -22,7 +22,7 @@ window.addEventListener('load', async () => {
   const activeSection = GetUrlParams('activeSection') || "account-info"
   const userID = GetUrlParams('user')
 
-  if(!userID) return RedirectToHome()
+  if (!userID) return RedirectToHome()
 
   const user = await GetUserInfos(userID)
 
@@ -83,7 +83,7 @@ window.addEventListener('load', async () => {
       }
 
       if (event.target.getAttribute('data-redirect') === 'admin-dashboard') {
-        RedirectToCMS()
+        return RedirectToCMS()
       }
 
       let paramArr = [
