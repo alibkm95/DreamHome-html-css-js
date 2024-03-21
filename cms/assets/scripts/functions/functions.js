@@ -107,18 +107,18 @@ const TitleGenerator = (adType) => {
 export const RenderNotFound = (parentElem) => {
   parentElem.innerHTML = ''
   parentElem.insertAdjacentHTML('afterbegin', `
-    <div class="not-found">
-      <div class="container">
-        <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
-        <p class="not-found__text text-center fs-3">
-          Sorry. We could not find any results ...
-        </p>
-        <a href="./index.html" class="not-found__link btn-style">
-          Back to Home
-          <i class="fa-solid fa-home"></i>
-        </a>
-      </div>
+  <div class="not-found h-100">
+    <div class="not-found__container">
+      <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
+      <p class="not-found__text text-center fs-3">
+        Sorry. We could not find any results ...
+      </p>
+      <a href="./index.html" class="not-found__link btn-style">
+        Back to Home
+        <i class="fa-solid fa-home"></i>
+      </a>
     </div>
+  </div>
   `)
 }
 
@@ -220,7 +220,7 @@ export const GetAllRequests = async (reqOptions = null) => {
     const reqParams = Object.entries(reqOptions);
     reqParams.forEach(([key, value]) => {
       if (value) {
-        reqURL += `${key}=${value}`
+        reqURL += `${key}=${value}&`
       }
     })
   }
@@ -247,7 +247,7 @@ export const GetAllTickets = async (reqOptions = null) => {
     const reqParams = Object.entries(reqOptions);
     reqParams.forEach(([key, value]) => {
       if (value) {
-        reqURL += `${key}=${value}`
+        reqURL += `${key}=${value}&`
       }
     })
   }
@@ -273,7 +273,7 @@ export const GetAllUsers = async (reqOptions = null) => {
     const reqParams = Object.entries(reqOptions);
     reqParams.forEach(([key, value]) => {
       if (value) {
-        reqURL += `${key}=${value}`
+        reqURL += `${key}=${value}&`
       }
     })
   }
@@ -289,4 +289,60 @@ export const GetAllUsers = async (reqOptions = null) => {
 
   return null
 
+}
+
+export const GetAllAds = async (reqOptions = null) => {
+
+  let reqURL = `${baseURL}/ads`
+
+  if (reqOptions) {
+    reqURL += '?'
+
+    const reqParams = Object.entries(reqOptions);
+    reqParams.forEach(([key, value], index) => {
+      if (value) {
+        reqURL += `${key}=${value}&`
+      }
+    })
+  }
+
+  const response = await fetch(reqURL, {
+    credentials: 'include'
+  })
+
+  if (response.status === 200) {
+    const result = await response.json()
+    return result
+  }
+
+  return null
+}
+
+export const RenderAdsTable = (parentElem, items, page, itemPerPage) => {
+  items.map((item, index) => {
+    parentElem.insertAdjacentHTML('beforeend', `
+      <tr>
+        <th scope="row">
+        ${(index + 1) + ((page - 1) * itemPerPage)}
+        </th>
+        <td>
+          <img src="${item.cover}" alt="cover">
+        </td>
+        <td>
+        ${item.title}
+        </td>
+        <td>
+        ${item.adType}
+        </td>
+        <td>
+        ${item.propType}
+        </td>
+        <td>
+          <a href="./ad-detailes.html?item=${item._id}" class="table__link">
+            Detailes
+          </a>
+        </td>
+      </tr>
+    `)
+  })
 }

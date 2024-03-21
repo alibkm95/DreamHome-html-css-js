@@ -1,5 +1,7 @@
 const Ads = require('../models/Ads')
 const Views = require('../models/Views')
+const Token = require('../models/Token')
+const { isTokenValid } = require('../utils');
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
 const fs = require('fs')
@@ -47,8 +49,29 @@ const getAllAds = async (req, res) => {
     propType,
     adType,
     sort,
-    search
+    search,
+    publish
   } = req.query
+
+  const { refreshToken, accessToken } = req.signedCookies
+
+  if (accessToken) {
+    const payload = isTokenValid(accessToken)
+    req.user = payload.user
+  } else if (refreshToken) {
+    const payload = isTokenValid(refreshToken)
+
+    const existingToken = await Token.findOne({
+      user: payload.user.userId,
+      refreshToken: payload.refreshToken
+    })
+
+    if (existingToken || existingToken?.isValid) {
+      req.user = payload.user
+    }
+  } else {
+    req.user = null
+  }
 
   let queryObject = {}
 
@@ -58,6 +81,21 @@ const getAllAds = async (req, res) => {
 
   if (adType && adType !== 'all') {
     queryObject.adType = adType
+  }
+
+  if (req.user?.role === 'ROOTADMIN' || req.user?.role === 'ADMIN') {
+    if (publish && publish === 'true') {
+      queryObject.publish = true
+    }
+
+    if (publish && publish === 'false') {
+      queryObject.publish = false
+    }
+
+    if(publish && publish !== 'true' && publish !== 'false' && publish !== 'all') queryObject.publish = true
+
+  } else {
+    queryObject.publish = true
   }
 
   if (search) {
@@ -103,6 +141,26 @@ const getAllAds = async (req, res) => {
 const getSingleAd = async (req, res) => {
 
   const { id: adId } = req.params
+  
+  const { refreshToken, accessToken } = req.signedCookies
+
+  if (accessToken) {
+    const payload = isTokenValid(accessToken)
+    req.user = payload.user
+  } else if (refreshToken) {
+    const payload = isTokenValid(refreshToken)
+
+    const existingToken = await Token.findOne({
+      user: payload.user.userId,
+      refreshToken: payload.refreshToken
+    })
+
+    if (existingToken || existingToken?.isValid) {
+      req.user = payload.user
+    }
+  } else {
+    req.user = null
+  }
 
   const ad = await Ads.findOne({ _id: adId })
 
@@ -110,7 +168,7 @@ const getSingleAd = async (req, res) => {
     throw new CustomError.NotFoundError('there is no such an ad')
   }
 
-  if (req.user.role !== 'ROOTADMIN' && req.user.role !== 'ADMIN') {
+  if (req.user?.role !== 'ROOTADMIN' && req.user?.role !== 'ADMIN') {
     try {
       await Views.create({ ad: adId })
     } catch (error) {

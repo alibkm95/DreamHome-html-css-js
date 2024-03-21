@@ -58,7 +58,8 @@
           <div class="line-divider"></div>
           <div class="topbar__user">
             <div class="topbar__user-profile">
-              <img class="topbar__user-profile-img d-block w-100" src="./assets/images/user.svg" alt="USER" id="header-user-profile-img">
+              <img class="topbar__user-profile-img d-block w-100" src="./assets/images/user.svg" alt="USER"
+                id="header-user-profile-img">
             </div>
             <div class="topbar__user-infos">
               <p class="topbar__user-infos-name">
@@ -176,7 +177,7 @@
                   <i class="fa-solid fa-search"></i>
                   Search:
                 </label>
-                <input type="text" name="search" id="search-input" placeholder="Search by keyword..." />
+                <input type="text" name="search" id="filter-search-input" placeholder="Search by keyword..." />
               </div>
               <div class="filter__body-adType filter-input">
                 <label for="ad-type">
@@ -280,21 +281,7 @@
                 Create New Ad
               </a>
             </div>
-            <div class="ads__body">
-
-              <div class="not-found">
-                <div class="not-found__container">
-                  <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
-                  <p class="not-found__text text-center fs-3">
-                    Sorry. We could not find any results ...
-                  </p>
-                  <a href="./index.html" class="not-found__link btn-style">
-                    Back to Home
-                    <i class="fa-solid fa-home"></i>
-                  </a>
-                </div>
-              </div>
-
+            <div class="ads__body" id="ads-wrapper">
               <div class="data-table">
                 <table class="table table-striped table-hover border">
                   <thead>
@@ -308,231 +295,11 @@
                     </tr>
                   </thead>
                   <tbody id="data-container">
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        <img src="./assets/images/download.png" alt="cover">
-                      </td>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        ad type
-                      </td>
-                      <td>
-                        property type
-                      </td>
-                      <td>
-                        <a href="#" class="table__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
+                    <!-- insert from js -->
                   </tbody>
                 </table>
               </div>
-
-              <div class="pagination my-4">
+              <div class="pagination my-4 hide">
                 <div class="pagination__container">
                   <button class="pagination__btn prev-btn">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -541,7 +308,6 @@
                   <div class="pagination__actions">
                     <span class="pagination__current">
                       <!-- insert from js -->
-                      Page <span class="pagination__current-active">3</span> of 10
                     </span>
                     <div class="pagination__jump">
                       <label for="jump-input" class="pagination__jump-label">
@@ -561,7 +327,6 @@
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

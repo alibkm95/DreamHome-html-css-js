@@ -10,9 +10,14 @@ window.addEventListener('load', async () => {
   const adminProfileElem = document.getElementById('header-user-profile-img')
   const adminNameElem = document.querySelector('.topbar__user-infos-name')
   const adminRoleElem = document.querySelector('.topbar__user-infos-role')
+  const redirectToMainPageBtn = document.getElementById('redirect-to-main')
 
   menuTogglerOuterElem.addEventListener('click', () => {
     ToggleSidebarMenu(menuTogglerOuterElem, sidebarElem)
+  })
+
+  redirectToMainPageBtn.addEventListener('click', () => {
+    RedirectTo('../frontend/index.html')
   })
 
   const user = await GetMe()
