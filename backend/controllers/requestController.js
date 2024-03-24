@@ -34,7 +34,7 @@ const createRequest = async (req, res) => {
 
 const getAllRequests = async (req, res) => {
 
-  const { maxDate, minDate, user: userID } = req.query
+  const { maxDate, minDate, user: userID, ad: adId } = req.query
 
   let queryObject = {}
 
@@ -47,6 +47,10 @@ const getAllRequests = async (req, res) => {
 
   if (userID) {
     queryObject.user = userID
+  }
+
+  if (adId) {
+    queryObject.ad = adId
   }
 
   let result = Request.find(queryObject)

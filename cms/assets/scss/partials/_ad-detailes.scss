@@ -2,12 +2,19 @@
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
 
+.swal2-container {
+  z-index: 10000 !important;
+}
+
 .charts {
 
   &-inner {
     padding: f.rem(10);
     height: 100%;
     min-height: f.rem(300);
+  }
+
+  &__request{
 
     canvas {
       width: 100%;
@@ -17,6 +24,13 @@
 }
 
 .detailes {
+
+  &__header {
+
+    i {
+      color: var(--bs-indigo);
+    }
+  }
 
   .upload-cover,
   .upload-panorama {
@@ -57,19 +71,19 @@
 
   .ads-form {
 
-    &__input{
+    &__input {
 
-      &-text{
+      &-text {
         line-height: 1.5;
         font-size: f.rem(12);
         color: var(--txts);
         margin-bottom: f.rem(5);
 
-        >i{
+        >i {
           color: var(--red);
         }
 
-        .input-help{
+        .input-help {
           background-color: var(--green);
           color: var(--white);
           border: none;

@@ -161,14 +161,12 @@
                   Advertisements
                 </a>
               </li>
-              <li class="breadcrumb-item active" aria-current="page">
-                Detailes & edit or Create new
-              </li>
+              <!-- insert from js -->
             </ol>
           </nav>
         </div>
       </section>
-      <section class="charts py-4">
+      <section class="charts py-4 hide">
         <div class="container-fluid">
           <div class="row gy-3">
             <div class="col col-12 col-md-6">
@@ -188,11 +186,8 @@
         <div class="container-fluid">
           <div class="detailes__wrapper p-3 border rounded">
             <div class="detailes__header">
-              <p class="detailes__header-text fs-3">
-                <i class="fa-solid fa-list"></i>
-                Detailes & Edit
-                <!-- <i class="fa-solid fa-plus-square"></i>
-                Create New -->
+              <p class="detailes__header-text fs-3" id="container-header-text">
+                <!-- insert from js -->
               </p>
             </div>
             <div class="detailes__body mt-5">
@@ -200,7 +195,7 @@
                 <div class="col col-12 col-md-6">
                   <form class="upload-cover rounded p-2" id="upload-cover">
                     <label for="cover-input" class="d-block w-100 rounded">
-                      <img src="./assets/images/upload-img.png" style="opacity: 0.3;">
+                      <img src="./assets/images/upload-img.png" style="opacity: 0.3;" id="upload-cover-img">
                     </label>
                     <input type="file" name="cover-input" id="cover-input" class="hide upload-cover__input">
                     <div class="upload-cover__controls">
@@ -208,9 +203,9 @@
                         <fa class="fa-solid fa-cloud-upload"></fa>
                         Upload
                       </button>
-                      <div class="progress hide">
+                      <div class="progress hide" id="cover-upload-proc">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                          aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                          aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                       </div>
                     </div>
                   </form>
@@ -218,7 +213,7 @@
                 <div class="col col-12 col-md-6">
                   <form class="upload-panorama rounded p-2" id="upload-panorama">
                     <label for="panorama-input" class="d-block w-100 rounded">
-                      <img src="./assets/images/upload-img.png" style="opacity: 0.3;">
+                      <img src="./assets/images/upload-img.png" style="opacity: 0.3;" id="upload-panorama-img">
                     </label>
                     <input type="file" name="panorama-input" id="panorama-input" class="hide upload-panorama__input">
                     <div class="upload-cover__controls">
@@ -226,10 +221,10 @@
                         <fa class="fa-solid fa-cloud-upload"></fa>
                         Upload
                       </button>
-                      <div class="progress hide">
+                      <div class="progress hide" id="panorama-upload-proc">
                         <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated"
-                          role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                          style="width: 75%"></div>
+                          role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                          style="width: 0%"></div>
                       </div>
                     </div>
 
@@ -487,6 +482,18 @@
                     </div>
                     <div class="ads-form__input col col-12">
                       <p class="ads-form__input-text">
+                        + default is (0)
+                      </p>
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="district-input" placeholder="district ...">
+                        <label for="district-input">
+                          <i class="fa-solid fa-district-dot"></i>
+                          District
+                        </label>
+                      </div>
+                    </div>
+                    <div class="ads-form__input col col-12">
+                      <p class="ads-form__input-text">
                         <i class="fa-solid fa-asterisk"></i>
                         required
                       </p>
@@ -499,23 +506,8 @@
                         </label>
                       </div>
                     </div>
-                    <div class="ads-form__controls col col-12 d-flex flex-row-reverse gap-3 flex-wrap">
-                      <button class="btn-style ads-form__controls-btn edit-btn" type="submit">
-                        <i class="fa-solid fa-save"></i>
-                        Save changes
-                      </button>
-                      <button class="btn-style ads-form__controls-btn delete-btn" type="button">
-                        <i class="fa-solid fa-trash"></i>
-                        Delete ad
-                      </button>
-                      <a href="./ad-detailes.html" class="btn-style ads-form__controls-btn create-new-btn">
-                        <i class="fa-solid fa-plus-square"></i>
-                        Create new ad
-                      </a>
-                      <button class="btn-style ads-form__controls-btn create-btn" type="submit">
-                        <i class="fa-solid fa-plus-square"></i>
-                        Create
-                      </button>
+                    <div class="ads-form__controls col col-12 d-flex flex-row-reverse gap-3 flex-wrap" id="ad-form-controls-wrapper">
+                      <!-- insert from js -->
                     </div>
                   </form>
                 </div>
