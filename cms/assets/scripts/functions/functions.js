@@ -1,5 +1,6 @@
 import {
-  ValidateAdInputs
+  ValidateAdInputs,
+  IsNotEmpty
 } from './utils.js'
 
 export const baseURL = 'http://localhost:5000/api/v1'
@@ -97,6 +98,20 @@ export const GetCookie = (cookieName) => {
     }
   }
   return null
+}
+
+const ClassGenerator = (status) => {
+  if (status === 'pending') {
+    return 'text-warning'
+  }
+
+  if (status === 'completed') {
+    return 'text-success'
+  }
+
+  if (status === 'canceled') {
+    return 'text-danger'
+  }
 }
 
 const TitleGenerator = (adType) => {
@@ -358,6 +373,56 @@ export const RenderAdsTable = (parentElem, items, page, itemPerPage) => {
           <a href="./ad-detailes.html?item=${item._id}" class="table__link">
             Detailes
           </a>
+        </td>
+      </tr>
+    `)
+  })
+}
+
+export const RenderRequestsTable = (parentElem, items, page, itemPerPage) => {
+  parentElem.innerHTML = ''
+  items.map((item, index) => {
+    parentElem.insertAdjacentHTML('beforeend', `
+      <tr>
+        <th scope="row">
+        ${(index + 1) + ((page - 1) * itemPerPage)}
+        </th>
+        <td>
+          ${item.ad.title}
+        </td>
+        <td>
+          ${item.user.name}
+        </td>
+        <td class="${ClassGenerator(item.status)}">
+          ${item.status}
+        </td>
+        <td>
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownBtn" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              actions
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownBtn">
+              <li>
+                <button class="dropdown-item" onclick="ShowRequestDetailesModal('${item._id}')">
+                  Detailes
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" onclick="ShowRequestStatusModal('${item._id}', '${item.status}', '${item.user.email}')">
+                  Manage status
+                </button>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <button class="dropdown-item text-danger" onclick="DeleteRequest('${item._id}')">
+                  Delete request
+                </button>
+              </li>
+            </ul>
+          </div>
         </td>
       </tr>
     `)
@@ -712,3 +777,334 @@ export const GetAdDetailes = async (adId) => {
   return null
 }
 
+export const RenderRequestCharts = async () => {
+  const requestChartWrapper = document.getElementById('charts-request-wrapper')
+  const statusChartWrapper = document.getElementById('charts-status-wrapper')
+
+  const requestsData = await GetAllRequests({ itemPerPage: 100 })
+
+  if (requestsData && requestsData.requests?.length) {
+
+    const requestsGroup = GroupData(requestsData.requests)
+
+    const statusCounts = {
+      pending: 0,
+      completed: 0,
+      canceled: 0,
+    }
+
+    requestsData.requests.forEach(request => {
+      const status = request.status;
+      statusCounts[status]++
+    })
+
+    let requestCountChartConfigs = {
+      type: 'line',
+      data: {
+        labels: requestsGroup.map(req => { return req[0] }),
+        datasets: [{
+          label: 'Requests (top 100)',
+          data: requestsGroup.map(req => { return req[1] }),
+          backgroundColor: 'rgba(70, 10, 255, 0.5)',
+          borderColor: 'rgba(70, 10, 255, 1)',
+          borderWidth: 2,
+          lineTension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            min: 0
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    }
+
+    let requestStatusChartConfigs = {
+      type: 'bar',
+      data: {
+        labels: ['pending', 'completed', 'canceled'],
+        datasets: [
+          {
+            label: '',
+            data: Object.values(statusCounts),
+            backgroundColor: ['rgba(255, 205, 86, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+            borderColor: ['rgb(255, 205, 86)', 'rgb(54, 162, 235)', 'rgb(255, 99, 132)'],
+            borderWidth: 2,
+            lineTension: 0.4,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              boxWidth: 0,
+            }
+          },
+          title: {
+            display: true,
+            text: 'Top 100 request states'
+          }
+        }
+      }
+    }
+
+    CreateChart(requestChartWrapper, requestCountChartConfigs)
+    CreateChart(statusChartWrapper, requestStatusChartConfigs)
+  } else {
+    requestChartWrapper.insertAdjacentHTML('beforebegin', `
+    <div class="alert alert-secondary">there is no data to show</div>
+    `)
+
+    viewChartWrapper.insertAdjacentHTML('beforebegin', `
+    <div class="alert alert-secondary">there is no data to show</div>
+    `)
+  }
+}
+
+const GroupData = (data) => {
+  const result = data.reduce((acc, item) => {
+    const date = new Date(item.createdAt).toISOString().slice(0, 10);
+    acc[date] = (acc[date] || 0) + 1;
+    return acc;
+  }, {});
+
+  return Object.entries(result);
+}
+
+export const ShowRequestDetailesModal = async (reqID) => {
+  ToggleGlobalLoader('Getting data ...')
+
+  const response = await fetch(`${baseURL}/request/${reqID}`, {
+    credentials: 'include'
+  })
+
+  const result = await response.json()
+
+  if (response.status !== 200) {
+    ToggleGlobalLoader()
+    console.log(response)
+    return ToastBox(
+      'error',
+      `error ${response.status} - refresh page and try again!`,
+      3000,
+      null,
+      null
+    )
+  }
+
+  const request = result.request[0]
+  const detailesModalParent = document.querySelector('.detailes-modal')
+  const detailesModalDataWrapper = document.querySelector('.detailes-modal__body')
+  const detailesModalCloseBtn = document.getElementById('detailes-modal-close')
+
+  detailesModalDataWrapper.innerHTML = ''
+  detailesModalDataWrapper.insertAdjacentHTML('beforeend', `
+    <ul class="ad mb-4">
+      <li class="ad-cover">
+        <img class="d-block w-100 rounded" src="${request.ad.cover}">
+      </li>
+      <li class="ad-title">
+        Title:
+        <span>
+          ${request.ad.title}
+        </span>
+      </li>
+      <li class="ad-propType">
+        Property type:
+        <span>
+          ${request.ad.propType}
+        </span>
+      </li>
+      <li class="ad-adType">
+        Ad type:
+        <span>
+          ${request.ad.adType}
+        </span>
+      </li>
+      <li class="ad-primaryPrice">
+        ${TitleGenerator(request.ad.adType)[0]}
+        <span>
+          ${request.ad.primaryPrice.toLocaleString()}
+        </span>
+      </li>
+      <li class="ad-secondaryPrice">
+      ${TitleGenerator(request.ad.adType)[1]}
+        <span>
+        ${request.ad.secondaryPrice.toLocaleString()}
+        </span>
+      </li>
+      <li class="ad-full-info">
+        <a href="./ad-detailes.html?item=${request.ad._id}" class="ad-info-btn btn-style">
+          ad's full info
+        </a>
+      </li>
+    </ul>
+    <ul class="applicant mt-2 pt-4 border-top">
+      <li class="applicant-profile">
+        <img src="${request.user.profile}" class="d-block w-100">
+      </li>
+      <li class="applicant-name">
+        Name:
+        <span>
+          ${request.user.name}
+        </span>
+      </li>
+      <li class="applicant-email">
+        Email:
+        <span>
+          ${request.user.email}
+        </span>
+      </li>
+      <li class="applicant-phone">
+        Phone:
+        <span>
+          ${request.user.phone}
+        </span>
+      </li>
+    </ul>
+  `)
+
+  detailesModalCloseBtn.addEventListener('click', () => {
+    detailesModalParent.classList.add('hide')
+  })
+
+  window.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      detailesModalParent.classList.add('hide')
+    }
+  })
+
+  detailesModalParent.classList.remove('hide')
+
+  ToggleGlobalLoader()
+}
+
+export const ShowRequestStatusModal = async (reqID, reqState, email) => {
+  const statusModal = document.querySelector('.status-modal')
+  const statusForm = document.querySelector('.status-form')
+  const pendingRadioBtn = document.getElementById('pending-rdo')
+  const completeRadioBtn = document.getElementById('complete-rdo')
+  const cancelRadioBtn = document.getElementById('cancel-rdo')
+  const subjectInput = document.getElementById('subject-input')
+  const messageInput = document.getElementById('msg-input')
+  const statusModalCloseBtn = document.getElementById('status-modal-close')
+
+  subjectInput.value = ''
+  messageInput.value = ''
+
+  switch (reqState) {
+    case 'pending':
+      pendingRadioBtn.checked = true
+      break;
+    case 'completed':
+      completeRadioBtn.checked = true
+      break;
+    case 'canceled':
+      cancelRadioBtn.checked = true
+      break;
+    default:
+      statusModal.classList.add('hide')
+      break;
+  }
+
+  statusForm.setAttribute('data-id', reqID)
+  statusForm.setAttribute('data-user', email)
+  statusModal.classList.remove('hide')
+
+  statusModalCloseBtn.addEventListener('click', () => {
+    statusModal.classList.add('hide')
+  })
+
+  window.addEventListener('click', event => {
+    if (event.target == statusModal) {
+      statusModal.classList.add('hide')
+    }
+  })
+
+  window.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      statusModal.classList.add('hide')
+    }
+  })
+}
+
+export const UpdateRequestStatus = async (target, tableParentElem, page, itemPerPage) => {
+  const statusModal = document.querySelector('.status-modal')
+
+  ToggleGlobalLoader('Updating ...')
+  statusModal.classList.add('hide')
+
+  const pendingRadioBtn = document.getElementById('pending-rdo')
+  const completeRadioBtn = document.getElementById('complete-rdo')
+  const cancelRadioBtn = document.getElementById('cancel-rdo')
+  const subjectInput = document.getElementById('subject-input')
+  const messageInput = document.getElementById('msg-input')
+  const email = target.getAttribute('data-user')
+  const id = target.getAttribute('data-id')
+  let state = null
+
+  switch (true) {
+    case pendingRadioBtn.checked:
+      state = 'pending'
+      break;
+    case completeRadioBtn.checked:
+      state = 'completed'
+      break;
+    case cancelRadioBtn.checked:
+      state = 'canceled'
+      break;
+    default:
+      state = null
+      break;
+  }
+
+  let bodyObject = {
+    email,
+    message: IsNotEmpty(messageInput.value.trim()) ? messageInput.value.trim() : null,
+    subject: IsNotEmpty(subjectInput.value.trim()) ? subjectInput.value.trim() : null
+  }
+
+  const response = await fetch(`${baseURL}/request/${id}?status=${state}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const result = await response.json()
+
+  if (response.status === 200) {
+    // Todo => rerender dinamic datas
+    ToggleGlobalLoader()
+    ToastBox(
+      'success',
+      result.msg,
+      3000,
+      null,
+      null
+    )
+  } else {
+    ToggleGlobalLoader()
+    ToastBox(
+      'error',
+      result.msg,
+      3000,
+      null,
+      null
+    )
+  }
+}
+
+export const DeleteRequest = async (reqID) => {
+  console.log(reqID)
+}

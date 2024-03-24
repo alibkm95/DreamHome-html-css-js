@@ -221,6 +221,13 @@
                   </option>
                 </select>
               </div>
+              <div class="filter__body-user filter-input">
+                <label for="user-type">
+                  <i class="fa-solid fa-user"></i>
+                  User:
+                </label>
+                <input type="text" name="user-type" id="user-type" placeholder="insert users email ...">
+              </div>
               <div class="filter__body-submit filter-input">
                 <button type="submit" class="filter__body-submit-btn">
                   Apply filters
@@ -240,20 +247,6 @@
               </p>
             </div>
             <div class="requests__body">
-
-              <div class="not-found">
-                <div class="not-found__container">
-                  <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
-                  <p class="not-found__text text-center fs-3">
-                    Sorry. We could not find any results ...
-                  </p>
-                  <a href="./index.html" class="not-found__link btn-style">
-                    Back to Home
-                    <i class="fa-solid fa-home"></i>
-                  </a>
-                </div>
-              </div>
-
               <div class="data-table">
                 <table class="table table-striped table-hover border">
                   <thead>
@@ -266,53 +259,12 @@
                     </tr>
                   </thead>
                   <tbody id="data-container">
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        ad title
-                      </td>
-                      <td>
-                        users name
-                      </td>
-                      <td>
-                        status
-                      </td>
-                      <td>
-                        <div class="dropdown">
-                          <button class="btn dropdown-toggle" type="button" id="dropdownBtn" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            actions
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownBtn">
-                            <li>
-                              <button class="dropdown-item">
-                                Detailes
-                              </button>
-                            </li>
-                            <li>
-                              <button class="dropdown-item">
-                                Manage status
-                              </button>
-                            </li>
-                            <li>
-                              <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                              <button class="dropdown-item text-danger">
-                                Delete request
-                              </button>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
+                    <!-- insert by js -->
                   </tbody>
                 </table>
               </div>
 
-              <div class="pagination my-4">
+              <div class="pagination my-4 hide">
                 <div class="pagination__container">
                   <button class="pagination__btn prev-btn">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -321,7 +273,6 @@
                   <div class="pagination__actions">
                     <span class="pagination__current">
                       <!-- insert from js -->
-                      Page <span class="pagination__current-active">3</span> of 10
                     </span>
                     <div class="pagination__jump">
                       <label for="jump-input" class="pagination__jump-label">
@@ -359,69 +310,7 @@
               </button>
             </div>
             <div class="detailes-modal__body py-3">
-              <ul class="ad mb-4">
-                <li class="ad-cover">
-                  <img class="d-block w-100 rounded" src="./assets/images/download.png">
-                </li>
-                <li class="ad-title">
-                  title:
-                  <span>
-                    the ads title
-                  </span>
-                </li>
-                <li class="ad-propType">
-                  propType:
-                  <span>
-                    the ads propType
-                  </span>
-                </li>
-                <li class="ad-adType">
-                  adType:
-                  <span>
-                    the ads adType
-                  </span>
-                </li>
-                <li class="ad-primaryPrice">
-                  primaryPrice:
-                  <span>
-                    the ads primaryPrice
-                  </span>
-                </li>
-                <li class="ad-secondaryPrice">
-                  secondaryPrice:
-                  <span>
-                    the ads secondaryPrice
-                  </span>
-                </li>
-                <li class="ad-full-info">
-                  <a href="#" class="ad-info-btn btn-style">
-                    ad's full info
-                  </a>
-                </li>
-              </ul>
-              <ul class="applicant mt-2 pt-4 border-top">
-                <li class="applicant-profile">
-                  <img src="./assets/images/user.svg" class="d-block w-100">
-                </li>
-                <li class="applicant-name">
-                  name:
-                  <span>
-                    users name
-                  </span>
-                </li>
-                <li class="applicant-email">
-                  email:
-                  <span>
-                    users email
-                  </span>
-                </li>
-                <li class="applicant-phone">
-                  phone:
-                  <span>
-                    users phone
-                  </span>
-                </li>
-              </ul>
+              <!-- insert from js -->
             </div>
           </div>
         </div>
@@ -442,15 +331,15 @@
                   Select status type:
                 </p>
                 <div class="status-form__input radio-input-group">
-                  <input type="radio" class="btn-check" name="radio-group" id="pending" autocomplete="off"
+                  <input type="radio" class="btn-check" name="radio-group" id="pending-rdo" autocomplete="off"
                     checked>
-                  <label class="btn btn-outline-warning text-dark" for="pending">Pending</label>
+                  <label class="btn btn-outline-warning text-dark" for="pending-rdo">Pending</label>
 
-                  <input type="radio" class="btn-check" name="radio-group" id="complete" autocomplete="off">
-                  <label class="btn btn-outline-success" for="complete">Complete</label>
+                  <input type="radio" class="btn-check" name="radio-group" id="complete-rdo" autocomplete="off">
+                  <label class="btn btn-outline-success" for="complete-rdo">Complete</label>
 
-                  <input type="radio" class="btn-check" name="radio-group" id="cancel" autocomplete="off">
-                  <label class="btn btn-outline-danger" for="cancel">Cancel</label>
+                  <input type="radio" class="btn-check" name="radio-group" id="cancel-rdo" autocomplete="off">
+                  <label class="btn btn-outline-danger" for="cancel-rdo">Cancel</label>
                 </div>
                 <p class="status-form__text py-2 mt-2">
                   Inform applicant with email:

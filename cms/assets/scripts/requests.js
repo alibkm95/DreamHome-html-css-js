@@ -1,70 +1,123 @@
+import {
+  RenderRequestCharts,
+  RenderNotFound,
+  GetUrlParams,
+  GetAllRequests,
+  RenderRequestsTable,
+  ShowRequestDetailesModal,
+  ShowRequestStatusModal,
+  DeleteRequest,
+  AddParamToUrl,
+  ToggleGlobalLoader,
+  UpdateRequestStatus,
+  NextPageHandler,
+  PrevPageHandler,
+  JumpToPageHandler,
+} from './functions/functions.js'
 
-const requestChartWrapper = document.getElementById('charts-request-wrapper')
-const statusChartWrapper = document.getElementById('charts-status-wrapper')
+window.ShowRequestDetailesModal = ShowRequestDetailesModal
+window.ShowRequestStatusModal = ShowRequestStatusModal
+window.DeleteRequest = DeleteRequest
 
-const requestChart = new Chart(requestChartWrapper, {
-  type: 'line',
-  data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      label: 'Views',
-      data: [5, 2, 6, 8, 4, 4, 7, 5, 6, 10, 6, 12],
-      backgroundColor: 'rgba(70, 10, 255, 0.5)',
-      borderColor: 'rgba(70, 10, 255, 1)',
-      borderWidth: 2,
-      lineTension: 0.4,
-      fill: true
-    }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      y: {
-        min: 0
-      }
-    },
-    responsive: true,
-    maintainAspectRatio: false
+window.addEventListener('load', async () => {
+  ToggleGlobalLoader('Loading ...')
+
+  let maxDate = GetUrlParams('maxDate') || ''
+  let minDate = GetUrlParams('minDate') || ''
+  let reqStatus = GetUrlParams('status') || 'all'
+  let userEmail = GetUrlParams('user') || ''
+  let page = GetUrlParams('page') || 1
+  let itemPerPage = 20
+  let totalPages = null
+
+  const filterBar = document.getElementById('filter-form')
+  const maxDateInput = document.getElementById('max-date')
+  const minDateInput = document.getElementById('min-date')
+  const statusTypeInput = document.getElementById('status-type')
+  const userInput = document.getElementById('user-type')
+  const statusForm = document.querySelector('.status-form')
+
+  maxDateInput.value = maxDate
+  minDateInput.value = minDate
+  statusTypeInput.value = reqStatus
+  userInput.value = userEmail
+
+  await RenderRequestCharts()
+
+  let reqOptions = {
+    status: reqStatus,
+    page,
+    itemPerPage,
   }
-})
 
-const statusChart = new Chart(statusChartWrapper, {
-  type: 'bar',
-  data: {
-    labels: ['a', 'b', 'c'],
-    datasets: [
-      {
-        label: 'pending',
-        data: [7, 12, 19],
-        borderWidth: 2,
-        lineTension: 0.4,
-        fill: true
-      },
-      {
-        label: 'completed',
-        data: [6, 13, 5],
-        borderWidth: 2,
-        lineTension: 0.4,
-        fill: true
-      },
-      {
-        label: 'canceled',
-        data: [16, 9, 4],
-        // backgroundColor: ['#ffd900', '#ff3709'],
-        borderWidth: 2,
-        lineTension: 0.4,
-        fill: true
-      }
+  if (
+    !isNaN(Date.parse(new Date(maxDate).toLocaleDateString('en-CA'))) &&
+    !isNaN(Date.parse(new Date(minDate).toLocaleDateString('en-CA')))
+  ) {
+    reqOptions.maxDate = maxDate
+    reqOptions.minDate = minDate
+  }
+
+  if (userEmail.length) {
+    reqOptions.user = userEmail
+  }
+
+  const requestsData = await GetAllRequests(reqOptions)
+
+  const requests = requestsData.requests
+  totalPages = requestsData.numOfPages
+
+  if (!requests.length) {
+    document.querySelector('.charts').classList.add('hide')
+    document.querySelector('.filter').classList.add('hide')
+    RenderNotFound(document.querySelector('.requests__body'))
+    ToggleGlobalLoader()
+    return
+  }
+
+  const dataTabelParentElem = document.getElementById('data-container')
+
+  RenderRequestsTable(dataTabelParentElem, requests, page, itemPerPage)
+
+  filterBar.addEventListener('submit', event => {
+    event.preventDefault()
+
+    const filterPropsArr = [
+      { key: 'maxDate', value: maxDateInput.value.length ? new Date(maxDateInput.value).toLocaleDateString('en-CA') : '' },
+      { key: 'minDate', value: minDateInput.value.length ? new Date(minDateInput.value).toLocaleDateString('en-CA') : '' },
+      { key: 'status', value: statusTypeInput.value },
+      { key: 'user', value: userInput.value.trim().length ? userInput.value.trim() : '' },
+      { key: 'page', value: 1 },
     ]
-  },
-  options: {
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true
-      }
-    }
+
+    AddParamToUrl(filterPropsArr)
+  })
+
+  statusForm.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    await UpdateRequestStatus(event.target, dataTabelParentElem, page, itemPerPage)
+  })
+
+  ToggleGlobalLoader()
+
+  if (totalPages <= 1) {
+    return
   }
+
+  const paginationParent = document.querySelector('.pagination')
+  const nextBtn = document.querySelector('.next-btn')
+  const prevBtn = document.querySelector('.prev-btn')
+  const pagesInfoElem = document.querySelector('.pagination__current')
+  const jumpInput = document.getElementById('jump-input')
+  const jumpBtn = document.querySelector('.jump-btn')
+
+  paginationParent.classList.remove('hide')
+
+  nextBtn.addEventListener('click', () => NextPageHandler(page ? page : 1, totalPages))
+  prevBtn.addEventListener('click', () => PrevPageHandler(page ? page : 1))
+  jumpBtn.addEventListener('click', () => JumpToPageHandler(jumpInput.value.trim(), totalPages))
+
+  pagesInfoElem.insertAdjacentHTML('afterbegin', `
+    Page <span class="pagination__current-active">${page ? page : 1}</span> of ${totalPages}
+  `)
 })

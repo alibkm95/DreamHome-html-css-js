@@ -1,10 +1,10 @@
 module.exports = {
-  service: process.env.EMAIL_SERVICE ,//|| 'gmail',
-  host: process.env.EMAIL_HOST ,//|| 'smtp.gmail.com',
-  port: process.env.EMAIL_HOST_PORT ,//|| 587,
+  service: process.env.EMAIL_SERVICE ,
+  host: process.env.EMAIL_HOST ,
+  port: process.env.EMAIL_HOST_PORT ,
   secure: false,
   auth: {
-    user: process.env.EMAIL_AUTH_USER ,//|| 'rocketcarmail@gmail.com',
-    pass: process.env.EMAIL_AUTH_PASSWORD //|| 'cdwhdngatnwngmhu'
+    user: process.env.EMAIL_AUTH_USER ,
+    pass: process.env.EMAIL_AUTH_PASSWORD 
   }
 } 

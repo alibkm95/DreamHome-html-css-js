@@ -34,18 +34,20 @@
       "maxDate"
       "minDate"
       "status"
+      "user"
       "submit";
 
     @include m.media(sm) {
       grid-template-areas:
         "maxDate minDate"
-        "status submit";
+        "status user"
+        "submit submit";
     }
 
-    @include m.media(md) {
+    @include m.media(lg) {
       grid-template-areas:
-        "maxDate minDate status"
-        "submit submit submit";
+        "maxDate minDate status user"
+        "submit submit submit submit";
     }
 
     &-max-date {
@@ -58,6 +60,10 @@
 
     &-status {
       grid-area: status;
+    }
+
+    &-user{
+      grid-area: user;
     }
 
     &-submit {
@@ -265,6 +271,8 @@
         width: 100%;
         max-width: f.rem(200);
         border-radius: 50%;
+        overflow: hidden;
+        box-shadow: 2px 2px f.rem(10) var(--black-60);
 
         img {
           aspect-ratio: 1 / 1;
@@ -278,6 +286,7 @@
         font-weight: bolder;
 
         span {
+          text-transform: none;
           display: block;
           margin-left: f.rem(5);
           font-size: f.rem(14);
@@ -293,7 +302,7 @@
   background-color: var(--black-20);
   backdrop-filter: blur(5px);
   z-index: 100000;
-  // display: flex;
+  display: flex;
   align-items: start;
   justify-content: center;
 

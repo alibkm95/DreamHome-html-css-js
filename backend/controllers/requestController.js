@@ -1,6 +1,8 @@
 const Request = require('../models/Request')
+const User = require('../models/User')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
+const sendEmail = require('../utils/sendEmail')
 
 const createRequest = async (req, res) => {
 
@@ -34,7 +36,7 @@ const createRequest = async (req, res) => {
 
 const getAllRequests = async (req, res) => {
 
-  const { maxDate, minDate, user: userID, ad: adId } = req.query
+  const { maxDate, minDate, user: userMail, ad: adId, status } = req.query
 
   let queryObject = {}
 
@@ -45,12 +47,28 @@ const getAllRequests = async (req, res) => {
     }
   }
 
-  if (userID) {
-    queryObject.user = userID
+  if (userMail) {
+    const user = await User.findOne({ email: userMail })
+
+    if (user) {
+      queryObject.user = user._id
+    }
   }
 
   if (adId) {
     queryObject.ad = adId
+  }
+
+  if (status && status === 'pending') {
+    queryObject.status = 'pending'
+  }
+
+  if (status && status === 'completed') {
+    queryObject.status = 'completed'
+  }
+
+  if (status && status === 'canceled') {
+    queryObject.status = 'canceled'
   }
 
   let result = Request.find(queryObject)
@@ -84,7 +102,7 @@ const getSingleRequest = async (req, res) => {
   const request = await Request.find({ _id: reqId })
     .populate({
       path: 'user',
-      select: '_id name email'
+      select: '_id name email profile phone'
     })
     .populate({
       path: 'ad'
@@ -114,6 +132,7 @@ const updateRequest = async (req, res) => {
 
   const { status } = req.query
   const { id: reqId } = req.params
+  const { email, subject, message } = req.body
 
   if (!status) {
     throw new CustomError.BadRequestError('update failed! status must be provided')
@@ -127,6 +146,18 @@ const updateRequest = async (req, res) => {
 
   request.status = status
   await request.save()
+
+  if (email && subject && message) {
+    try {
+      await sendEmail({
+        to: email,
+        subject,
+        html: `<p>${message}</p>`
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   res.status(StatusCodes.OK).json({ request, msg: 'update request successfully' })
 }
