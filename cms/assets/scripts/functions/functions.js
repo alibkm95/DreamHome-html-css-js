@@ -394,6 +394,9 @@ export const RenderRequestsTable = (parentElem, items, page, itemPerPage) => {
         <td>
           ${item.user.name}
         </td>
+        <td>
+          ${new Date(item.createdAt).toLocaleDateString('en-CA')}
+        </td>
         <td class="${ClassGenerator(item.status)}">
           ${item.status}
         </td>
@@ -654,7 +657,7 @@ export const UpdateCurrentAd = async (adId, inputGroup) => {
     yearOfCunstruction: inputGroup.YOCInput.value.trim().length ? Number(inputGroup.YOCInput.value.trim()) : 0,
     location: inputGroup.locationInput.value.trim(),
     district: inputGroup.districtInput.value.trim().length ? Number(inputGroup.districtInput.value.trim()) : 0,
-    publish: inputGroup.publishInput.checked ? true : false,
+    publish: inputGroup.publishInput.selectedIndex === 0 ? true : false,
     description: inputGroup.descriptionInput.value.trim()
   }
 
@@ -1275,6 +1278,15 @@ export const DeleteRequest = async (reqID) => {
           null,
           () => { window.location.reload() }
         )
+      } else if (response.status === 403) {
+        ToggleGlobalLoader()
+        ToastBox(
+          'error',
+          'only root admin able to remove request',
+          3000,
+          null,
+          null
+        )
       } else {
         ToggleGlobalLoader()
         ToastBox(
@@ -1392,8 +1404,50 @@ export const RenderConversations = (messages) => {
   })
 }
 
-export const DeleteTicket = async (ticketID) => {
-  console.log(ticketID)
+export const DeleteTicket = (ticketID) => {
+  MsgBox(
+    'warning',
+    'Are you sure? after deleting there is no way to recover data!',
+    'Cancel',
+    'Delete',
+    async () => {
+      ToggleGlobalLoader('Deleting ...')
+
+      const response = await fetch(`${baseURL}/tickets/${ticketID}`, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
+
+      const result = await response.json()
+
+      if (response.status === 200) {
+        ToggleGlobalLoader()
+        RedirectTo('./tickets.html')
+      } else if (response.status === 403) {
+        ToggleGlobalLoader()
+        ToastBox(
+          'error',
+          'only root admin able to remove ticket',
+          3000,
+          null,
+          null
+        )
+      } else {
+        ToggleGlobalLoader()
+        ToastBox(
+          'error',
+          result.msg,
+          3000,
+          null,
+          null
+        )
+      }
+    },
+    null
+  )
 }
 
 export const CloseTicket = (ticketID) => {

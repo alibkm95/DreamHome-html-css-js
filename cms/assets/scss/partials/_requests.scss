@@ -2,6 +2,10 @@
 @use '../utils/mixins' as m;
 @use '../utils/variables' as v;
 
+.swal2-container {
+  z-index: 10000 !important;
+}
+
 .charts {
 
   &-inner {
