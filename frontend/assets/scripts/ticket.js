@@ -29,20 +29,20 @@ window.addEventListener('load', async () => {
   ticketTitleElem.innerText = ticket.subject
   ticketDateElem.innerText = `${new Date(ticket.createdAt).toLocaleDateString()} - ${new Date(ticket.createdAt).toLocaleTimeString()}`
 
-  switch (ticket.ticketStatus) {
-    case 'pending':
-      ticketStatusElem.classList.add('text-warning')
-      break;
-    case 'answered':
-      ticketStatusElem.classList.add('text-success')
-      break;
-    case 'closed':
-      ticketStatusElem.classList.add('text-danger')
-      break;
-    default:
-      ticketStatusElem.classList.add('')
-      break;
-  }
+  // switch (ticket.ticketStatus) {
+  //   case 'pending':
+  //     ticketStatusElem.classList.add('text-warning')
+  //     break;
+  //   case 'answered':
+  //     ticketStatusElem.classList.add('text-success')
+  //     break;
+  //   case 'closed':
+  //     ticketStatusElem.classList.add('text-danger')
+  //     break;
+  //   default:
+  //     ticketStatusElem.classList.add(' ')
+  //     break;
+  // }
 
   ticketStatusElem.innerText = `${ticket.ticketStatus}`
 

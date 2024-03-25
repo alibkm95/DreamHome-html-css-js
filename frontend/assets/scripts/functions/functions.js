@@ -2518,7 +2518,7 @@ export const RenderUsersSaveList = async () => {
               ${saveItem.ad.propType} | ${saveItem.ad.adType}
             </span>
             <span class="sm-box__subtext">
-              saved on: ${new Date(saveItem.createdAt).toLocaleDateString('')}
+              saved on: ${new Date(saveItem.createdAt).toLocaleDateString('en-CA')}
             </span>
           </div>
           <div class="sm-box__right">
@@ -2791,6 +2791,7 @@ export const GetTicketDetailes = async () => {
   })
 
   const response = await result.json()
+  console.log(response)
 
   if (result.status === 200) {
     return response.ticket
@@ -2813,7 +2814,7 @@ export const RenderConversation = (ticketInfo) => {
             ${message.creator.name}
             </span>
             <span class="msg__header-info-date">
-            ${new Date(message.createdAt).toLocaleDateString() + ' - ' + new Date(message.createdAt).toLocaleTimeString()}
+            ${new Date(message.createdAt).toLocaleDateString('en-CA') + ' - ' + new Date(message.createdAt).toLocaleTimeString('en-CA')}
             </span>
             <span class="msg__header-info-role">
             ${message.creator.role.toLowerCase()}

@@ -95,7 +95,7 @@ window.addEventListener('load', async () => {
 
   statusForm.addEventListener('submit', async (event) => {
     event.preventDefault()
-    await UpdateRequestStatus(event.target, dataTabelParentElem, page, itemPerPage)
+    await UpdateRequestStatus(event.target)
   })
 
   ToggleGlobalLoader()

@@ -105,11 +105,11 @@ const ClassGenerator = (status) => {
     return 'text-warning'
   }
 
-  if (status === 'completed') {
+  if (status === 'completed' || status === 'answered') {
     return 'text-success'
   }
 
-  if (status === 'canceled') {
+  if (status === 'canceled' || status === 'closed') {
     return 'text-danger'
   }
 }
@@ -351,6 +351,7 @@ export const GetAllAds = async (reqOptions = null) => {
 }
 
 export const RenderAdsTable = (parentElem, items, page, itemPerPage) => {
+  parentElem.innerHTML = ''
   items.map((item, index) => {
     parentElem.insertAdjacentHTML('beforeend', `
       <tr>
@@ -385,7 +386,7 @@ export const RenderRequestsTable = (parentElem, items, page, itemPerPage) => {
     parentElem.insertAdjacentHTML('beforeend', `
       <tr>
         <th scope="row">
-        ${(index + 1) + ((page - 1) * itemPerPage)}
+          ${(index + 1) + ((page - 1) * itemPerPage)}
         </th>
         <td>
           ${item.ad.title}
@@ -423,6 +424,37 @@ export const RenderRequestsTable = (parentElem, items, page, itemPerPage) => {
               </li>
             </ul>
           </div>
+        </td>
+      </tr>
+    `)
+  })
+}
+
+export const RenderTicketsTable = (parentElem, items, page, itemPerPage) => {
+  parentElem.innerHTML = ''
+  items.map((item, index) => {
+    parentElem.insertAdjacentHTML('beforeend', `
+      <tr>
+        <th scope="row">
+        ${(index + 1) + ((page - 1) * itemPerPage)}
+        </th>
+        <td>
+          ${item.subject}
+        </td>
+        <td>
+          <p class="sender-name">${item.user.name}</p>
+          <p class="sender-email">${item.user.email}</p>
+        </td>
+        <td>
+          ${new Date(item.createdAt).toLocaleDateString('en-CA')}
+        </td>
+        <td class="${ClassGenerator(item.ticketStatus)}">
+          ${item.ticketStatus}
+        </td>
+        <td>
+          <a href="./ticket-detailes.html?item=${item._id}" class="btn-style tickets__link">
+            Detailes
+          </a>
         </td>
       </tr>
     `)
@@ -777,6 +809,22 @@ export const GetAdDetailes = async (adId) => {
   return null
 }
 
+export const GetTicketDetailes = async (ticketID) => {
+
+  if (!ticketID) return null
+
+  const response = await fetch(`${baseURL}/tickets/${ticketID}`, {
+    credentials: 'include'
+  })
+
+  if (response.status === 200) {
+    const result = await response.json()
+    return result.ticket
+  }
+
+  return null
+}
+
 export const RenderRequestCharts = async () => {
   const requestChartWrapper = document.getElementById('charts-request-wrapper')
   const statusChartWrapper = document.getElementById('charts-status-wrapper')
@@ -864,6 +912,99 @@ export const RenderRequestCharts = async () => {
     `)
 
     viewChartWrapper.insertAdjacentHTML('beforebegin', `
+    <div class="alert alert-secondary">there is no data to show</div>
+    `)
+  }
+}
+
+export const RenderTicketCharts = async () => {
+  const ticketChartWrapper = document.getElementById('charts-ticket-wrapper')
+  const statusChartWrapper = document.getElementById('charts-status-wrapper')
+
+  const ticketsData = await GetAllTickets({ itemPerPage: 100 })
+
+  if (ticketsData && ticketsData.tickets?.length) {
+
+    const ticketsGroup = GroupData(ticketsData.tickets)
+
+    const statusCounts = {
+      pending: 0,
+      answered: 0,
+      closed: 0,
+    }
+
+    ticketsData.tickets.forEach(ticket => {
+      const status = ticket.ticketStatus;
+      statusCounts[status]++
+    })
+
+    let ticketCountChartConfigs = {
+      type: 'line',
+      data: {
+        labels: ticketsGroup.map(req => { return req[0] }),
+        datasets: [{
+          label: 'Tickets (top 100)',
+          data: ticketsGroup.map(req => { return req[1] }),
+          backgroundColor: 'rgba(70, 10, 255, 0.5)',
+          borderColor: 'rgba(70, 10, 255, 1)',
+          borderWidth: 2,
+          lineTension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            min: 0
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    }
+
+    let ticketStatusChartConfigs = {
+      type: 'bar',
+      data: {
+        labels: ['pending', 'answered', 'closed'],
+        datasets: [
+          {
+            label: '',
+            data: Object.values(statusCounts),
+            backgroundColor: ['rgba(255, 205, 86, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+            borderColor: ['rgb(255, 205, 86)', 'rgb(54, 162, 235)', 'rgb(255, 99, 132)'],
+            borderWidth: 2,
+            lineTension: 0.4,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              boxWidth: 0,
+            }
+          },
+          title: {
+            display: true,
+            text: 'Top 100 request states'
+          }
+        }
+      }
+    }
+
+    CreateChart(ticketChartWrapper, ticketCountChartConfigs)
+    CreateChart(statusChartWrapper, ticketStatusChartConfigs)
+
+  } else {
+    ticketChartWrapper.insertAdjacentHTML('beforebegin', `
+    <div class="alert alert-secondary">there is no data to show</div>
+    `)
+
+    statusChartWrapper.insertAdjacentHTML('beforebegin', `
     <div class="alert alert-secondary">there is no data to show</div>
     `)
   }
@@ -1036,7 +1177,7 @@ export const ShowRequestStatusModal = async (reqID, reqState, email) => {
   })
 }
 
-export const UpdateRequestStatus = async (target, tableParentElem, page, itemPerPage) => {
+export const UpdateRequestStatus = async (target) => {
   const statusModal = document.querySelector('.status-modal')
 
   ToggleGlobalLoader('Updating ...')
@@ -1084,14 +1225,13 @@ export const UpdateRequestStatus = async (target, tableParentElem, page, itemPer
   const result = await response.json()
 
   if (response.status === 200) {
-    // Todo => rerender dinamic datas
     ToggleGlobalLoader()
     ToastBox(
       'success',
       result.msg,
       3000,
       null,
-      null
+      () => { window.location.reload() }
     )
   } else {
     ToggleGlobalLoader()
@@ -1106,5 +1246,203 @@ export const UpdateRequestStatus = async (target, tableParentElem, page, itemPer
 }
 
 export const DeleteRequest = async (reqID) => {
-  console.log(reqID)
+
+  MsgBox(
+    'warning',
+    'Are you sure about delete this request? after delete there is no war to recover data!',
+    'Cancel',
+    'Remove',
+    async () => {
+
+      ToggleGlobalLoader('Removing ...')
+
+      const response = await fetch(`${baseURL}/request/${reqID}`, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
+
+      const result = await response.json()
+
+      if (response.status === 200) {
+        ToggleGlobalLoader()
+        ToastBox(
+          'success',
+          result.msg,
+          3000,
+          null,
+          () => { window.location.reload() }
+        )
+      } else {
+        ToggleGlobalLoader()
+        ToastBox(
+          'error',
+          result.msg,
+          3000,
+          null,
+          null
+        )
+      }
+    },
+    null
+  )
+}
+
+export const RenderTicketDetailes = async (ticketID, ticketObject = null) => {
+  let ticket = null
+
+  if (ticketObject) {
+    ticket = ticketObject
+  } else {
+    ticket = await GetTicketDetailes(ticketID)
+  }
+
+  if (!ticket) {
+    return RedirectTo('./tickets.html')
+  }
+
+  const ticketInfosContainer = document.querySelector('.ticket__info-container')
+  ticketInfosContainer.innerHTML = ''
+
+  ticketInfosContainer.insertAdjacentHTML('afterbegin', `
+    <span class="ticket__info-title">
+      <i class="fa-solid fa-circle"></i>
+      title:
+    </span>
+    <p class="ticket__info-text title-text fs-5" id="ticket-title">
+      ${ticket.subject}
+    </p>
+    <span class="ticket__info-title">
+      <i class="fa-solid fa-clock"></i>
+      created at:
+    </span>
+    <p class="ticket__info-text" id="ticket-date">
+      ${new Date(ticket.createdAt).toLocaleString('en-CA')}
+    </p>
+    <span class="ticket__info-title">
+      <i class="fa-solid fa-mug-hot"></i>
+      status:
+    </span>
+    <p class="ticket__info-text" id="ticket-status">
+      ${ticket.ticketStatus}
+    </p>
+    <span class="ticket__info-title">
+      <i class="fa-solid fa-user"></i>
+      creator:
+    </span>
+    <p class="ticket__info-text" id="ticket-user">
+      ${ticket.user.name}
+    </p>
+    ${ticket.ticketStatus !== 'closed' ?
+      `
+      <button class="ticket__info-delete btn btn-warning" onclick="CloseTicket('${ticket._id}')">
+        close this ticket
+      </button>
+      `
+      :
+      `
+      <div class="alert alert-warning text-center my-0">
+        this ticket is closed !!!
+      </div>
+      `
+    }
+    <button class="ticket__info-delete btn btn-danger" onclick="DeleteTicket('${ticket._id}')">
+      Delete this ticket
+    </button>
+  `)
+
+  RenderConversations(ticket.conversations)
+}
+
+export const RenderConversations = (messages) => {
+  const messagesWrapper = document.getElementById('message-wrapper')
+  messagesWrapper.innerHTML = ''
+
+  messages.forEach(msg => {
+    messagesWrapper.insertAdjacentHTML('beforeend', `
+      <div class="msg ${msg.creator.role === 'USER' ? 'msg-user' : 'msg-admin'}">
+        <div class="msg__header">
+          <img src="${msg.creator.profile}" alt="user" class="msg__header-img">
+          <div class="msg__header-info">
+            <span class="msg__header-info-user">
+            ${msg.creator.name}
+            </span>
+            <span class="msg__header-info-date">
+            ${new Date(msg.createdAt).toLocaleDateString() + ' - ' + new Date(msg.createdAt).toLocaleTimeString()}
+            </span>
+            <span class="msg__header-info-role">
+            ${msg.creator.role.toLowerCase()}
+            </span>
+          </div>
+        </div>
+        <div class="msg__body">
+          <div class="msg__body-text">
+            ${msg.message}
+          </div>
+          <div class="msg__body-seen">
+          ${msg.creator.role !== 'USER' ? `
+            <i class="fa-solid ${msg.seenByUser ? 'fa-check-double' : 'fa-check'}"></i>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `)
+  })
+}
+
+export const DeleteTicket = async (ticketID) => {
+  console.log(ticketID)
+}
+
+export const CloseTicket = async (ticketID) => {
+  console.log(ticketID)
+}
+
+export const SendNewMessage = async (parent, ticketID) => {
+  ToggleGlobalLoader('Sending ...')
+  const messageInput = document.getElementById('message-input')
+
+  messageInput.addEventListener('focus', () => {
+    parent.classList.remove('border-danger')
+  })
+
+  const isMessageProvided = IsNotEmpty(messageInput.value)
+  if (!isMessageProvided) {
+    ToggleGlobalLoader()
+    ToastBox('error', 'message content is required', 3000, null, null)
+    parent.classList.add('border-danger')
+    return
+  }
+
+  const bodyObject = {
+    newMessage: messageInput.value.trim()
+  }
+
+  const response = await fetch(`${baseURL}/tickets/addNewMsg/${ticketID}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyObject),
+    credentials: 'include'
+  })
+
+  const result = await response.json()
+
+  if (response.status === 200) {
+    ToggleGlobalLoader()
+    messageInput.value = ''
+    await RenderTicketDetailes(result.ticket._id, result.ticket)
+  } else {
+    ToggleGlobalLoader()
+    ToastBox(
+      'error',
+      result.msg,
+      3000,
+      null,
+      null
+    )
+  }
 }

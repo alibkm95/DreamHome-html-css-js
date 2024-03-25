@@ -35,19 +35,20 @@
       "minDate"
       "status"
       "user"
+      "search"
       "submit";
 
     @include m.media(sm) {
       grid-template-areas:
         "maxDate minDate"
         "status user"
-        "submit submit";
+        "search submit";
     }
 
     @include m.media(lg) {
       grid-template-areas:
-        "maxDate minDate status user"
-        "submit submit submit submit";
+      "maxDate minDate status"
+      "user search submit";
     }
 
     &-max-date {
@@ -64,6 +65,10 @@
 
     &-user{
       grid-area: user;
+    }
+
+    &-search {
+      grid-area: search;
     }
 
     &-submit {

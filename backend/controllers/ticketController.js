@@ -1,4 +1,5 @@
 const Ticket = require('../models/Ticket')
+const User = require('../models/User')
 const Conversation = require('../models/Conversation')
 
 const { StatusCodes } = require('http-status-codes')
@@ -41,7 +42,7 @@ const createTicket = async (req, res) => {
 
 const getAllTickets = async (req, res) => {
 
-  const { search, ticketStatus } = req.query
+  const { search, ticketStatus, user: userEmail, maxDate, minDate } = req.query
 
   let queryObject = {}
 
@@ -53,9 +54,24 @@ const getAllTickets = async (req, res) => {
     queryObject.subject = { $regex: search, $options: 'i' }
   }
 
+  if (userEmail) {
+    const user = await User.findOne({ email: userEmail })
+
+    if (user) {
+      queryObject.user = user._id
+    }
+  }
+
+  if (maxDate && minDate) {
+    queryObject.createdAt = {
+      $gt: new Date(minDate),
+      $lt: new Date(maxDate),
+    }
+  }
+
   let result = Ticket.find(queryObject).populate({
     path: 'user',
-    select: 'name role'
+    select: 'name role email'
   })
 
   const page = Number(req.query.page) || 1
