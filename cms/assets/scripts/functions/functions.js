@@ -1396,8 +1396,49 @@ export const DeleteTicket = async (ticketID) => {
   console.log(ticketID)
 }
 
-export const CloseTicket = async (ticketID) => {
-  console.log(ticketID)
+export const CloseTicket = (ticketID) => {
+  MsgBox(
+    'warning',
+    'Are you sure?? after closing ticket, can not open it again!',
+    'Cancel',
+    'Close ticket',
+    async () => {
+      ToggleGlobalLoader('Closing ...')
+
+      const response = await fetch(`${baseURL}/tickets/${ticketID}`, {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
+
+      const result = await response.json()
+
+      if (response.status === 200) {
+        ToggleGlobalLoader()
+        ToastBox(
+          'success',
+          result.msg,
+          3000,
+          null,
+          async () => {
+            await RenderTicketDetailes(ticketID, null)
+          }
+        )
+      } else {
+        ToggleGlobalLoader()
+        ToastBox(
+          'error',
+          result.msg,
+          3000,
+          null,
+          null
+        )
+      }
+    },
+    null
+  )
 }
 
 export const SendNewMessage = async (parent, ticketID) => {
