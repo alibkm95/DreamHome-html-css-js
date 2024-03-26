@@ -5,6 +5,7 @@ const crypto = require('crypto')
 const CustomError = require('../errors')
 const fs = require('fs')
 const path = require('path')
+const sendEmail = require('../utils/sendEmail')
 const {
   createTokenUser,
   attachCookiesToResponse,
@@ -239,6 +240,35 @@ const bannUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: `the user ${user.name} | ${user.email} - is ${user.isBanned ? 'banned' : 'unblocked'} successfully` })
 }
 
+const sendMailToUser = async (req, res) => {
+
+  const { id: userId } = req.params
+  const { subject, message } = req.body
+
+  const user = await User.findOne({ _id: userId })
+
+  if (!user) {
+    throw new CustomError.NotFoundError('there is no such a user')
+  }
+
+  if (!subject && !message) {
+    throw new CustomError.BadRequestError('subject and message must be provided')
+  }
+
+  try {
+    await sendEmail({
+      to: user.email,
+      subject,
+      html: `<p>${message}</p>`
+    })
+
+    return res.status(StatusCodes.OK).json({ msg: `email sent to ${user.email} successfully` })
+  } catch (error) {
+    console.log(error)
+    throw new CustomError.BadRequestError('sending email failed !!!')
+  }
+}
+
 module.exports = {
   getAllUsers,
   getSingleUser,
@@ -248,4 +278,5 @@ module.exports = {
   deleteUser,
   uploadUserProfile,
   bannUser,
+  sendMailToUser
 }

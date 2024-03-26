@@ -15,6 +15,7 @@ const {
   deleteUser,
   uploadUserProfile,
   bannUser,
+  sendMailToUser
 } = require('../controllers/userController')
 
 router
@@ -44,6 +45,10 @@ router
 router
   .route('/bannUser/:id')
   .patch(authenticateUser, authorizePermissions('ROOTADMIN', 'ADMIN'), bannUser)
+
+router
+  .route('/sendMail/:id')
+  .post(authenticateUser, authorizePermissions('ROOTADMIN', 'ADMIN'), sendMailToUser)
 
 router
   .route('/:id')

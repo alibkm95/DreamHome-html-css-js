@@ -1818,3 +1818,71 @@ export const DeleteUser = () => {
     null
   )
 }
+
+export const SendEmailToUser = async (userID) => {
+
+  const subjectInput = document.getElementById('subject-input')
+  const messageInput = document.getElementById('msg-input')
+
+  let isSubjectProvided = IsNotEmpty(subjectInput.value)
+  if (!isSubjectProvided) {
+    subjectInput.classList.add('is-invalid')
+    return ToastBox(
+      'error',
+      'subject is required',
+      3000,
+      null,
+      null
+    )
+  }
+
+  let isMessageProvided = IsNotEmpty(messageInput.value)
+  if (!isMessageProvided) {
+    messageInput.classList.add('is-invalid')
+    return ToastBox(
+      'error',
+      'message is required',
+      3000,
+      null,
+      null
+    )
+  }
+
+  ToggleGlobalLoader('Sending ...')
+
+  const response = await fetch(`${baseURL}/users/sendMail/${userID}`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      subject: subjectInput.value.trim(),
+      message: messageInput.value.trim()
+    }),
+    credentials: 'include'
+  })
+
+  const result = await response.json()
+
+  if (response.status === 200) {
+    subjectInput.value = ''
+    messageInput.value = ''
+    ToggleGlobalLoader()
+    ToastBox(
+      'success',
+      result.msg,
+      3000,
+      null,
+      null
+    )
+  } else {
+    ToggleGlobalLoader()
+    ToastBox(
+      'error',
+      result.msg,
+      3000,
+      null,
+      null
+    )
+  }
+}
