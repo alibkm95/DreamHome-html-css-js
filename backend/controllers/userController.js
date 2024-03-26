@@ -222,6 +222,14 @@ const bannUser = async (req, res) => {
     throw new CustomError.NotFoundError('there is no such user')
   }
 
+  if (req.user.role === 'ADMIN' && (user.role === 'ADMIN' || user.role === 'ROOTADMIN')) {
+    throw new CustomError.BadRequestError('this action requires "ROOTADMIN" access')
+  }
+
+  if (req.user.role === 'ROOTADMIN' && user.role === 'ROOTADMIN') {
+    throw new CustomError.BadRequestError('can not bann accounts with ROOTADMIN access')
+  }
+
   const { isBanned } = user
 
   user.isBanned = isBanned ? false : true

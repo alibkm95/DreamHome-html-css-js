@@ -1611,6 +1611,8 @@ export const SendNewMessage = async (parent, ticketID) => {
 
 export const RenderUserInfos = async (userID) => {
 
+  ToggleGlobalLoader('Getting infos ...')
+
   const user = await GetUserDetailes(userID)
 
   if (!user) {
@@ -1676,6 +1678,7 @@ export const RenderUserInfos = async (userID) => {
   `)
 
   RenderUserActions(user)
+  ToggleGlobalLoader()
 }
 
 export const RenderUserActions = (user) => {
@@ -1701,13 +1704,117 @@ export const RenderUserActions = (user) => {
 }
 
 export const ChangeUserRole = async () => {
+
+  ToggleGlobalLoader('Updating ...')
+
   const userID = GetUrlParams('user')
+
+  const response = await fetch(`${baseURL}/users/updateUserRole/${userID}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+
+  const result = await response.json()
+
+  if (response.status !== 200) {
+    ToggleGlobalLoader()
+    return ToastBox(
+      'error',
+      result.msg,
+      3000,
+      null,
+      null
+    )
+  }
+
+  await RenderUserInfos(userID)
+  ToggleGlobalLoader()
+  ToastBox(
+    'success',
+    result.msg,
+    3000,
+    null,
+    null
+  )
 }
 
 export const UserBlockingManager = async () => {
+
+  ToggleGlobalLoader('Updating ...')
+
   const userID = GetUrlParams('user')
+
+  const response = await fetch(`${baseURL}/users/bannUser/${userID}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+
+  const result = await response.json()
+
+  if (response.status !== 200) {
+    ToggleGlobalLoader()
+    return ToastBox(
+      'error',
+      result.msg,
+      3000,
+      null,
+      null
+    )
+  }
+
+  await RenderUserInfos(userID)
+  ToggleGlobalLoader()
+  ToastBox(
+    'success',
+    result.msg,
+    3000,
+    null,
+    null
+  )
 }
 
-export const DeleteUser = async () => {
+export const DeleteUser = () => {
   const userID = GetUrlParams('user')
+
+  MsgBox(
+    'warning',
+    'Are you sure? after deleting there is no way to recover data!',
+    'Cancel',
+    'Delete',
+    async () => {
+
+      ToggleGlobalLoader('Deleting ...')
+
+      const response = await fetch(`${baseURL}/users/deleteUser/${userID}`, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
+
+      const result = await response.json()
+
+      if (response.status !== 200) {
+        ToggleGlobalLoader()
+        return ToastBox(
+          'error',
+          result.msg,
+          3000,
+          null,
+          null
+        )
+      }
+
+      ToggleGlobalLoader()
+      return RedirectTo('./users.html')
+    },
+    null
+  )
 }
