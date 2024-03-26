@@ -22,18 +22,18 @@ const getAllUsers = async (req, res) => {
   }
 
   if (nameSearch) {
-    queryObject.name = { $regex: nameSearch, options: 'i' }
+    queryObject.name = { $regex: nameSearch, $options: 'i' }
   }
 
-  if (verified) {
+  if (verified && (verified === 'true' || verified === 'false')) {
     queryObject.isVerified = verified === 'true' ? true : false
   }
 
-  if (userRole) {
-    queryObject.role = userRole === 'ADMIN' ? 'ADMIN' : 'USER'
+  if (userRole && (userRole === 'USER' || userRole === 'ADMIN')) {
+    queryObject.role = userRole
   }
 
-  if (banned) {
+  if (banned && (banned === 'true' || banned === 'false')) {
     queryObject.isBanned = banned === 'true' ? true : false
   }
 
@@ -228,7 +228,7 @@ const bannUser = async (req, res) => {
 
   user.save()
 
-  res.status(StatusCodes.OK).json({ msg: `the user ${user.name} | ${user.email} - is ${user.isBanned ? 'blocked' : 'unblocked'} successfully` })
+  res.status(StatusCodes.OK).json({ msg: `the user ${user.name} | ${user.email} - is ${user.isBanned ? 'banned' : 'unblocked'} successfully` })
 }
 
 module.exports = {

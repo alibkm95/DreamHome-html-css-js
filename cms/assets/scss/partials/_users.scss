@@ -19,21 +19,22 @@
     grid-template-areas:
       "userName"
       "userEmail"
-      "userPhone"
-      "status"
+      "acc"
+      "role"
+      "bann"
       "submit";
 
     @include m.media(sm) {
       grid-template-areas:
         "userName userEmail"
-        "userPhone status"
-        "submit submit";
+        "acc role"
+        "bann submit";
     }
 
     @include m.media(lg) {
       grid-template-areas:
-        "userName userEmail userPhone status"
-        "submit submit submit submit";
+        "userName userEmail acc"
+        "role bann submit";
     }
 
     &-user-name {
@@ -44,12 +45,16 @@
       grid-area: userEmail;
     }
 
-    &-status {
-      grid-area: status;
+    &-user-acc {
+      grid-area: acc;
     }
 
-    &-user-phone{
-      grid-area: userPhone;
+    &-user-role {
+      grid-area: role;
+    }
+
+    &-user-bann {
+      grid-area: bann;
     }
 
     &-submit {
@@ -120,14 +125,13 @@
     }
   }
 
-  &__link {
+  .dropdown>button {
     background-color: var(--green);
-    color: var(--bs-white) !important;
-    padding: f.rem(10);
-    border-radius: f.rem(5);
-    transition: all 0.3s ease;
+    color: var(--bs-white);
+    border: none;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: var(--bs-indigo);
     }
   }

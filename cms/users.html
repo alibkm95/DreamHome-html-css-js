@@ -185,27 +185,54 @@
                 </label>
                 <input type="text" name="user-email" id="user-email" placeholder="user's email ...">
               </div>
-              <div class="filter__body-user-phone filter-input">
-                <label for="user-phone">
-                  <i class="fa-solid fa-mobile"></i>
-                  Phone:
-                </label>
-                <input type="text" name="user-phone" id="user-phone" placeholder="user's phone ...">
-              </div>
-              <div class="filter__body-status filter-input">
-                <label for="status-type">
+              <div class="filter__body-user-acc filter-input">
+                <label for="acc-type">
                   <i class="fa-solid fa-check-circle"></i>
-                  Account status:
+                  Verification:
                 </label>
-                <select name="status-type" id="status-type">
+                <select name="acc-type" id="acc-type">
                   <option value="all" selected>
                     All
                   </option>
-                  <option value="verified">
+                  <option value="true">
                     verified
                   </option>
-                  <option value="unverified">
+                  <option value="false">
                     unverified
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-user-role filter-input">
+                <label for="role-type">
+                  <i class="fa-solid fa-address-card"></i>
+                  Account role:
+                </label>
+                <select name="role-type" id="role-type">
+                  <option value="all" selected>
+                    All
+                  </option>
+                  <option value="USER">
+                    user
+                  </option>
+                  <option value="ADMIN">
+                    admin
+                  </option>
+                </select>
+              </div>
+              <div class="filter__body-user-bann filter-input">
+                <label for="bann-type">
+                  <i class="fa-solid fa-ban"></i>
+                  Bann status:
+                </label>
+                <select name="bann-type" id="bann-type">
+                  <option value="all" selected>
+                    All
+                  </option>
+                  <option value="true">
+                    banned
+                  </option>
+                  <option value="false">
+                    unbanned
                   </option>
                 </select>
               </div>
@@ -229,19 +256,6 @@
             </div>
             <div class="users__body">
 
-              <div class="not-found">
-                <div class="not-found__container">
-                  <img class="not-found__img" src="./assets/images/404.svg" alt="Not Found">
-                  <p class="not-found__text text-center fs-3">
-                    Sorry. We could not find any results ...
-                  </p>
-                  <a href="./index.html" class="not-found__link btn-style">
-                    Back to Home
-                    <i class="fa-solid fa-home"></i>
-                  </a>
-                </div>
-              </div>
-
               <div class="data-table">
                 <table class="table table-striped table-hover border">
                   <thead>
@@ -255,33 +269,12 @@
                     </tr>
                   </thead>
                   <tbody id="data-container">
-                    <tr>
-                      <th scope="row">
-                        1
-                      </th>
-                      <td>
-                        Ali bak mohamadi asl
-                      </td>
-                      <td>
-                        ali.bkm95@gmail.com
-                      </td>
-                      <td>
-                        2024-03-12
-                      </td>
-                      <td>
-                        verified
-                      </td>
-                      <td>
-                        <a href="#" class="btn-style users__link">
-                          Detailes
-                        </a>
-                      </td>
-                    </tr>
+                    <!-- insert from js -->
                   </tbody>
                 </table>
               </div>
 
-              <div class="pagination my-4">
+              <div class="pagination my-4 hide">
                 <div class="pagination__container">
                   <button class="pagination__btn prev-btn">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -290,7 +283,6 @@
                   <div class="pagination__actions">
                     <span class="pagination__current">
                       <!-- insert from js -->
-                      Page <span class="pagination__current-active">3</span> of 10
                     </span>
                     <div class="pagination__jump">
                       <label for="jump-input" class="pagination__jump-label">
@@ -328,7 +320,7 @@
     </main>
   </div>
   <script src="./node_modules/chart.js/dist/chart.umd.js"></script>
-  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
   <script type="module" src="./assets/scripts/shared/shared.js"></script>
   <script type="module" src="./assets/scripts/users.js"></script>

@@ -464,6 +464,58 @@ export const RenderTicketsTable = (parentElem, items, page, itemPerPage) => {
   })
 }
 
+export const RenderUsersTable = (parentElem, items, page, itemPerPage) => {
+  parentElem.innerHTML = ''
+  items.map((item, index) => {
+    parentElem.insertAdjacentHTML('beforeend', `
+      <tr>
+        <th scope="row">
+          ${(index + 1) + ((page - 1) * itemPerPage)}
+        </th>
+        <td>
+          ${item.name}
+        </td>
+        <td>
+          ${item.email}
+        </td>
+        <td>
+          ${new Date(item.createdAt).toLocaleDateString('en-CA')}
+        </td>
+        <td class="${item.isVerified ? 'text-success' : 'text-danger'}">
+          ${item.isVerified ? 'Verified' : 'Not verified'}
+        </td>
+        <td>
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="actionsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="actionsDropDown">
+              <li>
+                <a class="dropdown-item text-success" href="./user-detailes.html?user=${item._id}">
+                  Detailes
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item" href="./tickets.html?user=${item.email}">
+                  Users tickets
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="./requests.html?user=${item.email}">
+                  Users requests
+                </a>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    `)
+  })
+}
+
 export const UploadCoverImage = async () => {
   const coverFileInput = document.getElementById('cover-input')
   const coverProccess = document.getElementById('cover-upload-proc')
@@ -823,6 +875,21 @@ export const GetTicketDetailes = async (ticketID) => {
   if (response.status === 200) {
     const result = await response.json()
     return result.ticket
+  }
+
+  return null
+}
+
+export const GetUserDetailes = async (userID) => {
+
+  const response = await fetch(`${baseURL}/users/${userID}`, {
+    credentials: 'include'
+  })
+
+  const result = await response.json()
+
+  if (response.status === 200) {
+    return result.user
   }
 
   return null
@@ -1540,4 +1607,107 @@ export const SendNewMessage = async (parent, ticketID) => {
       null
     )
   }
+}
+
+export const RenderUserInfos = async (userID) => {
+
+  const user = await GetUserDetailes(userID)
+
+  if (!user) {
+    return RedirectTo('./users.html')
+  }
+
+  const userInfosContainer = document.querySelector('.client__infos')
+  userInfosContainer.innerHTML = ''
+  userInfosContainer.insertAdjacentHTML('beforeend', `
+    <div class="client__infos-profile">
+      <img src="${user.profile}" class="d-block w-100">
+    </div>
+    <ul class="client__infos-list">
+      <li class="client__infos-list-item">
+        Name:
+        <span>
+        ${user.name}
+        </span>
+      </li>
+      <li class="client__infos-list-item">
+        Email:
+        <span>
+        ${user.email}
+        </span>
+      </li>
+      <li class="client__infos-list-item">
+        Phone:
+        <span>
+        ${user.phone}
+        </span>
+      </li>
+      <li class="client__infos-list-item">
+        Role:
+        <span>
+        ${user.role.toLowerCase()}
+        </span>
+      </li>
+      <li class="client__infos-list-item">
+        Joined in: 
+        <span>
+        ${new Date(user.createdAt).toLocaleDateString('en-CA')}
+        </span>
+      </li>
+      <li class="client__infos-list-item">
+        Account status:
+        <span class="${user.isVerified ? 'text-success' : 'text-danger'}">
+        ${user.isVerified ? 'Verified' : 'Unverified'}
+        </span>
+      </li>
+      <li class="client__infos-list-item">
+        Verified in:
+        <span>
+        ${new Date(user.verifiedIn).toLocaleDateString('en-CA')}
+        </span>
+      </li>
+      <li class="client__infos-list-item">
+        Bann status:
+        <span class="${user.isBanned ? 'text-danger' : 'text-success'}">
+        ${user.isBanned ? 'Banned' : 'Not banned'}
+        </span>
+      </li>
+    </ul>
+  `)
+
+  RenderUserActions(user)
+}
+
+export const RenderUserActions = (user) => {
+  const actionsContainer = document.querySelector('.client__actions')
+  actionsContainer.innerHTML = ''
+  actionsContainer.insertAdjacentHTML('beforeend', `
+    <a href="./tickets.html?user=${user.email}" class="btn btn-primary text-light">
+      User's tickets
+    </a>
+    <a href="./requests.html?user=${user.email}" class="btn btn-success text-light">
+      User's requests
+    </a>
+    <button class="btn btn-warning" onclick="ChangeUserRole()">
+      ${user.role === 'USER' ? 'Promote to admin' : 'Demote to user'}
+    </button>
+    <button class="btn ${user.isBanned ? 'btn-success' : 'btn-danger'}" onclick="UserBlockingManager()">
+      ${user.isBanned ? 'Unblock user' : 'Bann user'}
+    </button>
+    <button class="btn btn-danger" onclick="DeleteUser()">
+      Delete user
+    </button>
+  `)
+}
+
+export const ChangeUserRole = async () => {
+  const userID = GetUrlParams('user')
+}
+
+export const UserBlockingManager = async () => {
+  const userID = GetUrlParams('user')
+}
+
+export const DeleteUser = async () => {
+  const userID = GetUrlParams('user')
 }
