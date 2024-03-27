@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const Ticket = require('./Ticket')
+const Request = require('./Request')
+const Saved = require('./Saved')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 
@@ -29,7 +32,7 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: {
-      values: ['USER','ADMIN','ROOTADMIN'],
+      values: ['USER', 'ADMIN', 'ROOTADMIN'],
       message: '{VALUE} is not supported as a valid role'
     },
     default: 'USER'
@@ -56,9 +59,19 @@ const UserSchema = new mongoose.Schema({
 })
 
 UserSchema.pre('save', async function () {
-  if(!this.isModified('password')) return
+  if (!this.isModified('password')) return
   const salt = await bcrypt.genSalt(10)
   this.password = await bcrypt.hash(this.password, salt)
+})
+
+UserSchema.pre('remove', async function () {
+  try {
+    await Ticket.deleteMany({ user: this._id })
+    await Request.deleteMany({ user: this._id })
+    await Saved.deleteMany({ user: this._id })
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 UserSchema.methods.comparePassword = async function (insertedPassword) {

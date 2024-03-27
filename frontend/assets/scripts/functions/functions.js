@@ -1451,10 +1451,10 @@ export const GetCookie = (cookieName) => {
 export const RenderLatestAds = async () => {
   const latestWrapperElem = document.getElementById('latest-wrapper')
   latestWrapperElem.innerHTML = ''
-  const result = await fetch(`${baseURL}/ads`)
-  const response = await result.json()
+  const response = await fetch(`${baseURL}/ads`)
+  const result = await response.json()
 
-  if (result.status !== 200) {
+  if (response.status !== 200) {
     latestWrapperElem.insertAdjacentHTML('afterbegin', `
       <div class="alert alert-danger w-100">
         an error occurred and we could not get latest ads informations :(
@@ -1463,7 +1463,7 @@ export const RenderLatestAds = async () => {
     return
   }
 
-  const ads = response.ads
+  const ads = result.ads
 
   if (ads.length === 0) {
     latestWrapperElem.insertAdjacentHTML('afterbegin', `
@@ -1560,10 +1560,10 @@ export const RenderLatestAds = async () => {
 export const RenderMostViewedAds = async () => {
   const topViewedWrapper = document.getElementById('most-viewed-wrapper')
   topViewedWrapper.innerHTML = ''
-  const result = await fetch(`${baseURL}/ads?sort=most-viewed`)
-  const response = await result.json()
+  const response = await fetch(`${baseURL}/ads?sort=most-viewed`)
+  const result = await response.json()
 
-  if (result.status !== 200) {
+  if (response.status !== 200) {
     topViewedWrapper.insertAdjacentHTML('afterbegin', `
       <div class="alert alert-danger w-100">
         an error occurred and we could not get latest ads informations :(
@@ -1572,7 +1572,7 @@ export const RenderMostViewedAds = async () => {
     return
   }
 
-  const ads = response.ads
+  const ads = result.ads
 
   if (ads.length === 0) {
     topViewedWrapper.insertAdjacentHTML('afterbegin', `
@@ -1714,16 +1714,16 @@ export const GetAdDetailes = async () => {
     return
   }
 
-  const result = await fetch(`${baseURL}/ads/${adId}`)
-  const response = await result.json()
+  const response = await fetch(`${baseURL}/ads/${adId}`)
+  const result = await response.json()
 
-  if (result.status === 404) {
+  if (response.status === 404) {
     const parentElem = document.querySelector('.main')
     RenderNotFound(parentElem)
     return
   }
 
-  const ad = response.ad
+  const ad = result.ad
   const savedList = await GetUserSavedList()
   let isAlredySaved = false
 
@@ -1875,10 +1875,10 @@ export const RenderSimilarAds = async (adType, propType) => {
   const similarWrapper = document.getElementById('similar-wrapper')
 
   similarWrapper.innerHTML = ''
-  const result = await fetch(`${baseURL}/ads?propType=${propType}&adType=${adType}`)
-  const response = await result.json()
+  const response = await fetch(`${baseURL}/ads?propType=${propType}&adType=${adType}`)
+  const result = await response.json()
 
-  if (result.status !== 200) {
+  if (response.status !== 200) {
     similarWrapper.insertAdjacentHTML('afterbegin', `
       <div class="alert alert-danger w-100">
         an error occurred and we could not get similar ads informations :(
@@ -1887,7 +1887,7 @@ export const RenderSimilarAds = async (adType, propType) => {
     return
   }
 
-  const ads = response.ads
+  const ads = result.ads
 
   if (ads.length === 0) {
     similarWrapper.insertAdjacentHTML('afterbegin', `
@@ -2019,7 +2019,7 @@ export const SaveAdHandler = async (event) => {
     selectedAd: GetUrlParams('item')
   }
 
-  const result = await fetch(`${baseURL}/save`, {
+  const response = await fetch(`${baseURL}/save`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
@@ -2028,18 +2028,18 @@ export const SaveAdHandler = async (event) => {
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
 
-  if (result.status === 200) {
-    if (response.saved) {
-      ToastBox('success', response.msg, 3000, null, null)
+  if (response.status === 200) {
+    if (result.saved) {
+      ToastBox('success', result.msg, 3000, null, null)
       event.target.innerHTML = ''
       event.target.insertAdjacentHTML('beforeend', `
       <i class="fa-solid fa-bookmark"></i>
       saved
       `)
     } else {
-      ToastBox('success', response.msg, 3000, null, null)
+      ToastBox('success', result.msg, 3000, null, null)
       event.target.innerHTML = ''
       event.target.insertAdjacentHTML('beforeend', `
       <i class="fa-regular fa-bookmark"></i>
@@ -2048,7 +2048,7 @@ export const SaveAdHandler = async (event) => {
     }
   }
 
-  if (result.status === 401) {
+  if (response.status === 401) {
     MsgBox(
       'error',
       'in order to save an item, you need to login with your account',
@@ -2081,7 +2081,7 @@ export const RequestAdHandler = async (event) => {
     selectedAd: GetUrlParams('item')
   }
 
-  const result = await fetch(`${baseURL}/request`, {
+  const response = await fetch(`${baseURL}/request`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
@@ -2090,16 +2090,16 @@ export const RequestAdHandler = async (event) => {
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
 
-  if (result.status === 201) {
+  if (response.status === 201) {
     ToastBox('success', 'The request was successfully registered. Please wait for a call from our experts in the next few days', 3000, null, null)
     event.target.innerHTML = ''
     event.target.insertAdjacentHTML('beforeend', `
       <i class="fa-solid fa-people-group"></i>
       Request
     `)
-  } else if (result.status === 401) {
+  } else if (response.status === 401) {
     MsgBox(
       'error',
       'in order to submit a request, you need to login with your account',
@@ -2113,7 +2113,7 @@ export const RequestAdHandler = async (event) => {
       Request
     `)
   } else {
-    ToastBox('error', response.msg, 3000, null, null)
+    ToastBox('error', result.msg, 3000, null, null)
     event.target.innerHTML = ''
     event.target.insertAdjacentHTML('beforeend', `
       <i class="fa-solid fa-people-group"></i>
@@ -2128,14 +2128,14 @@ export const GetUserSavedList = async () => {
 
   if (!isLoggedIn) return false
 
-  const result = await fetch(`${baseURL}/save/u`, {
+  const response = await fetch(`${baseURL}/save/u`, {
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
 
-  if (result.status === 200) {
-    return response.userSaveList
+  if (response.status === 200) {
+    return result.userSaveList
   }
 }
 
@@ -2145,14 +2145,14 @@ export const GetUserTickets = async () => {
 
   if (!isLoggedIn) return false
 
-  const result = await fetch(`${baseURL}/tickets/showMyTickets`, {
+  const response = await fetch(`${baseURL}/tickets/showMyTickets`, {
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
 
-  if (result.status === 200) {
-    return response.tickets
+  if (response.status === 200) {
+    return result.tickets
   }
 }
 
@@ -2161,14 +2161,14 @@ export const GetUserRequests = async () => {
 
   if (!isLoggedIn) return false
 
-  const result = await fetch(`${baseURL}/request/u`, {
+  const response = await fetch(`${baseURL}/request/u`, {
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
 
-  if (result.status === 200) {
-    return response.requests
+  if (response.status === 200) {
+    return result.requests
   }
 }
 
@@ -2349,7 +2349,7 @@ export const CreateTicket = async (subjectElem, messageElem) => {
     message: messageElem.value.trim()
   }
 
-  const result = await fetch(`${baseURL}/tickets`, {
+  const response = await fetch(`${baseURL}/tickets`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
@@ -2358,11 +2358,11 @@ export const CreateTicket = async (subjectElem, messageElem) => {
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
 
   ToggleGlobalLoader()
 
-  if (result.status === 401) {
+  if (response.status === 401) {
     return MsgBox(
       'error',
       'in order to send a ticket you have to login with your account',
@@ -2373,12 +2373,12 @@ export const CreateTicket = async (subjectElem, messageElem) => {
     )
   }
 
-  if (result.status === 201) {
+  if (response.status === 201) {
     subjectElem.value = ''
     messageElem.value = ''
-    ToastBox('success', response.msg, 3000, null, RedirectToHome)
+    ToastBox('success', result.msg, 3000, null, RedirectToHome)
   } else {
-    return ToastBox('error', response.msg, 3000, null, null)
+    return ToastBox('error', result.msg, 3000, null, null)
   }
 }
 
@@ -2386,16 +2386,16 @@ export const UploadUserProfile = async (img) => {
   const formdata = new FormData()
   formdata.append('image', img)
 
-  const result = await fetch(`${baseURL}/users/profile`, {
+  const response = await fetch(`${baseURL}/users/profile`, {
     method: "PATCH",
     body: formdata,
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
 
-  if (result.status === 200) {
-    return response.profile
+  if (response.status === 200) {
+    return result.profile
   } else {
     return false
   }
@@ -2635,7 +2635,7 @@ export const RenderUserRequests = async () => {
             </span>
             <span class="sm-box__subtext">
               ${req.status === 'pending' ? ' Waiting for an appointment' : ''}
-              ${req.status === 'completed' ? ' Arranged. wait for our call' : ''}
+              ${req.status === 'completed' ? ' Arranged. check your emails' : ''}
               ${req.status === 'canceled' ? ' canceled by admins' : ''}
             </span>
           </div>
@@ -2685,7 +2685,7 @@ export const UpdateUserInfos = async () => {
     newPassword: isPasswordUpdates ? passwordInput.value.trim() : null
   }
 
-  const updateUser = await fetch(`${baseURL}/users/updateUser`, {
+  const response = await fetch(`${baseURL}/users/updateUser`, {
     method: "PATCH",
     headers: {
       'Content-Type': 'application/json'
@@ -2694,9 +2694,9 @@ export const UpdateUserInfos = async () => {
     credentials: 'include'
   })
 
-  const response = await updateUser.json()
+  const result = await response.json()
 
-  if (updateUser.status === 200) {
+  if (response.status === 200) {
     const userInfoParent = document.querySelector('.panel__user-info-list')
 
     userInfoParent.innerHTML = ''
@@ -2718,7 +2718,7 @@ export const UpdateUserInfos = async () => {
 
     ToastBox('success', 'update information success!', 3000, null, null)
   } else {
-    ToastBox('error', response.msg, 3000, null, null)
+    ToastBox('error', result.msg, 3000, null, null)
   }
 }
 
@@ -2786,15 +2786,15 @@ export const GetTicketDetailes = async () => {
 
   if (!ticketId) return RedirectToHome()
 
-  const result = await fetch(`${baseURL}/tickets/${ticketId}`, {
+  const response = await fetch(`${baseURL}/tickets/${ticketId}`, {
     credentials: 'include'
   })
 
-  const response = await result.json()
+  const result = await response.json()
   console.log(response)
 
-  if (result.status === 200) {
-    return response.ticket
+  if (response.status === 200) {
+    return result.ticket
   } else {
     return false
   }
@@ -2861,7 +2861,7 @@ export const SendNewMessage = async (parent) => {
     newMessage: messageInput.value.trim()
   }
 
-  const newMessage = await fetch(`${baseURL}/tickets/addNewMsg/${ticketID}`, {
+  const response = await fetch(`${baseURL}/tickets/addNewMsg/${ticketID}`, {
     method: "PATCH",
     headers: {
       'Content-Type': 'application/json'
@@ -2870,18 +2870,18 @@ export const SendNewMessage = async (parent) => {
     credentials: 'include'
   })
 
-  const response = await newMessage.json()
+  const result = await response.json()
 
   ToggleGlobalLoader()
 
-  if (newMessage.status === 200) {
+  if (response.status === 200) {
 
-    RenderConversation(response.ticket)
+    RenderConversation(result.ticket)
     messageInput.value = ''
 
     const ticketStatusElem = document.getElementById('ticket-status')
 
-    switch (response.ticket.ticketStatus) {
+    switch (result.ticket.ticketStatus) {
       case 'pending':
         ticketStatusElem.classList.add('text-warning')
         break;
@@ -2896,11 +2896,11 @@ export const SendNewMessage = async (parent) => {
         break;
     }
 
-    ticketStatusElem.innerText = `${response.ticket.ticketStatus}`
+    ticketStatusElem.innerText = `${result.ticket.ticketStatus}`
 
     ToastBox('success', 'message sent successfully', 3000, null, null)
   } else {
-    ToastBox('error', response.msg, 3000, null, null)
+    ToastBox('error', result.msg, 3000, null, null)
     return
   }
 }
