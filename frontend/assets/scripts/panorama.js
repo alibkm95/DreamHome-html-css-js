@@ -5,7 +5,7 @@ import {
 window.addEventListener('load', async () => {
 
   const image = await GetAdDetailes()
-  
+
 
   const panoramaImage = new PANOLENS.ImagePanorama(image)
   const imageContainer = document.querySelector('.image-container')
@@ -20,5 +20,4 @@ window.addEventListener('load', async () => {
 
   const loaderElem = document.querySelector('.loader')
   loaderElem.classList.add('hide')
-
 })
