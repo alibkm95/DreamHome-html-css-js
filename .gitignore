@@ -128,9 +128,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-# my inser frontend
-a.js
-a.html
-[0-9]*.png
-[0-9]*.jpg
