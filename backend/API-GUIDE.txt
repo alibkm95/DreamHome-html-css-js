@@ -1,0 +1,575 @@
+API guide:
+
+  baseURL: http://localhost:5000/api/v1
+  attention: any request that requires an access token or a refresh token must include an credentials set to "included" in its fetch.
+
+
+=============================================
+Authentication:
+
+  register: {
+    path: /auth/register
+    method: "POST"
+    body: {
+      email: string - required
+      name: string - required
+      phone: string - required
+      password: string - required
+    }
+    response: json => {"msg": "success message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  login: {
+    path: /auth/login
+    method: "POST"
+    body: {
+      email: string - required
+      password: string - required
+    }
+    response: json => {"user": "user infos object"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  logout: {
+    path: /auth/logout
+    method: "DELETE"
+    response: json => {"msg": "success message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  verify email: {
+    path: /auth/verifyEmail
+    method: "POST"
+    body: {
+      email: string - required
+      verificationToken: string - required
+    }
+    response: json => {"user": "user infos object"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  forget password: {
+    path: /auth/forgetPassword
+    method: "POST"
+    body: {
+      email: string - required
+    }
+    response: json => {"msg": "sent reset email message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  reset password: {
+    path: /auth/resetPassword
+    method: "POST"
+    body: {
+      email: string - required
+      password: string - required
+      token: string - required
+    }
+    response: json => {"msg": "reset success message"}
+  }
+
+=============================================
+Ads:
+
+  create new ad: {
+    path: /ads
+    method: "POST"
+    body: {
+      title: string - required
+      area: number - required
+      propType: string - required - enum['apartment', 'villa-bungalow', 'lands', 'commercials']
+      adType: string - required - enum['buy-and-sell', 'mortgage-and-rent', 'partnering-construction']
+      primaryPrice: number - optional - default=0
+      secondaryPrice: number - optional - default=0
+      cover: string - required
+      panorama: string - required
+      rooms: number - required
+      floorLevel: number - optional - default=0
+      totalFloors: number - optional - default=0
+      elavator: Boolean - optional - default=false
+      parking: Boolean - optional - default=false
+      warehouse: Boolean - optional - default=false
+      yearOfCunstruction: number - optional - default=0
+      location: string - optional = default=''
+      district: number - optional - default=0
+      description: string - required
+      publish: Boolean - optional - default=true
+    }
+    response: json => {"ad": "created ad infos", "msg": "success message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get all ads: {
+    path: /ads
+    method: "GET"
+    query parameters: {
+      propType: optional(for filtering) - enum['apartment', 'villa-bungalow', 'lands', 'commercials', 'all'] - default='all'
+      adType: optional(for filtering) - enum['buy-and-sell', 'mortgage-and-rent', 'partnering-construction'] - default='all'
+      sort: optional(for sorting) - enum['newest', 'most-viewed', 'A-Z', 'Z-A'] - default='newest'
+      search: optional(for searching)
+      publish: optional(for filtering) - enum['all', 'true', 'false'] - default='all'
+      page: optional(for pagination) = default=1
+      itemPerPage: optional(for pagination) - default=12
+    }
+    response: json => {"ads": {"ads info object"}, "totalAds": "number of total publishable ads", "numOfPages": "number of total pages"}
+  }
+  
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get single ad: {
+    path: /ads/:id
+    method: "GET"
+    request parameters: {
+      id: required - the candidate ad id
+    }
+    response: json => {"ad": {"the ad infos"}}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  update ad: {
+    path: /ads/:id
+    method: "PATCH"
+    request parameters: {
+      id: rquired - the candidate ad id
+    }
+    body: {
+      title: string - required
+      area: number - required
+      propType: string - required - enum['apartment', 'villa-bungalow', 'lands', 'commercials']
+      adType: string - required - enum['buy-and-sell', 'mortgage-and-rent', 'partnering-construction']
+      primaryPrice: number - optional - default=0
+      secondaryPrice: number - optional - default=0
+      cover: string - required
+      panorama: string - required
+      rooms: number - required
+      floorLevel: number - optional - default=0
+      totalFloors: number - optional - default=0
+      elavator: Boolean - optional - default=false
+      parking: Boolean - optional - default=false
+      warehouse: Boolean - optional - default=false
+      yearOfCunstruction: number - optional - default=0
+      location: string - optional = default=''
+      district: number - optional - default=0
+      description: string - required
+      publish: Boolean - optional - default=true
+    }
+    response: json => {"ad": {"the ad infos"}}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  upload ad images(cover & panorama): {
+    path: /ads/uploadImage
+    method: "POST"
+    body: {
+      formData: the form data that includes image file
+    }
+    response: json => {"image": "the uploaded image direct link"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  delete ad: {
+    path: /ads/:id
+    method: "DELETE"
+    request parameters: {
+      id: the candidate ad id
+    }
+    response: json => {"msg": "the message of deleting"}
+  }
+
+=============================================
+requests:
+
+  create request: {
+    path: /request
+    method: "POST"
+    body: {
+      selectedAd: required - the requesting ad id
+    }
+    response: json => {"msg": "the message of creating"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get all requests: {
+    path: /request
+    method: "GET"
+    query parameters: {
+      maxDate: optional(for filtering) - (in "yyyy-mm-dd" format)
+      minDate: optional(for filtering) - (in "yyyy-mm-dd" format)
+      user: optional(for filtering) - (the candidate user's email)
+      ad: optional(for filtering) - (the candidate ad id)
+      status: optional(for filtering) - enum['pending', 'completed', 'canceled', 'all'] - default='all'
+      page: optional(for pagination) = default=1
+      itemPerPage: optional(for pagination) = default=20
+    }
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get singel request: {
+    path: /request/:id
+    method: "GET"
+    request parameters: {
+      id: the candidate request id
+    }
+    response: json => {"request": "the request, requested ad and applicant infos"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get user request(for users only): {
+    path: /request/u
+    method: "GET"
+    response: json => {"requests": "the requests of applicant user along with ad infos"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  update request: {
+    path: /request/:id
+    method: "PATCH"
+    request parameters: {
+      id: the candidate requet id
+    }
+    query parameters: {
+      status: required - enum['pending', 'completed', 'canceled']
+    }
+    body: {
+      email: optional(for sending inform email) - (the applicants email address)
+      subject: optional(for sending inform email) - (the subject of email)
+      message: optional(for sending inform email) = (the message of email)
+    }
+    response: json => {"request": {"the updated requests infos"}, "msg": "the updating message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  delete request: {
+    path: /request/:id
+    method: "DELETE"
+    request parameters: {
+      id: the candidate requet id
+    }
+    response: json => {"msg": "the deleting message"}
+  }
+
+=============================================
+Saved:
+
+  toggle save(toggling an ad in saved list): {
+    path: /save
+    method: "POST"
+    body: {
+      selectedAd: required - the candidate ad id
+    }
+    response: json => {"saved": "Boolean(saved ? true : false)", "msg": "toggling message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get all saves: {
+    path: /save
+    method: "GET"
+    query parameters: {
+      page: optional(for pagination) = default=1
+      itemPerPage: optional(for pagination) = default=20
+    }
+    response: json => {"savedList": "all users saved ads infos", "totalSavedCount": "number of total saves", "numOfPage": "number of all available pages"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get user save list(only for user): {
+    path: /save/u
+    method: "GET"
+    response: json => {"userSaveList": "user's all saved ads infos"}
+  }
+
+=============================================
+Tickets:
+
+  create ticket: {
+    path: /tickets
+    method: "POST"
+    body: {
+      subject: string - required
+      message: string - required
+    }
+    response: json => {"msg": "the ticketing message"}
+  } 
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get all tickets: {
+    path: /tickets
+    method: "GET"
+    query parameters: {
+      search: optional(for search in subjects)
+      ticketStatus: optional(for filtering) - enum['pending', 'answered', 'closed', 'all'] - default='all'
+      user: optional(for getting single users ticket)
+      maxDate: optional(for filtering) - (in "yyyy-mm-dd" format)
+      minDate: optional(for filtering) - (in "yyyy-mm-dd" format)
+      page: optional(for pagination) = default=1
+      itemPerPage: optional(for pagination) = default=20
+    }
+    response: json => {"tickets": "available tickets infos", "totalTickets": "available tickets count", "numOfPages": "number of total pages"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get current user's tickets(only for user): {
+    path: /tickets/showMyTickets
+    method: "GET"
+    response: {"tickets": "all user's tickets", "count": "count of all available use tickets"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get singel ticket: {
+    path: /tickets/:id
+    method: "GET"
+    request parameters: {
+      id: the candidate ticket id
+    }
+    response: json => {"ticket": "the information of ticket and all conversations messages alongside with ticket"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  add new message to conversation: {
+    path: /tickets/addNewMsg/:id
+    method: "PATCH"
+    request parameters: {
+      id: the candidate ticket id
+    }
+    body: {
+      newMessage: string - required
+    }
+    response: json => {"ticket": "the information of ticket and all conversations messages alongside with ticket"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  update ticket: {
+    path: /tickets/:id
+    method: "PATCH"
+    request parameters: {
+      id: the candidate ticket id
+    }
+    response: json => {"msg": "the closing ticket message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  delete ticket: {
+    path: /tickets/:id
+    method: "DELETE"
+    request parameters: {
+      id: the candidate ticket id
+    }
+    response: json => {"msg": "deleting message"}
+  }
+
+=============================================
+Users:
+
+  get all users: {
+    psth: /users
+    method: "GET"
+    request parameters: {
+      emailSearch: optional(for filtering)
+      nameSearch: optional(for filtering)
+      verified: optional(for filtering) - enum['true', 'false', 'all'] - default='all'
+      userRole: optional(for filtering) - enum['ADMIN', 'USER', 'all'] - default='all'
+      banned: optional(for filtering) - enum['true', 'false', 'all'] - default='all'
+    }
+    response: json => {"users": "all users info", "numOfPages": "avaiable pages number", "totalUsers": "available users count"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get singel user: {
+    path: /users/:id
+    method: "GET"
+    request parameters: {
+      id: the candidate user id
+    }
+    response: json => {"user": "user infos object"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get current user(only for user that logged in): {
+    path: /users/showMe
+    method: "GET"
+    response: json => {"user": "user infos object"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  update user: {
+    path: /users/updateUser
+    method: "PATCH"
+    body: {
+      email: string - required
+      name: string - required
+      phone: string - required
+      oldPassword: string - optional(in case if user want to update their password)
+      newPassword: string - optional(in case if users want to update their password)
+    }
+    reponse: json => {"user": "updated user infos"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  update user role: {
+    path: /users/updateUserRole/:id
+    method: "PATCH"
+    request parameters: {
+      id: the candidate user id
+    }
+    response: json => {"msg": "toggling user role (ADMIN || USER) message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  delete user: {
+    path: /users/deleteUser/:id
+    method: "DELETE"
+    request parameters: {
+      id: the candidate user id
+    }
+    response: json => {"msg": "the deleting message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  upload user profile: {
+    path: /users/profile
+    method: "PATCH"
+    body: {
+      formData: the form data that includes image file
+    }
+    response: json => {"user": "user infos with new profile"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  bann user: {
+    path: /users/bannUser/:id
+    method: "PATCH"
+    request parameters: {
+      id: the candidate user id
+    }
+    response: json => {"msg": "toggling user ban status (banned || unbanned) message"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  send email to user: {
+    path: /users/sendMail/:id
+    method: "POST"
+    request parameters: {
+      id: the candidate user id
+    }
+    body: {
+      subject: string - required
+      message: string - required
+    }
+    response: json => {"msg": "sending email message"}
+  }
+
+=============================================
+Views:
+
+  get all views: {
+    path: /view
+    method: "GET"
+    response: json => {"viewsGroup": "grouped data for all ads views in certain dates"}
+  }
+
+  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  ********************************************
+  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+  get single ad views: {
+    path: /view/:id
+    method: "GET"
+    request parameters: {
+      id: the candidate ad id
+    }
+    response: json => {"viewGroup": "grouped data for a candidate ad views in certain dates"}
+  }
