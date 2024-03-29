@@ -4,14 +4,13 @@ require('express-async-errors')
 const express = require('express')
 const app = express()
 
-const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
 const xss = require('xss')
 const cors = require('cors')
-const mogoSanitize = require('express-mongo-sanitize')
+const mongoSanitize = require('express-mongo-sanitize')
 
 const connectDB = require('./db/connect')
 
@@ -28,8 +27,16 @@ const saveRouter = require('./routes/savedRoutes')
 const notFoundMiddleware = require('./middlewares/notFound')
 const errorHandlerMiddleware = require('./middlewares/errorHandler')
 
-// CORS
-// const setHeaders = require('./middlewares/headers')
+// ! => in production mode you can use this features that commented down below, for security reasons
+// app.use(
+//   rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 60,
+//   })
+// )
+// app.use(helmet())
+// app.use(xss())
+// app.use(mongoSanitize())
 
 app.use(express.json())
 app.use(cookieParser(process.env.COOKIE_SECRET))
@@ -38,7 +45,6 @@ app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
 }))
-// app.use(setHeaders)
 app.use(express.static('./public'))
 app.use(fileUpload())
 
