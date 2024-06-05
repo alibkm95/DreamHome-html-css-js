@@ -758,9 +758,9 @@ export const RenderAdCharts = async (adId) => {
 
     const filteredData = adViewsData.map((item) => {
       if (new Date(item[0]) >= thirtyDaysAgo && new Date(item[0]) <= today) {
-        return item
+        return item;
       }
-    })
+    }).filter((item) => item !== undefined);
 
     let chartConfigs = {
       type: 'line',

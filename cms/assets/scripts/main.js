@@ -30,9 +30,9 @@ window.addEventListener('load', async () => {
 
     const filteredData = viewsData.map((item) => {
       if (new Date(item[0]) >= thirtyDaysAgo && new Date(item[0]) <= today) {
-        return item
+        return item;
       }
-    })
+    }).filter((item) => item !== undefined);
 
     filteredData.forEach(item => {
       totalViewsCount += item[1]
