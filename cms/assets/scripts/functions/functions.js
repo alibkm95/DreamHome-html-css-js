@@ -93,8 +93,9 @@ export const GetCookie = (cookieName) => {
   cookieName += '='
   const cookies = document.cookie.split(';')
   for (let i = 0; i < cookies.length; i++) {
-    if (cookies[i].startsWith(cookieName)) {
-      return cookies[i].substring(cookieName.length)
+    const cookie = cookies[i].trim()
+    if (cookie.startsWith(cookieName)) {
+      return cookie.substring(cookieName.length)
     }
   }
   return null
